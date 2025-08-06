@@ -15,9 +15,11 @@ export const invoke = (args: string[]): Promise<{ code: number | null; stdout: s
     });
 
     gcloud.on('close', (code) => {
+      // All responses from gcloud, including non-zero codes.
       resolve({ code, stdout, stderr });
     });
     gcloud.on('error', (err) => {
+      // Process failed to start. gcloud isn't able to be invoked.
       reject(err);
     });
   });
