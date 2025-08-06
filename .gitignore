@@ -1,0 +1,7 @@
+# Local dependencies folder
+node_modules
+# Build output folder
+dist
+
+.DS_Store
+.gemini
