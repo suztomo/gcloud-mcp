@@ -18,34 +18,10 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import pkg from '../package.json' with { type: 'json' };
 import { registerRunGcloudCommand } from './tools/run_gcloud_command.js';
-import { writeFileSync, mkdirSync } from 'fs';
-import { join } from 'path';
+import * as gcloud from './gcloud.js';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-
-const initializeGeminiCLI = () => {
-  // When running `npm start -w [workspace]`, npm sets the CWD to the workspace directory.
-  // INIT_CWD is an environment variable set by npm that holds the original CWD.
-  // Use the original CWD if it exists, otherwise use the process' CWD.
-  const cwd = process.env['INIT_CWD'] || process.cwd();
-  const extensionDir = join(cwd, '.gemini', 'extensions', 'gcloud-mcp');
-  mkdirSync(extensionDir, { recursive: true });
-  const extensionFile = join(extensionDir, 'gemini-extension.json');
-  const content = {
-    name: pkg.name,
-    version: pkg.version,
-    description: 'Enable MCP-compatible AI agents to interact with Google Cloud.',
-    contextFileName: 'GEMINI.md',
-    mcpServers: {
-      gcloud: {
-        command: 'npm',
-        args: ['start', '-w', 'gcloud-mcp'],
-      },
-    },
-  };
-  writeFileSync(extensionFile, JSON.stringify(content, null, 2));
-  console.log(`Gemini CLI extension initialized at: ${extensionFile}`);
-};
+import { initializeGeminiCLI } from './gemini-cli-init.js';
 
 const main = async () => {
   const argv = await yargs(hideBin(process.argv)).option('gemini-cli-init', {
@@ -55,19 +31,21 @@ const main = async () => {
   }).argv;
 
   if (argv.geminiCliInit) {
-    initializeGeminiCLI();
+    await initializeGeminiCLI();
     return;
+  }
+
+  const isAvailable = await gcloud.isAvailable();
+  if (!isAvailable) {
+    console.log('Unable to start gcloud mcp server: gcloud executable not found.');
   }
 
   const server = new McpServer({
     name: 'gcloud-mcp-server',
     version: pkg.version,
   });
-
   registerRunGcloudCommand(server);
-
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
+  await server.connect(new StdioServerTransport());
   console.log('🚀 gcloud mcp server started');
 };
 
