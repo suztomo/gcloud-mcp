@@ -1,8 +1,6 @@
 {
   "extends": "@tsconfig/strictest/tsconfig.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist",
     "lib": ["es2023"],
     "target": "es2022",
     "module": "nodenext",
