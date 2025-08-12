@@ -28,10 +28,11 @@ vi.mock('fs/promises', () => ({
 
 beforeEach(() => {
   vi.clearAllMocks();
-  process.env['INIT_CWD'] = '/test/cwd';
+  delete process.env['INIT_CWD'];
 });
 
 test('initializeGeminiCLI should create directory and write files', async () => {
+  process.env['INIT_CWD'] = '/test/cwd';
   await initializeGeminiCLI();
 
   const extensionDir = join('/test/cwd', '.gemini', 'extensions', 'gcloud-mcp');
@@ -54,10 +55,41 @@ test('initializeGeminiCLI should create directory and write files', async () => 
       },
     },
   };
-  expect(writeFile).toHaveBeenCalledWith(
-    extensionFile,
-    JSON.stringify(expectedExtensionJson, null, 2),
-  );
+  expect(writeFile).toHaveBeenCalledWith(extensionFile, JSON.stringify(expectedExtensionJson, null, 2));
+
+  // Verify GEMINI.md reading and writing
+  expect(readFile).toHaveBeenCalled();
+  expect(writeFile).toHaveBeenCalledWith(geminiMdDestPath, 'Test content for GEMINI.md');
+});
+
+test('initializeGeminiCLI should create directory and write files when process.env[init_cwd] is not set', async () => {
+  const fakecwd = '/fakecwd';
+  const spy = vi.spyOn(process, 'cwd');
+  spy.mockReturnValue(fakecwd);
+
+  await initializeGeminiCLI();
+
+  const extensionDir = join(fakecwd, '.gemini', 'extensions', 'gcloud-mcp');
+  const extensionFile = join(extensionDir, 'gemini-extension.json');
+  const geminiMdDestPath = join(extensionDir, 'GEMINI.md');
+
+  // Verify directory creation
+  expect(mkdir).toHaveBeenCalledWith(extensionDir, { recursive: true });
+
+  // Verify gemini-extension.json content
+  const expectedExtensionJson = {
+    name: pkg.name,
+    version: pkg.version,
+    description: 'Enable MCP-compatible AI agents to interact with Google Cloud.',
+    contextFileName: 'GEMINI.md',
+    mcpServers: {
+      gcloud: {
+        command: 'npm',
+        args: ['start', '-w', 'gcloud-mcp'],
+      },
+    },
+  };
+  expect(writeFile).toHaveBeenCalledWith(extensionFile, JSON.stringify(expectedExtensionJson, null, 2));
 
   // Verify GEMINI.md reading and writing
   expect(readFile).toHaveBeenCalled();
