@@ -51,9 +51,7 @@ const main = async () => {
 
   const isAvailable = await gcloud.isAvailable();
   if (!isAvailable) {
-    console.log(
-      'Unable to start gcloud mcp server: gcloud executable not found.'
-    );
+    console.log('Unable to start gcloud mcp server: gcloud executable not found.');
   }
 
   let config: GcloudMcpConfig = {};
