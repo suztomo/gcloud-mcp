@@ -32,7 +32,6 @@ export const default_denylist: string[] = [
   'cloud-shell ssh',
   'workstations ssh',
   'app instances ssh',
-  'alpha compute list',
 ];
 
 const main = async () => {
