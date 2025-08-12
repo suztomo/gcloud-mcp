@@ -52,14 +52,20 @@ test('should initialize Gemini CLI when --gemini-cli-init is provided', async ()
   expect(initializeGeminiCLI).toHaveBeenCalled();
 });
 
-test('should log a message if gcloud is not available', async () => {
+test('should exit if gcloud is not available', async () => {
   process.argv = ['node', 'index.js'];
   vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(false);
-  const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+  vi.stubGlobal('process', { ...process, exit: vi.fn() });
+
   await import('./index.js');
+
   expect(gcloud.isAvailable).toHaveBeenCalled();
-  expect(consoleLogSpy).toHaveBeenCalledWith('Unable to start gcloud mcp server: gcloud executable not found.');
-  consoleLogSpy.mockRestore();
+  expect(consoleErrorSpy).toHaveBeenCalledWith('Unable to start gcloud mcp server: gcloud executable not found.');
+  expect(process.exit).toHaveBeenCalledWith(1);
+
+  consoleErrorSpy.mockRestore();
+  vi.unstubAllGlobals();
 });
 
 describe('with --config flag', () => {
