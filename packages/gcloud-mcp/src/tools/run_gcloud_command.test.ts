@@ -112,6 +112,36 @@ describe('createRunGcloudCommand', () => {
         ],
       });
     });
+
+    test('returns error for denylisted command with alpha release track', async () => {
+      const denylist = ['compute list'];
+      createRunGcloudCommand([], denylist).register(mockServer);
+      const toolImplementation = getToolImplementation();
+
+      const result = await toolImplementation({
+        args: ['alpha', 'compute', 'list'],
+      });
+
+      expect(gcloudInvoke).not.toHaveBeenCalled();
+      expect(result).toEqual({
+        content: [{ type: 'text', text: 'Command denied.' }],
+      });
+    });
+
+    test('returns error for denylisted command with beta release track', async () => {
+      const denylist = ['compute list'];
+      createRunGcloudCommand([], denylist).register(mockServer);
+      const toolImplementation = getToolImplementation();
+
+      const result = await toolImplementation({
+        args: ['beta', 'compute', 'list'],
+      });
+
+      expect(gcloudInvoke).not.toHaveBeenCalled();
+      expect(result).toEqual({
+        content: [{ type: 'text', text: 'Command denied.' }],
+      });
+    });
   });
 
   describe('gcloud invocation results', () => {
