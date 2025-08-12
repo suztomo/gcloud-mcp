@@ -24,3 +24,9 @@ Thumbs.db
 # Test report files
 coverage/
 packages/*/coverage/
+
+# Compiled JS
+build/
+
+# Package-lock file
+package-lock.json
