@@ -63,14 +63,24 @@ test('should log a message if gcloud is not available', async () => {
 test('should start the McpServer if gcloud is available', async () => {
   process.argv = ['node', 'index.js'];
   vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(true);
-  await import('./index.js');
+  const { default_denylist } = await import('./index.js');
   expect(gcloud.isAvailable).toHaveBeenCalled();
   expect(McpServer).toHaveBeenCalledWith({
     name: 'gcloud-mcp-server',
     version: '0.1.0',
   });
-  expect(createRunGcloudCommand).toHaveBeenCalledWith([], []);
+  expect(createRunGcloudCommand).toHaveBeenCalledWith([], default_denylist);
   expect(registerToolSpy).toHaveBeenCalledWith(vi.mocked(McpServer).mock.instances[0]);
   const serverInstance = vi.mocked(McpServer).mock.instances[0];
   expect(serverInstance!.connect).toHaveBeenCalledWith(expect.any(StdioServerTransport));
+});
+
+test('should merge denylists when provided via argv', async () => {
+  process.argv = ['node', 'index.js', '--denylist', 'gcloud projects list', 'gcloud compute instances list'];
+  vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(true);
+  const { default_denylist } = await import('./index.js');
+
+  const expectedDenylist = [...default_denylist, 'gcloud projects list', 'gcloud compute instances list'];
+
+  expect(createRunGcloudCommand).toHaveBeenCalledWith([], expectedDenylist);
 });

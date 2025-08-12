@@ -23,12 +23,28 @@ import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { initializeGeminiCLI } from './gemini-cli-init.js';
 
+export const default_denylist: string[] = [
+  'compute start-iap-tunnel',
+  'compute connect-to-serial-port',
+  'compute tpus tpu-vm ssh',
+  'compute tpus queued-resources ssh',
+  'compute ssh',
+  'cloud-shell ssh',
+  'workstations ssh',
+  'app instances ssh',
+];
+
 const main = async () => {
-  const argv = await yargs(hideBin(process.argv)).option('gemini-cli-init', {
-    alias: 'init',
-    type: 'boolean',
-    description: 'Initialize the Gemini CLI extension',
-  }).argv;
+  const argv = await yargs(hideBin(process.argv))
+    .option('gemini-cli-init', {
+      alias: 'init',
+      type: 'boolean',
+      description: 'Initialize the Gemini CLI extension',
+    })
+    .option('denylist', {
+      type: 'array',
+      description: 'A list of gcloud commands to denylist.',
+    }).argv;
 
   if (argv.geminiCliInit) {
     await initializeGeminiCLI();
@@ -44,7 +60,11 @@ const main = async () => {
     name: 'gcloud-mcp-server',
     version: pkg.version,
   });
-  createRunGcloudCommand([], []).register(server);
+
+  const userDenylist = (argv.denylist as string[]) || [];
+  const mergedDenylist = [...new Set([...default_denylist, ...userDenylist])];
+
+  createRunGcloudCommand([], mergedDenylist).register(server);
   await server.connect(new StdioServerTransport());
   console.log('🚀 gcloud mcp server started');
 };
