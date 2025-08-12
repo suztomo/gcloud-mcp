@@ -56,9 +56,7 @@ test('should log a message if gcloud is not available', async () => {
   const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
   await import('./index.js');
   expect(gcloud.isAvailable).toHaveBeenCalled();
-  expect(consoleLogSpy).toHaveBeenCalledWith(
-    'Unable to start gcloud mcp server: gcloud executable not found.'
-  );
+  expect(consoleLogSpy).toHaveBeenCalledWith('Unable to start gcloud mcp server: gcloud executable not found.');
   consoleLogSpy.mockRestore();
 });
 
@@ -72,11 +70,7 @@ test('should start the McpServer if gcloud is available', async () => {
     version: '0.1.0',
   });
   expect(createRunGcloudCommand).toHaveBeenCalledWith([], []);
-  expect(registerToolSpy).toHaveBeenCalledWith(
-    vi.mocked(McpServer).mock.instances[0]
-  );
+  expect(registerToolSpy).toHaveBeenCalledWith(vi.mocked(McpServer).mock.instances[0]);
   const serverInstance = vi.mocked(McpServer).mock.instances[0];
-  expect(serverInstance.connect).toHaveBeenCalledWith(
-    expect.any(StdioServerTransport)
-  );
+  expect(serverInstance.connect).toHaveBeenCalledWith(expect.any(StdioServerTransport));
 });
