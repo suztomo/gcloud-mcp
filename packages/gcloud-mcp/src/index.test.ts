@@ -28,7 +28,9 @@ vi.mock('../package.json', () => ({
 }));
 vi.mock('@modelcontextprotocol/sdk/server/mcp.js');
 vi.mock('@modelcontextprotocol/sdk/server/stdio.js');
-vi.mock('./tools/run_gcloud_command.js');
+vi.mock('./tools/run_gcloud_command.js', () => ({
+  registerRunGcloudCommand: vi.fn(),
+}));
 vi.mock('./gcloud.js');
 vi.mock('./gemini-cli-init.js');
 
@@ -62,7 +64,9 @@ test('should start the McpServer if gcloud is available', async () => {
     name: 'gcloud-mcp-server',
     version: '0.1.0',
   });
-  expect(registerRunGcloudCommand).toHaveBeenCalled();
+  expect(registerRunGcloudCommand).toHaveBeenCalledWith(vi.mocked(McpServer).mock.instances[0]);
   const serverInstance = vi.mocked(McpServer).mock.instances[0];
-  expect(serverInstance.connect).toHaveBeenCalledWith(expect.any(StdioServerTransport));
+  expect(serverInstance.connect).toHaveBeenCalledWith(
+    expect.any(StdioServerTransport)
+  );
 });
