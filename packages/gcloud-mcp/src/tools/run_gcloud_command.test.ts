@@ -113,4 +113,56 @@ describe('createRunGcloudCommand', () => {
       });
     });
   });
+
+  describe('gcloud invocation results', () => {
+    test('returns stdout and stderr when gcloud invocation is successful', async () => {
+      createRunGcloudCommand().register(mockServer);
+      const toolImplementation = getToolImplementation();
+      gcloudInvoke.mockResolvedValue({
+        code: 0,
+        stdout: 'output',
+        stderr: 'error',
+      });
+
+      const result = await toolImplementation({ args: ['a', 'c'] });
+
+      expect(gcloudInvoke).toHaveBeenCalledWith(['a', 'c']);
+      expect(result).toEqual({
+        content: [
+          {
+            type: 'text',
+            text: 'gcloud process exited with code 0. stdout:\noutput\nstderr:\nerror',
+          },
+        ],
+      });
+    });
+
+    test('returns error when gcloud invocation throws an error', async () => {
+      createRunGcloudCommand().register(mockServer);
+      const toolImplementation = getToolImplementation();
+      gcloudInvoke.mockRejectedValue(new Error('gcloud error'));
+
+      const result = await toolImplementation({ args: ['a', 'c'] });
+
+      expect(gcloudInvoke).toHaveBeenCalledWith(['a', 'c']);
+      expect(result).toEqual({
+        content: [{ type: 'text', text: 'gcloud error' }],
+        isError: true,
+      });
+    });
+
+    test('returns error when gcloud invocation throws a non-error', async () => {
+      createRunGcloudCommand().register(mockServer);
+      const toolImplementation = getToolImplementation();
+      gcloudInvoke.mockRejectedValue('gcloud error');
+
+      const result = await toolImplementation({ args: ['a', 'c'] });
+
+      expect(gcloudInvoke).toHaveBeenCalledWith(['a', 'c']);
+      expect(result).toEqual({
+        content: [{ type: 'text', text: 'An unknown error ocurred.' }],
+        isError: true,
+      });
+    });
+  });
 });
