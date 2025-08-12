@@ -64,17 +64,17 @@ test('should log a message if gcloud is not available', async () => {
 
 describe('with --config flag', () => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
-  let processExitSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(true);
     consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    processExitSpy = vi.spyOn(process, 'exit').mockImplementation((() => {}) as (code?: number) => never);
+    // Stub process.exit to avoid test runner termination and to spy on calls
+    vi.stubGlobal('process', { ...process, exit: vi.fn() });
   });
 
   afterEach(() => {
     consoleErrorSpy.mockRestore();
-    processExitSpy.mockRestore();
+    vi.unstubAllGlobals();
   });
 
   test('should load lists from a valid config file', async () => {
@@ -135,7 +135,7 @@ describe('with --config flag', () => {
     process.argv = ['node', 'index.js', '--config', 'relative/path'];
     await import('./index.js');
     expect(consoleErrorSpy).toHaveBeenCalledWith('Error: The --config path must be an absolute file path.');
-    expect(processExitSpy).toHaveBeenCalledWith(1);
+    expect(process.exit).toHaveBeenCalledWith(1);
   });
 
   test('should exit if config file cannot be read', async () => {
@@ -148,7 +148,7 @@ describe('with --config flag', () => {
     await import('./index.js');
 
     expect(consoleErrorSpy).toHaveBeenCalledWith(`Error reading or parsing config file: ${readError}`);
-    expect(processExitSpy).toHaveBeenCalledWith(1);
+    expect(process.exit).toHaveBeenCalledWith(1);
   });
 
   test('should exit if config file has invalid JSON', async () => {
@@ -158,7 +158,7 @@ describe('with --config flag', () => {
     await import('./index.js');
 
     expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining('Error reading or parsing config file:'));
-    expect(processExitSpy).toHaveBeenCalledWith(1);
+    expect(process.exit).toHaveBeenCalledWith(1);
   });
 });
 

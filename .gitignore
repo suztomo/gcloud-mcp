@@ -24,3 +24,5 @@ Thumbs.db
 # Test report files
 coverage/
 packages/*/coverage/
+junit.xml
+packages/*/junit.xml
