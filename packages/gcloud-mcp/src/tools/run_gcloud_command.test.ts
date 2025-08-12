@@ -111,3 +111,28 @@ test('registerRunGcloudCommand handles exceptions', async () => {
     isError: true,
   });
 });
+
+test('registerRunGcloudCommand handles non-Error exceptions', async () => {
+  const server = new McpServer();
+  const registerToolSpy = vi.spyOn(server, 'registerTool');
+
+  registerRunGcloudCommand(server);
+
+  const handler = registerToolSpy.mock.calls[0][2];
+  const args = { args: ['projects', 'list'] };
+
+  mockedGcloudInvoke.mockRejectedValue('non-error');
+
+  const result = await handler(args);
+
+  expect(mockedGcloudInvoke).toHaveBeenCalledWith(['projects', 'list']);
+  expect(result).toEqual({
+    content: [
+      {
+        type: 'text',
+        text: 'An unknown error ocurred.',
+      },
+    ],
+    isError: true,
+  });
+});
