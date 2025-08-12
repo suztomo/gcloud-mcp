@@ -30,6 +30,54 @@ beforeEach(() => {
   vi.clearAllMocks();
 });
 
+test('should return true if which command succeeds', async () => {
+  const mockChildProcess = {
+    on: vi.fn((event, callback) => {
+      if (event === 'close') {
+        setTimeout(() => callback(0), 0);
+      }
+    }),
+  };
+  mockedSpawn.mockReturnValue(mockChildProcess);
+
+  const result = await gcloud.isAvailable();
+
+  expect(result).toBe(true);
+  expect(mockedSpawn).toHaveBeenCalledWith('which', ['gcloud']);
+});
+
+test('should return false if which command fails with non-zero exit code', async () => {
+  const mockChildProcess = {
+    on: vi.fn((event, callback) => {
+      if (event === 'close') {
+        setTimeout(() => callback(1), 0);
+      }
+    }),
+  };
+  mockedSpawn.mockReturnValue(mockChildProcess);
+
+  const result = await gcloud.isAvailable();
+
+  expect(result).toBe(false);
+  expect(mockedSpawn).toHaveBeenCalledWith('which', ['gcloud']);
+});
+
+test('should return false if which command fails', async () => {
+  const mockChildProcess = {
+    on: vi.fn((event, callback) => {
+      if (event === 'error') {
+        setTimeout(() => callback(new Error('Failed to start')), 0);
+      }
+    }),
+  };
+  mockedSpawn.mockReturnValue(mockChildProcess);
+
+  const result = await gcloud.isAvailable();
+
+  expect(result).toBe(false);
+  expect(mockedSpawn).toHaveBeenCalledWith('which', ['gcloud']);
+});
+
 test('should correctly handle stdout and stderr', async () => {
   const mockChildProcess = {
     stdout: new PassThrough(),
