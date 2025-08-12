@@ -25,8 +25,5 @@ Thumbs.db
 coverage/
 packages/*/coverage/
 
-# Compiled JS
-build/
-
 # Package-lock file
 package-lock.json

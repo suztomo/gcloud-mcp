@@ -14,7 +14,7 @@
     "test": "vitest run",
     "test:ci": "vitest run --coverage",
     "clean": "gts clean",
-    "compile": "tsc",
+    "compile": "tsc -p .",
     "fix": "gts fix",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
@@ -30,10 +30,10 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-license-header": "^0.8.0",
     "eslint-plugin-prettier": "^5.5.4",
+    "gts": "^6.0.2",
     "turbo": "latest",
-    "vitest": "^3.2.4",
-    "gts": "^5.3.1",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.3",
+    "vitest": "^3.2.4"
   },
   "packageManager": "npm@10.9.2"
 }
