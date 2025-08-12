@@ -74,10 +74,7 @@ describe('with --config flag', () => {
     await import('./index.js');
 
     expect(fs.readFileSync).toHaveBeenCalledWith('/abs/path/config.json', 'utf-8');
-    expect(createRunGcloudCommand).toHaveBeenCalledWith(
-      ['projects list'],
-      ['projects delete']
-    );
+    expect(createRunGcloudCommand).toHaveBeenCalledWith(['projects list'], ['projects delete']);
     expect(registerToolSpy).toHaveBeenCalled();
   });
 
@@ -121,9 +118,7 @@ describe('with --config flag', () => {
   test('should exit if config path is not absolute', async () => {
     process.argv = ['node', 'index.js', '--config', 'relative/path'];
     await import('./index.js');
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      'Error: The --config path must be an absolute file path.'
-    );
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Error: The --config path must be an absolute file path.');
     expect(processExitSpy).toHaveBeenCalledWith(1);
   });
 
@@ -136,9 +131,7 @@ describe('with --config flag', () => {
 
     await import('./index.js');
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      `Error reading or parsing config file: ${readError}`
-    );
+    expect(consoleErrorSpy).toHaveBeenCalledWith(`Error reading or parsing config file: ${readError}`);
     expect(processExitSpy).toHaveBeenCalledWith(1);
   });
 
@@ -148,9 +141,7 @@ describe('with --config flag', () => {
 
     await import('./index.js');
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      expect.stringContaining('Error reading or parsing config file:')
-    );
+    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining('Error reading or parsing config file:'));
     expect(processExitSpy).toHaveBeenCalledWith(1);
   });
 });
