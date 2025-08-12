@@ -6,7 +6,7 @@
   "workspaces": [
     "packages/*"
   ],
-   "bin": {
+  "bin": {
     "gcloud-mcp": "./packages/gcloud-mcp/dist/src/index.js"
   },
   "scripts": {
