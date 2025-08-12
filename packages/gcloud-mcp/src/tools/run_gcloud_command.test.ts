@@ -31,11 +31,7 @@ test('registerRunGcloudCommand registers the tool and handles success', async ()
 
   registerRunGcloudCommand(server);
 
-  expect(registerToolSpy).toHaveBeenCalledWith(
-    'run_gcloud_command',
-    expect.any(Object),
-    expect.any(Function),
-  );
+  expect(registerToolSpy).toHaveBeenCalledWith('run_gcloud_command', expect.any(Object), expect.any(Function));
 
   const handler = registerToolSpy.mock.calls[0][2];
   const args = { args: ['projects', 'list'] };
