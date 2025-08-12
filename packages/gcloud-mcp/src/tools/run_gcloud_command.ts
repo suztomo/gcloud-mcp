@@ -32,7 +32,7 @@ const deniedCommands = (denylist: string[] = []) => ({
     if (denylist.length === 0) {
       return false; // No denylist = all commands allowed
     }
-    return denylist.some((denied) => command.startsWith(denied));
+    return denylist.some((denied) => command.includes(denied));
   },
 });
 
