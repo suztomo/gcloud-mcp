@@ -6,5 +6,8 @@
     "rootDir": "."
   },
   "include": [ "src/**/*.ts", "./package.json" ],
-  "exclude": [ "dist" ]
+  "exclude": [ "dist" ],
+  "references": [
+    { "path": "../common" }
+  ]
 }

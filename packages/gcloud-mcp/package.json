@@ -4,11 +4,11 @@
   "type": "module",
   "main": "dist/src/index.js",
   "bin": {
-    "gcloud-mcp": "./packages/gcloud-mcp/dist/src/index.js"
+    "gcloud-mcp": "./dist/src/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && cp GEMINI-extension.md dist/",
+    "build": "tsc --build && cp GEMINI-extension.md dist/",
     "start": "node dist/src/index.js",
     "lint": "eslint 'src/**/*.ts'",
     "lint:fix": "eslint 'src/**/*.ts' --fix",
@@ -39,6 +39,7 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.17.1",
     "@types/yargs": "^17.0.33",
+    "common": "file:../common",
     "yargs": "^18.0.0",
     "zod": "^3.25.76"
   }

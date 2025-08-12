@@ -19,11 +19,17 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import pkg from '../package.json' with { type: 'json' };
-import { registerRunGcloudCommand } from './tools/run_gcloud_command.js';
+import { createRunGcloudCommand } from './tools/run_gcloud_command.js';
 import * as gcloud from './gcloud.js';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { initializeGeminiCLI } from './gemini-cli-init.js';
+import { initializeGeminiCLI } from 'common/dist/src/gemini-cli-init.js';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 
 const main = async () => {
   const argv = await yargs(hideBin(process.argv)).option('gemini-cli-init', {
@@ -33,7 +39,7 @@ const main = async () => {
   }).argv;
 
   if (argv.geminiCliInit) {
-    await initializeGeminiCLI();
+    await initializeGeminiCLI(pkg.name, pkg.version, __dirname);
     return;
   }
 
@@ -46,7 +52,7 @@ const main = async () => {
     name: 'gcloud-mcp-server',
     version: pkg.version,
   });
-  registerRunGcloudCommand(server);
+  createRunGcloudCommand([], []).register(server);
   await server.connect(new StdioServerTransport());
   console.log('🚀 gcloud mcp server started');
 };
