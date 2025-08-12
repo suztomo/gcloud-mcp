@@ -4,7 +4,7 @@
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
     "build": "tsc && cp GEMINI-extension.md dist/",
     "start": "node dist/src/index.js",
     "lint": "eslint 'src/**/*.ts' --max-warnings 0",
