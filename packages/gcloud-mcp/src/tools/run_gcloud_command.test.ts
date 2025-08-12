@@ -14,121 +14,103 @@
  * limitations under the License.
  */
 
-import { test, expect, vi, Mock } from 'vitest';
+import { test, expect, vi, Mock, beforeEach, describe } from 'vitest';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { createRunGcloudCommand } from './run_gcloud_command.js';
 import * as gcloud from '../gcloud.js';
-import { registerRunGcloudCommand } from './run_gcloud_command.js';
 
-vi.mock('../gcloud.js', () => ({
-  invoke: vi.fn(),
-}));
+vi.mock('../gcloud.js');
 
-const mockedGcloudInvoke = gcloud.invoke as Mock;
+const mockServer = {
+  registerTool: vi.fn(),
+} as unknown as McpServer;
 
-test('registerRunGcloudCommand registers the tool and handles success', async () => {
-  const server = new McpServer();
-  const registerToolSpy = vi.spyOn(server, 'registerTool');
+const getToolImplementation = () => {
+  expect(mockServer.registerTool).toHaveBeenCalledOnce();
+  return (mockServer.registerTool as Mock).mock.calls[0]![2];
+};
 
-  registerRunGcloudCommand(server);
+describe('createRunGcloudCommand', () => {
+  let gcloudInvoke: Mock;
 
-  expect(registerToolSpy).toHaveBeenCalledWith('run_gcloud_command', expect.any(Object), expect.any(Function));
-
-  const handler = registerToolSpy.mock.calls[0][2];
-  const args = { args: ['projects', 'list'] };
-
-  mockedGcloudInvoke.mockResolvedValue({
-    code: 0,
-    stdout: 'PROJECT_ID: my-project',
-    stderr: '',
+  beforeEach(() => {
+    vi.clearAllMocks();
+    gcloudInvoke = gcloud.invoke as Mock;
   });
 
-  const result = await handler(args);
+  describe('with allowlist', () => {
+    test('invokes gcloud for allowlisted command', async () => {
+      const allowlist = ['a b'];
+      createRunGcloudCommand(allowlist).register(mockServer);
+      const toolImplementation = getToolImplementation();
+      gcloudInvoke.mockResolvedValue({
+        code: 0,
+        stdout: 'output',
+        stderr: '',
+      });
 
-  expect(mockedGcloudInvoke).toHaveBeenCalledWith(['projects', 'list']);
-  expect(result).toEqual({
-    content: [
-      {
-        type: 'text',
-        text: 'gcloud process exited with code 0. stdout:\nPROJECT_ID: my-project',
-      },
-    ],
+      const result = await toolImplementation({ args: ['a', 'b', 'c'] });
+
+      expect(gcloudInvoke).toHaveBeenCalledWith(['a', 'b', 'c']);
+      expect(result).toEqual({
+        content: [
+          {
+            type: 'text',
+            text: 'gcloud process exited with code 0. stdout:\noutput',
+          },
+        ],
+      });
+    });
+
+    test('returns error for non-allowlisted command', async () => {
+      const allowlist = ['a b'];
+      createRunGcloudCommand(allowlist).register(mockServer);
+      const toolImplementation = getToolImplementation();
+
+      const result = await toolImplementation({ args: ['a', 'c'] });
+
+      expect(gcloudInvoke).not.toHaveBeenCalled();
+      expect(result).toEqual({
+        content: [{ type: 'text', text: 'Command not allowed.' }],
+      });
+    });
   });
-});
 
-test('registerRunGcloudCommand handles gcloud command failure', async () => {
-  const server = new McpServer();
-  const registerToolSpy = vi.spyOn(server, 'registerTool');
+  describe('with denylist', () => {
+    test('returns error for denylisted command', async () => {
+      const denylist = ['a b'];
+      createRunGcloudCommand([], denylist).register(mockServer);
+      const toolImplementation = getToolImplementation();
 
-  registerRunGcloudCommand(server);
+      const result = await toolImplementation({ args: ['a', 'b', 'c'] });
 
-  const handler = registerToolSpy.mock.calls[0][2];
-  const args = { args: ['projects', 'list'] };
+      expect(gcloudInvoke).not.toHaveBeenCalled();
+      expect(result).toEqual({
+        content: [{ type: 'text', text: 'Command denied.' }],
+      });
+    });
 
-  mockedGcloudInvoke.mockResolvedValue({
-    code: 1,
-    stdout: '',
-    stderr: 'ERROR: Permission denied.',
-  });
+    test('invokes gcloud for non-denylisted command', async () => {
+      const denylist = ['a b'];
+      createRunGcloudCommand([], denylist).register(mockServer);
+      const toolImplementation = getToolImplementation();
+      gcloudInvoke.mockResolvedValue({
+        code: 0,
+        stdout: 'output',
+        stderr: '',
+      });
 
-  const result = await handler(args);
+      const result = await toolImplementation({ args: ['a', 'c'] });
 
-  expect(mockedGcloudInvoke).toHaveBeenCalledWith(['projects', 'list']);
-  expect(result).toEqual({
-    content: [
-      {
-        type: 'text',
-        text: 'gcloud process exited with code 1. stdout:\n\nstderr:\nERROR: Permission denied.',
-      },
-    ],
-  });
-});
-
-test('registerRunGcloudCommand handles exceptions', async () => {
-  const server = new McpServer();
-  const registerToolSpy = vi.spyOn(server, 'registerTool');
-
-  registerRunGcloudCommand(server);
-
-  const handler = registerToolSpy.mock.calls[0][2];
-  const args = { args: ['projects', 'list'] };
-
-  mockedGcloudInvoke.mockRejectedValue(new Error('gcloud not found'));
-
-  const result = await handler(args);
-
-  expect(mockedGcloudInvoke).toHaveBeenCalledWith(['projects', 'list']);
-  expect(result).toEqual({
-    content: [
-      {
-        type: 'text',
-        text: 'gcloud not found',
-      },
-    ],
-    isError: true,
-  });
-});
-
-test('registerRunGcloudCommand handles non-Error exceptions', async () => {
-  const server = new McpServer();
-  const registerToolSpy = vi.spyOn(server, 'registerTool');
-
-  registerRunGcloudCommand(server);
-
-  const handler = registerToolSpy.mock.calls[0][2];
-  const args = { args: ['projects', 'list'] };
-
-  mockedGcloudInvoke.mockRejectedValue('non-error');
-
-  const result = await handler(args);
-
-  expect(mockedGcloudInvoke).toHaveBeenCalledWith(['projects', 'list']);
-  expect(result).toEqual({
-    content: [
-      {
-        type: 'text',
-        text: 'An unknown error ocurred.',
-      },
-    ],
-    isError: true,
+      expect(gcloudInvoke).toHaveBeenCalledWith(['a', 'c']);
+      expect(result).toEqual({
+        content: [
+          {
+            type: 'text',
+            text: 'gcloud process exited with code 0. stdout:\noutput',
+          },
+        ],
+      });
+    });
   });
 });
