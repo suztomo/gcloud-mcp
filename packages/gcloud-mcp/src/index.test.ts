@@ -17,7 +17,7 @@
 import { test, expect, vi, beforeEach } from 'vitest';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { registerRunGcloudCommand } from './tools/run_gcloud_command.js';
+import { createRunGcloudCommand } from './tools/run_gcloud_command.js';
 import * as gcloud from './gcloud.js';
 import { initializeGeminiCLI } from './gemini-cli-init.js';
 
@@ -28,8 +28,12 @@ vi.mock('../package.json', () => ({
 }));
 vi.mock('@modelcontextprotocol/sdk/server/mcp.js');
 vi.mock('@modelcontextprotocol/sdk/server/stdio.js');
+
+const registerToolSpy = vi.fn();
 vi.mock('./tools/run_gcloud_command.js', () => ({
-  registerRunGcloudCommand: vi.fn(),
+  createRunGcloudCommand: vi.fn(() => ({
+    register: registerToolSpy,
+  })),
 }));
 vi.mock('./gcloud.js');
 vi.mock('./gemini-cli-init.js');
@@ -37,6 +41,7 @@ vi.mock('./gemini-cli-init.js');
 beforeEach(() => {
   vi.clearAllMocks();
   vi.resetModules();
+  registerToolSpy.mockClear();
 });
 
 test('should initialize Gemini CLI when --gemini-cli-init is provided', async () => {
@@ -51,7 +56,9 @@ test('should log a message if gcloud is not available', async () => {
   const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
   await import('./index.js');
   expect(gcloud.isAvailable).toHaveBeenCalled();
-  expect(consoleLogSpy).toHaveBeenCalledWith('Unable to start gcloud mcp server: gcloud executable not found.');
+  expect(consoleLogSpy).toHaveBeenCalledWith(
+    'Unable to start gcloud mcp server: gcloud executable not found.'
+  );
   consoleLogSpy.mockRestore();
 });
 
@@ -64,7 +71,12 @@ test('should start the McpServer if gcloud is available', async () => {
     name: 'gcloud-mcp-server',
     version: '0.1.0',
   });
-  expect(registerRunGcloudCommand).toHaveBeenCalledWith(vi.mocked(McpServer).mock.instances[0]);
+  expect(createRunGcloudCommand).toHaveBeenCalledWith([], []);
+  expect(registerToolSpy).toHaveBeenCalledWith(
+    vi.mocked(McpServer).mock.instances[0]
+  );
   const serverInstance = vi.mocked(McpServer).mock.instances[0];
-  expect(serverInstance.connect).toHaveBeenCalledWith(expect.any(StdioServerTransport));
+  expect(serverInstance.connect).toHaveBeenCalledWith(
+    expect.any(StdioServerTransport)
+  );
 });
