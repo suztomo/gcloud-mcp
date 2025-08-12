@@ -27,3 +27,7 @@ packages/*/coverage/
 
 # Package-lock file
 package-lock.json
+
+junit.xml
+packages/*/junit.xml
+

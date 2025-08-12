@@ -114,6 +114,22 @@ describe('createRunGcloudCommand', () => {
     });
   });
 
+  describe('with allowlist and denylist', () => {
+    test('returns error for command in both lists', async () => {
+      const allowlist = ['a b'];
+      const denylist = ['a b'];
+      createRunGcloudCommand(allowlist, denylist).register(mockServer);
+      const toolImplementation = getToolImplementation();
+
+      const result = await toolImplementation({ args: ['a', 'b', 'c'] });
+
+      expect(gcloudInvoke).not.toHaveBeenCalled();
+      expect(result).toEqual({
+        content: [{ type: 'text', text: 'Command denied.' }],
+      });
+    });
+  });
+
   describe('gcloud invocation results', () => {
     test('returns stdout and stderr when gcloud invocation is successful', async () => {
       createRunGcloudCommand().register(mockServer);
