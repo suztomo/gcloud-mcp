@@ -26,13 +26,10 @@ jobs:
       - name: Install dependencies
         run: npm i
 
-      - name: Run formatter check
+      - name: Run gts
         run: |
-          npm run format
+          npm run fix
           git diff --exit-code
-
-      - name: Run linter
-        run: npm run lint
 
       - name: Build project
         run: npm run build
