@@ -18,7 +18,7 @@ import { test, expect, vi, beforeEach } from 'vitest';
 import { mkdir, writeFile, readFile } from 'fs/promises';
 import { initializeGeminiCLI } from './gemini-cli-init.js';
 import { join } from 'path';
-import pkg from '../package.json';
+import pkg from '../package.json' with { type: 'json' };
 
 vi.mock('fs/promises', () => ({
   mkdir: vi.fn(),
