@@ -6,9 +6,6 @@
   "workspaces": [
     "packages/*"
   ],
-  "bin": {
-    "gcloud-mcp": "./packages/gcloud-mcp/dist/src/index.js"
-  },
   "scripts": {
     "build": "turbo run build",
     "start": "node ./packages/gcloud-mcp/dist/src/index.js",
