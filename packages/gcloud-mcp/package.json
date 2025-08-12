@@ -2,9 +2,9 @@
   "name": "gcloud-mcp",
   "version": "0.1.0",
   "type": "module",
-  "main": "dist/index.js",
-    "bin": {
-    "gcloud-mcp": "./dist/src/index.js"
+  "main": "dist/src/index.js",
+  "bin": {
+    "gcloud-mcp": "dist/src/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
