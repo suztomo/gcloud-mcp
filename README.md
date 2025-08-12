@@ -42,9 +42,9 @@ Gemini-compatible extension interface.
 
 ```
 "mcpServers":{
-  "cloud-run": {
+  "gcloud-mcp": {
     "command": "npx",
-    "args": ["-y", "https://github.com/googleapis/gcloud-mcp"]
+    "args": ["-y", "github:googleapis/gcloud-mcp"]
   }
 }
 ```

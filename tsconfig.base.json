@@ -1,12 +1,16 @@
 {
   "extends": "@tsconfig/strictest/tsconfig.json",
   "compilerOptions": {
-    "lib": ["es2023"],
+    "lib": [
+      "es2023"
+    ],
     "target": "es2022",
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "esModuleInterop": true,
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "resolveJsonModule": true,
     "declaration": true,
     "incremental": true,
@@ -15,5 +19,8 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
-  "exclude": ["eslint.config.js", "dist"]
+  "exclude": [
+    "eslint.config.js",
+    "dist"
+  ],
 }
