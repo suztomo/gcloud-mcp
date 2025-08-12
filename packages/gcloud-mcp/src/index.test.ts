@@ -66,7 +66,5 @@ test('should start the McpServer if gcloud is available', async () => {
   });
   expect(registerRunGcloudCommand).toHaveBeenCalledWith(vi.mocked(McpServer).mock.instances[0]);
   const serverInstance = vi.mocked(McpServer).mock.instances[0];
-  expect(serverInstance.connect).toHaveBeenCalledWith(
-    expect.any(StdioServerTransport)
-  );
+  expect(serverInstance.connect).toHaveBeenCalledWith(expect.any(StdioServerTransport));
 });
