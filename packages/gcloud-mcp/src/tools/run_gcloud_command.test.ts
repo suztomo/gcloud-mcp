@@ -142,7 +142,7 @@ describe('createRunGcloudCommand', () => {
     });
 
     test('returns error for denylisted command with alpha release track', async () => {
-      const denylist = ['alpha', 'compute', 'list'];
+      const denylist = ['alpha'];
       const inputArgs = ['alpha', 'compute', 'list'];
       createRunGcloudCommand([], denylist).register(mockServer);
       const toolImplementation = getToolImplementation();
@@ -163,8 +163,8 @@ describe('createRunGcloudCommand', () => {
     });
 
     test('returns error for denylisted command with beta release track', async () => {
-      const denylist = ['compute', 'list'];
-      const inputArgs = ['beta', 'compute', 'list'];
+      const denylist = ['beta'];
+      const inputArgs = ['beta', 'compute', 'instance'];
       createRunGcloudCommand([], denylist).register(mockServer);
       const toolImplementation = getToolImplementation();
       gcloudSpawnMock.mockResolvedValue({
@@ -181,6 +181,73 @@ describe('createRunGcloudCommand', () => {
       expect(result).toEqual({
         content: [{ type: 'text', text: 'Command denied.' }],
       });
+    });
+    test('returns error for denylisted command with preview release track', async () => {
+      const denylist = ['preview'];
+      const inputArgs = ['preview', 'compute', 'create'];
+      createRunGcloudCommand([], denylist).register(mockServer);
+      const toolImplementation = getToolImplementation();
+      gcloudSpawnMock.mockResolvedValue({
+        code: 0,
+        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+        stderr: '',
+      });
+
+      const result = await toolImplementation({
+        args: inputArgs,
+      });
+
+      expect(gcloudInvoke).not.toHaveBeenCalled();
+      expect(result).toEqual({
+        content: [{ type: 'text', text: 'Command denied.' }],
+      });
+    });
+
+    test('returns error for denylisted command when command is denied', async () => {
+      const denylist = ['compute'];
+      const inputArgs = ['preview', 'compute', 'create'];
+      createRunGcloudCommand([], denylist).register(mockServer);
+      const toolImplementation = getToolImplementation();
+      gcloudSpawnMock.mockResolvedValue({
+        code: 0,
+        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+        stderr: '',
+      });
+
+      const result = await toolImplementation({
+        args: inputArgs,
+      });
+
+      expect(gcloudInvoke).not.toHaveBeenCalled();
+      expect(result).toEqual({
+        content: [{ type: 'text', text: 'Command denied.' }],
+      });
+    });
+
+    test('returns error when ga command is denied. All other variations should be denied', async () => {
+      const denylist = ['compute', 'list'];
+      createRunGcloudCommand([], denylist).register(mockServer);
+      const toolImplementation = getToolImplementation();
+
+      const variations = ['alpha', 'beta', 'preview', ''];
+
+      for (const version of variations) {
+        const inputArgs = [version, 'compute', 'list'].filter(Boolean);
+        gcloudSpawnMock.mockResolvedValue({
+          code: 0,
+          stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+          stderr: '',
+        });
+
+        const result = await toolImplementation({
+          args: inputArgs,
+        });
+
+        expect(gcloudInvoke).not.toHaveBeenCalled();
+        expect(result).toEqual({
+          content: [{ type: 'text', text: 'Command denied.' }],
+        });
+      }
     });
   });
 

@@ -80,6 +80,8 @@ export const createRunGcloudCommand = (allowlist: string[] = [], denylist: strin
           var { code, stdout, stderr } = await gcloud.spawnGcloudMetaLint(command);
 
           if (stderr) {
+            let result = `gcloud process exited with code ${code}. stdout:\n${stdout}`;
+            result += `\nstderr:\n${stderr}`;
             return { content: [{ type: 'text', text: 'result' }] };
           }
 
