@@ -55,7 +55,7 @@ test('should initialize Gemini CLI when gcloud-mcp init --agent=gemini-cli is ca
 test('should exit if gcloud is not available', async () => {
   process.argv = ['node', 'index.js'];
   vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(false);
-  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
   vi.stubGlobal('process', { ...process, exit: vi.fn() });
 
   await import('./index.js');
@@ -73,7 +73,7 @@ describe('with --config flag', () => {
 
   beforeEach(() => {
     vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(true);
-    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     // Stub process.exit to avoid test runner termination and to spy on calls
     vi.stubGlobal('process', { ...process, exit: vi.fn() });
   });
@@ -93,10 +93,11 @@ describe('with --config flag', () => {
     };
     vi.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify(config));
 
-    await import('./index.js');
+    const { default_denylist } = await import('./index.js');
+    const expected_deny_list = [...new Set([...default_denylist, ...config.run_gcloud_command.denylist])];
 
     expect(fs.readFileSync).toHaveBeenCalledWith('/abs/path/config.json', 'utf-8');
-    expect(createRunGcloudCommand).toHaveBeenCalledWith(['projects list'], ['projects delete']);
+    expect(createRunGcloudCommand).toHaveBeenCalledWith(['projects list'], expected_deny_list);
     expect(registerToolSpy).toHaveBeenCalled();
   });
 
@@ -109,9 +110,9 @@ describe('with --config flag', () => {
     };
     vi.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify(config));
 
-    await import('./index.js');
+    const { default_denylist } = await import('./index.js');
 
-    expect(createRunGcloudCommand).toHaveBeenCalledWith(['projects list'], []);
+    expect(createRunGcloudCommand).toHaveBeenCalledWith(['projects list'], default_denylist);
   });
 
   test('should handle only a denylist', async () => {
@@ -123,16 +124,18 @@ describe('with --config flag', () => {
     };
     vi.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify(config));
 
-    await import('./index.js');
-
-    expect(createRunGcloudCommand).toHaveBeenCalledWith([], ['projects delete']);
+    const { default_denylist } = await import('./index.js');
+    const expected_deny_list = [...new Set([...default_denylist, ...config.run_gcloud_command.denylist])];
+    expect(createRunGcloudCommand).toHaveBeenCalledWith([], expected_deny_list);
   });
 
   test('should use empty lists for partial config', async () => {
     process.argv = ['node', 'index.js', '--config', '/abs/path/config.json'];
     vi.spyOn(fs, 'readFileSync').mockReturnValue('{}'); // Empty JSON
-    await import('./index.js');
-    expect(createRunGcloudCommand).toHaveBeenCalledWith([], []);
+
+    const { default_denylist } = await import('./index.js');
+    const expected_deny_list = [...new Set([...default_denylist, ...[]])];
+    expect(createRunGcloudCommand).toHaveBeenCalledWith([], expected_deny_list);
   });
 
   test('should exit if config path is not absolute', async () => {
@@ -169,13 +172,13 @@ describe('with --config flag', () => {
 test('should start the McpServer if gcloud is available', async () => {
   process.argv = ['node', 'index.js'];
   vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(true);
-  await import('./index.js');
+  const { default_denylist } = await import('./index.js');
   expect(gcloud.isAvailable).toHaveBeenCalled();
   expect(McpServer).toHaveBeenCalledWith({
     name: 'gcloud-mcp-server',
     version: '0.1.0',
   });
-  expect(createRunGcloudCommand).toHaveBeenCalledWith([], []);
+  expect(createRunGcloudCommand).toHaveBeenCalledWith([], default_denylist);
   expect(registerToolSpy).toHaveBeenCalledWith(vi.mocked(McpServer).mock.instances[0]);
   const serverInstance = vi.mocked(McpServer).mock.instances[0];
   expect(serverInstance!.connect).toHaveBeenCalledWith(expect.any(StdioServerTransport));

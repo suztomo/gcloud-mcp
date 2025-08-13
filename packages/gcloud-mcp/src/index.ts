@@ -34,6 +34,17 @@ interface GcloudMcpConfig {
   };
 }
 
+export const default_denylist: string[] = [
+  'compute start-iap-tunnel',
+  'compute connect-to-serial-port',
+  'compute tpus tpu-vm ssh',
+  'compute tpus queued-resources ssh',
+  'compute ssh',
+  'cloud-shell ssh',
+  'workstations ssh',
+  'app instances ssh',
+];
+
 const main = async () => {
   yargs(hideBin(process.argv))
     .command(
@@ -43,25 +54,20 @@ const main = async () => {
         yargs
           .option('config', {
             type: 'string',
-            description:
-              'Path to a JSON configuration file (must be an absolute path).',
+            description: 'Path to a JSON configuration file (must be an absolute path).',
           })
           .version(pkg.version),
       async (argv) => {
         const isAvailable = await gcloud.isAvailable();
         if (!isAvailable) {
-          console.error(
-            'Unable to start gcloud mcp server: gcloud executable not found.'
-          );
+          console.error('Unable to start gcloud mcp server: gcloud executable not found.');
           process.exit(1);
         }
 
         let config: GcloudMcpConfig = {};
         if (argv.config) {
           if (!path.isAbsolute(argv.config)) {
-            console.error(
-              'Error: The --config path must be an absolute file path.'
-            );
+            console.error('Error: The --config path must be an absolute file path.');
             process.exit(1);
           }
           try {
@@ -76,14 +82,16 @@ const main = async () => {
         const allowlist = config.run_gcloud_command?.allowlist || [];
         const denylist = config.run_gcloud_command?.denylist || [];
 
+        const mergedDenylist = [...new Set([...default_denylist, ...denylist])];
+
         const server = new McpServer({
           name: 'gcloud-mcp-server',
           version: pkg.version,
         });
-        createRunGcloudCommand(allowlist, denylist).register(server);
+        createRunGcloudCommand(allowlist, mergedDenylist).register(server);
         await server.connect(new StdioServerTransport());
         console.log('🚀 gcloud mcp server started');
-      }
+      },
     )
     .command(init)
     .version(false)
