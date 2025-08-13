@@ -5,7 +5,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may may obtain a copy of the License at
+ * You may obtain a copy of the License at
  *
  *	http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -39,15 +39,14 @@ const main = async () => {
     .command(
       '$0',
       'Run the gcloud mcp server',
-      (yargs) => {
-        return yargs
+      (yargs) =>
+        yargs
           .option('config', {
             type: 'string',
             description:
               'Path to a JSON configuration file (must be an absolute path).',
           })
-          .version(pkg.version);
-      },
+          .version(pkg.version),
       async (argv) => {
         const isAvailable = await gcloud.isAvailable();
         if (!isAvailable) {
