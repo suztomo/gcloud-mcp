@@ -21,7 +21,6 @@ interface InstallArgs {
   item: 'gemini-cli';
 }
 
-// Fix 1: Replaced `{}` with `object` for better type safety.
 export const install: CommandModule<object, InstallArgs> = {
   command: 'install <item>',
   describe: 'Install a component',
