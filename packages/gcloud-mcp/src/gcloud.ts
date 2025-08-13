@@ -50,3 +50,32 @@ export const invoke = (args: string[]): Promise<{ code: number | null; stdout: s
       reject(err);
     });
   });
+
+export const spawnGcloudMetaLint = (
+  command: string,
+): Promise<{ code: number | null; stdout: string; stderr: string }> =>
+  new Promise((resolve, reject) => {
+    let stdout = '';
+    let stderr = '';
+
+    // gcloud meta lint-gcloud-commands --command-string="gcloud compute --log-http false instances list"
+    let invocationArgs = ['meta', 'lint-gcloud-commands', `--command-string=${command}`];
+
+    const gcloud = spawn('gcloud', invocationArgs, { stdio: ['ignore', 'pipe', 'pipe'] });
+
+    gcloud.stdout.on('data', (data) => {
+      stdout += data.toString();
+    });
+    gcloud.stderr.on('data', (data) => {
+      stderr += data.toString();
+    });
+
+    gcloud.on('close', (code) => {
+      // All responses from gcloud, including non-zero codes.
+      resolve({ code, stdout, stderr });
+    });
+    gcloud.on('error', (err) => {
+      // Process failed to start. gcloud isn't able to be invoked.
+      reject(err);
+    });
+  });

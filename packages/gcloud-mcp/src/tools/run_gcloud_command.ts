@@ -32,9 +32,22 @@ const deniedCommands = (denylist: string[] = []) => ({
     if (denylist.length === 0) {
       return false; // No denylist = all commands allowed
     }
-    return denylist.some((denied) => command.includes(denied));
+    return denylist.some((denied) => shouldDenyCommand(denied, command));
   },
 });
+
+function shouldDenyCommand(deniedCommand: string, currentCommand: string): boolean {
+  const possiblePrefixes = ['alpha', 'beta', 'preview'];
+  if (deniedCommand in possiblePrefixes) {
+    return possiblePrefixes.some((prefix) => currentCommand.startsWith(prefix));
+  }
+
+  const commandsToDeny = [deniedCommand];
+  possiblePrefixes.forEach((prefix) => {
+    commandsToDeny.push(`${prefix} ${deniedCommand}`);
+  });
+  return commandsToDeny.some((cmd) => currentCommand.startsWith(cmd));
+}
 
 export const createRunGcloudCommand = (allowlist: string[] = [], denylist: string[] = []) => ({
   register: (server: McpServer) => {
@@ -63,16 +76,24 @@ export const createRunGcloudCommand = (allowlist: string[] = [], denylist: strin
       },
       async ({ args }) => {
         const command = args.join(' ');
-
-        if (!allowedCommands(allowlist).contains(command)) {
-          return { content: [{ type: 'text', text: 'Command not allowed.' }] };
-        }
-        if (deniedCommands(denylist).contains(command)) {
-          return { content: [{ type: 'text', text: 'Command denied.' }] };
-        }
-
         try {
-          const { code, stdout, stderr } = await gcloud.invoke(args);
+          var { code, stdout, stderr } = await gcloud.spawnGcloudMetaLint(command);
+
+          if (stderr) {
+            return { content: [{ type: 'text', text: 'result' }] };
+          }
+
+          var parsedJson = JSON.parse(stdout);
+          var commandNoArgs = parsedJson[0]['command_string_no_args'];
+
+          if (!allowedCommands(allowlist).contains(commandNoArgs)) {
+            return { content: [{ type: 'text', text: 'Command not allowed.' }] };
+          }
+          if (deniedCommands(denylist).contains(commandNoArgs)) {
+            return { content: [{ type: 'text', text: 'Command denied.' }] };
+          }
+
+          var { code, stdout, stderr } = await gcloud.invoke(args);
           // If the exit status is not zero, an error occurred and the output may be
           // incomplete unless the command documentation notes otherwise. For example,
           // a command that creates multiple resources may only create a few, list them
@@ -84,7 +105,7 @@ export const createRunGcloudCommand = (allowlist: string[] = [], denylist: strin
           }
           return { content: [{ type: 'text', text: result }] };
         } catch (e: unknown) {
-          const msg = e instanceof Error ? e.message : 'An unknown error ocurred.';
+          const msg = e instanceof Error ? e.message : 'An unknown error occurred.';
           return { content: [{ type: 'text', text: msg }], isError: true };
         }
       },

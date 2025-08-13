@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *	http://www.apache.org/licenses/LICENSE-2.0
+ *\thttp://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,7 @@ import { createRunGcloudCommand } from './run_gcloud_command.js';
 import * as gcloud from '../gcloud.js';
 
 vi.mock('../gcloud.js');
+vi.mock('child_process');
 
 const mockServer = {
   registerTool: vi.fn(),
@@ -32,15 +33,18 @@ const getToolImplementation = () => {
 
 describe('createRunGcloudCommand', () => {
   let gcloudInvoke: Mock;
+  let gcloudSpawnMock: Mock;
 
   beforeEach(() => {
     vi.clearAllMocks();
     gcloudInvoke = gcloud.invoke as Mock;
+    gcloudSpawnMock = gcloud.spawnGcloudMetaLint as Mock;
   });
 
   describe('with allowlist', () => {
     test('invokes gcloud for allowlisted command', async () => {
       const allowlist = ['a b'];
+      const inputArgs = ['a', 'b', 'c'];
       createRunGcloudCommand(allowlist).register(mockServer);
       const toolImplementation = getToolImplementation();
       gcloudInvoke.mockResolvedValue({
@@ -48,10 +52,15 @@ describe('createRunGcloudCommand', () => {
         stdout: 'output',
         stderr: '',
       });
+      gcloudSpawnMock.mockResolvedValue({
+        code: 0,
+        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+        stderr: '',
+      });
 
-      const result = await toolImplementation({ args: ['a', 'b', 'c'] });
+      const result = await toolImplementation({ args: inputArgs });
 
-      expect(gcloudInvoke).toHaveBeenCalledWith(['a', 'b', 'c']);
+      expect(gcloudInvoke).toHaveBeenCalledWith(inputArgs);
       expect(result).toEqual({
         content: [
           {
@@ -65,9 +74,15 @@ describe('createRunGcloudCommand', () => {
     test('returns error for non-allowlisted command', async () => {
       const allowlist = ['a b'];
       createRunGcloudCommand(allowlist).register(mockServer);
+      const inputArgs = ['a', 'c'];
       const toolImplementation = getToolImplementation();
+      gcloudSpawnMock.mockResolvedValue({
+        code: 0,
+        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+        stderr: '',
+      });
 
-      const result = await toolImplementation({ args: ['a', 'c'] });
+      const result = await toolImplementation({ args: inputArgs });
 
       expect(gcloudInvoke).not.toHaveBeenCalled();
       expect(result).toEqual({
@@ -78,11 +93,19 @@ describe('createRunGcloudCommand', () => {
 
   describe('with denylist', () => {
     test('returns error for denylisted command', async () => {
-      const denylist = ['a b'];
+      const denylist = ['compute', 'list'];
+      const inputArgs = ['compute', 'list', '--zone', 'eastus1'];
       createRunGcloudCommand([], denylist).register(mockServer);
       const toolImplementation = getToolImplementation();
+      gcloudSpawnMock.mockResolvedValue({
+        code: 0,
+        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+        stderr: '',
+      });
 
-      const result = await toolImplementation({ args: ['a', 'b', 'c'] });
+      const result = await toolImplementation({
+        args: inputArgs,
+      });
 
       expect(gcloudInvoke).not.toHaveBeenCalled();
       expect(result).toEqual({
@@ -91,7 +114,8 @@ describe('createRunGcloudCommand', () => {
     });
 
     test('invokes gcloud for non-denylisted command', async () => {
-      const denylist = ['a b'];
+      const denylist = ['compute list'];
+      const inputArgs = ['compute', 'create'];
       createRunGcloudCommand([], denylist).register(mockServer);
       const toolImplementation = getToolImplementation();
       gcloudInvoke.mockResolvedValue({
@@ -99,10 +123,14 @@ describe('createRunGcloudCommand', () => {
         stdout: 'output',
         stderr: '',
       });
+      gcloudSpawnMock.mockResolvedValue({
+        code: 0,
+        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+        stderr: '',
+      });
 
-      const result = await toolImplementation({ args: ['a', 'c'] });
-
-      expect(gcloudInvoke).toHaveBeenCalledWith(['a', 'c']);
+      const result = await toolImplementation({ args: inputArgs });
+      expect(gcloudInvoke).toHaveBeenCalledWith(inputArgs);
       expect(result).toEqual({
         content: [
           {
@@ -114,12 +142,18 @@ describe('createRunGcloudCommand', () => {
     });
 
     test('returns error for denylisted command with alpha release track', async () => {
-      const denylist = ['compute list'];
+      const denylist = ['alpha', 'compute', 'list'];
+      const inputArgs = ['alpha', 'compute', 'list'];
       createRunGcloudCommand([], denylist).register(mockServer);
       const toolImplementation = getToolImplementation();
+      gcloudSpawnMock.mockResolvedValue({
+        code: 0,
+        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+        stderr: '',
+      });
 
       const result = await toolImplementation({
-        args: ['alpha', 'compute', 'list'],
+        args: inputArgs,
       });
 
       expect(gcloudInvoke).not.toHaveBeenCalled();
@@ -129,12 +163,18 @@ describe('createRunGcloudCommand', () => {
     });
 
     test('returns error for denylisted command with beta release track', async () => {
-      const denylist = ['compute list'];
+      const denylist = ['compute', 'list'];
+      const inputArgs = ['beta', 'compute', 'list'];
       createRunGcloudCommand([], denylist).register(mockServer);
       const toolImplementation = getToolImplementation();
+      gcloudSpawnMock.mockResolvedValue({
+        code: 0,
+        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+        stderr: '',
+      });
 
       const result = await toolImplementation({
-        args: ['beta', 'compute', 'list'],
+        args: inputArgs,
       });
 
       expect(gcloudInvoke).not.toHaveBeenCalled();
@@ -147,16 +187,22 @@ describe('createRunGcloudCommand', () => {
   describe('gcloud invocation results', () => {
     test('returns stdout and stderr when gcloud invocation is successful', async () => {
       createRunGcloudCommand().register(mockServer);
+      const inputArgs = ['a', 'c'];
       const toolImplementation = getToolImplementation();
       gcloudInvoke.mockResolvedValue({
         code: 0,
         stdout: 'output',
         stderr: 'error',
       });
+      gcloudSpawnMock.mockResolvedValue({
+        code: 0,
+        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+        stderr: '',
+      });
 
-      const result = await toolImplementation({ args: ['a', 'c'] });
+      const result = await toolImplementation({ args: inputArgs });
 
-      expect(gcloudInvoke).toHaveBeenCalledWith(['a', 'c']);
+      expect(gcloudInvoke).toHaveBeenCalledWith(inputArgs);
       expect(result).toEqual({
         content: [
           {
@@ -184,14 +230,45 @@ describe('createRunGcloudCommand', () => {
     test('returns error when gcloud invocation throws a non-error', async () => {
       createRunGcloudCommand().register(mockServer);
       const toolImplementation = getToolImplementation();
+      const inputArgs = ['a', 'c'];
+      gcloudSpawnMock.mockResolvedValue({
+        code: 0,
+        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+        stderr: '',
+      });
       gcloudInvoke.mockRejectedValue('gcloud error');
 
-      const result = await toolImplementation({ args: ['a', 'c'] });
+      const result = await toolImplementation({ args: inputArgs });
 
-      expect(gcloudInvoke).toHaveBeenCalledWith(['a', 'c']);
+      expect(gcloudInvoke).toHaveBeenCalledWith(inputArgs);
       expect(result).toEqual({
-        content: [{ type: 'text', text: 'An unknown error ocurred.' }],
+        content: [{ type: 'text', text: 'An unknown error occurred.' }],
         isError: true,
+      });
+    });
+
+    test('blocking app do not block apphub', async () => {
+      const denylist = ['app'];
+      createRunGcloudCommand([], denylist).register(mockServer);
+      const toolImplementation = getToolImplementation();
+      gcloudInvoke.mockResolvedValue({
+        code: 0,
+        stdout: 'output',
+        stderr: '',
+      });
+
+      const result = await toolImplementation({
+        args: ['alpha', 'apphub'],
+      });
+
+      expect(gcloudInvoke).toHaveBeenCalledWith(['alpha', 'apphub']);
+      expect(result).toEqual({
+        content: [
+          {
+            type: 'text',
+            text: 'gcloud process exited with code 0. stdout:\noutput',
+          },
+        ],
       });
     });
   });
