@@ -168,7 +168,7 @@ describe('createRunGcloudCommand', () => {
 
       expect(gcloudInvoke).not.toHaveBeenCalled();
       expect(result).toEqual({
-        content: [{ type: 'text', text: 'Command denied.' }],
+        content: [{ type: 'text', text: "Command is part of this tool's current denylist of disabled commands." }],
       });
     });
 
@@ -189,7 +189,7 @@ describe('createRunGcloudCommand', () => {
 
       expect(gcloudInvoke).not.toHaveBeenCalled();
       expect(result).toEqual({
-        content: [{ type: 'text', text: 'Command denied.' }],
+        content: [{ type: 'text', text: "Command is part of this tool's current denylist of disabled commands." }],
       });
     });
     test('returns error for denylisted command with preview release track', async () => {
@@ -209,7 +209,7 @@ describe('createRunGcloudCommand', () => {
 
       expect(gcloudInvoke).not.toHaveBeenCalled();
       expect(result).toEqual({
-        content: [{ type: 'text', text: 'Command denied.' }],
+        content: [{ type: 'text', text: "Command is part of this tool's current denylist of disabled commands." }],
       });
     });
 
@@ -230,7 +230,7 @@ describe('createRunGcloudCommand', () => {
 
       expect(gcloudInvoke).not.toHaveBeenCalled();
       expect(result).toEqual({
-        content: [{ type: 'text', text: 'Command denied.' }],
+        content: [{ type: 'text', text: "Command is part of this tool's current denylist of disabled commands." }],
       });
     });
 
@@ -255,7 +255,7 @@ describe('createRunGcloudCommand', () => {
 
         expect(gcloudInvoke).not.toHaveBeenCalled();
         expect(result).toEqual({
-          content: [{ type: 'text', text: 'Command denied.' }],
+          content: [{ type: 'text', text: "Command is part of this tool's current denylist of disabled commands." }],
         });
       }
     });
@@ -346,7 +346,8 @@ describe('createRunGcloudCommand', () => {
     });
 
     test('blocking app do not block apphub', async () => {
-      const denylist = ['app'];
+      const denylist = ['app '];
+      const inputArgs = ['apphub'];
       createRunGcloudCommand([], denylist).register(mockServer);
       const toolImplementation = getToolImplementation();
       gcloudInvoke.mockResolvedValue({
@@ -354,12 +355,17 @@ describe('createRunGcloudCommand', () => {
         stdout: 'output',
         stderr: '',
       });
-
-      const result = await toolImplementation({
-        args: ['alpha', 'apphub'],
+      gcloudSpawnMock.mockResolvedValue({
+        code: 0,
+        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+        stderr: '',
       });
 
-      expect(gcloudInvoke).toHaveBeenCalledWith(['alpha', 'apphub']);
+      const result = await toolImplementation({
+        args: inputArgs,
+      });
+
+      expect(gcloudInvoke).toHaveBeenCalledWith(inputArgs);
       expect(result).toEqual({
         content: [
           {

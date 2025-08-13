@@ -41,8 +41,8 @@ function shouldDenyCommand(deniedCommand: string, currentCommand: string): boole
   if (deniedCommand in possiblePrefixes) {
     return possiblePrefixes.some((prefix) => currentCommand.startsWith(prefix));
   }
-
-  const commandsToDeny = [deniedCommand];
+  // Important call out
+  const commandsToDeny = [deniedCommand + ' '];
   possiblePrefixes.forEach((prefix) => {
     commandsToDeny.push(`${prefix} ${deniedCommand}`);
   });
