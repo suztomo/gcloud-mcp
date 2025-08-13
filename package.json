@@ -1,11 +1,15 @@
 {
-  "name": "@google/gcloud-mcp",
+  "name": "@google-cloud/gcloud-mcp",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "workspaces": [
     "packages/*"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/googleapis/gcloud-mcp.git"
+  },
   "bin": {
     "gcloud-mcp": "./packages/gcloud-mcp/dist/src/index.js"
   },

@@ -19,8 +19,8 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { createRunGcloudCommand } from './tools/run_gcloud_command.js';
 import * as gcloud from './gcloud.js';
-import { initializeGeminiCLI } from './gemini-cli-init.js';
 import fs from 'fs';
+import { init } from './commands/init.js';
 
 vi.mock('../package.json', () => ({
   default: {
@@ -37,8 +37,8 @@ vi.mock('./tools/run_gcloud_command.js', () => ({
   })),
 }));
 vi.mock('./gcloud.js');
-vi.mock('./gemini-cli-init.js');
 vi.mock('fs');
+vi.mock('./commands/init.js');
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -46,16 +46,16 @@ beforeEach(() => {
   registerToolSpy.mockClear();
 });
 
-test('should initialize Gemini CLI when --gemini-cli-init is provided', async () => {
-  process.argv = ['node', 'index.js', '--gemini-cli-init'];
+test('should initialize Gemini CLI when gcloud-mcp init --agent=gemini-cli is called', async () => {
+  process.argv = ['node', 'index.js', 'init', '--agent=gemini-cli'];
   await import('./index.js');
-  expect(initializeGeminiCLI).toHaveBeenCalled();
+  expect(init.handler).toHaveBeenCalled();
 });
 
 test('should exit if gcloud is not available', async () => {
   process.argv = ['node', 'index.js'];
   vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(false);
-  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
   vi.stubGlobal('process', { ...process, exit: vi.fn() });
 
   await import('./index.js');
@@ -73,7 +73,7 @@ describe('with --config flag', () => {
 
   beforeEach(() => {
     vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(true);
-    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
     // Stub process.exit to avoid test runner termination and to spy on calls
     vi.stubGlobal('process', { ...process, exit: vi.fn() });
   });
@@ -132,10 +132,15 @@ describe('with --config flag', () => {
   test('should use empty lists for partial config', async () => {
     process.argv = ['node', 'index.js', '--config', '/abs/path/config.json'];
     vi.spyOn(fs, 'readFileSync').mockReturnValue('{}'); // Empty JSON
+<<<<<<< HEAD
 
     const { default_denylist } = await import('./index.js');
     const expected_deny_list = [...new Set([...default_denylist, ...[]])];
     expect(createRunGcloudCommand).toHaveBeenCalledWith([], expected_deny_list);
+=======
+    await import('./index.js');
+    expect(createRunGcloudCommand).toHaveBeenCalledWith([], []);
+>>>>>>> main
   });
 
   test('should exit if config path is not absolute', async () => {
