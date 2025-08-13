@@ -104,7 +104,7 @@ export const createRunGcloudCommand = (allowlist: string[] = [], denylist: strin
           if (stderr) {
             let result = `gcloud process exited with code ${code}. stdout:\n${stdout}`;
             result += `\nstderr:\n${stderr}`;
-            return { content: [{ type: 'text', text: 'result' }] };
+            return { content: [{ type: 'text', text: result }] };
           }
 
           var parsedJson = JSON.parse(stdout);
