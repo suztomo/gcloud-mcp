@@ -77,6 +77,10 @@ export const createRunGcloudCommand = (allowlist: string[] = [], denylist: strin
       async ({ args }) => {
         const command = args.join(' ');
         try {
+          // Linting is necessary because a possible valid gcloud command would be
+          // gcloud compute --log-http=true instance list
+          // There could be global flags in between the command and the group.
+          // Linting helps us remove those flags which simplifies allow/deny list logic.
           let { code, stdout, stderr } = await gcloud.spawnGcloudMetaLint(command);
 
           if (stderr) {
