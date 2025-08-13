@@ -346,7 +346,7 @@ describe('createRunGcloudCommand', () => {
     });
 
     test('blocking app do not block apphub', async () => {
-      const denylist = ['app '];
+      const denylist = ['app'];
       const inputArgs = ['apphub'];
       createRunGcloudCommand([], denylist).register(mockServer);
       const toolImplementation = getToolImplementation();
