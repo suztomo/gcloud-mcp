@@ -50,8 +50,7 @@ test('initializeGeminiCLI should create directory and write files', async () => 
     contextFileName: 'GEMINI.md',
     mcpServers: {
       gcloud: {
-        command: 'npx',
-        args: ['-y', '@google-cloud/gcloud-mcp'],
+        command: 'gcloud-mcp'
       },
     },
   };
@@ -84,8 +83,7 @@ test('initializeGeminiCLI should create directory and write files when process.e
     contextFileName: 'GEMINI.md',
     mcpServers: {
       gcloud: {
-        command: 'npx',
-        args: ['-y', '@google-cloud/gcloud-mcp'],
+        command: 'gcloud-mcp'
       },
     },
   };

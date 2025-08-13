@@ -51,6 +51,17 @@ Gemini-compatible extension interface.
 }
 ```
 
+## Remote Installation
+
+1. Install the package via npx: 
+    ```bash
+    npx @google-cloud/gcloud-mcp
+    ```
+2. Or via npm:
+   ```bash
+   npm i -g @google-cloud/gcloud-mcp
+   ```
+
 ## Setting up a Gemini CLI extension
 
 To use this MCP server as an extension with the Gemini CLI, run the following
