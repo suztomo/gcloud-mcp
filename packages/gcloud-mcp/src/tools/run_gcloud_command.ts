@@ -41,7 +41,7 @@ function shouldDenyCommand(deniedCommand: string, currentCommand: string): boole
   if (deniedCommand in possiblePrefixes) {
     return possiblePrefixes.some((prefix) => currentCommand.startsWith(prefix));
   }
-  // Important because now app would match to appldeployment.
+  // Important because without the space, app would be matched to apphub
   const commandsToDeny = [deniedCommand + ' '];
   possiblePrefixes.forEach((prefix) => {
     commandsToDeny.push(`${prefix} ${deniedCommand}`);
