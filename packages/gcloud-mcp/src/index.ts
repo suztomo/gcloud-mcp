@@ -91,11 +91,9 @@ const main = async () => {
     version: pkg.version,
   });
 
-  const userDenylist = (argv.denylist as string[]) || [];
-  const mergedDenylist = [...new Set([...default_denylist, ...userDenylist])];
+  const mergedDenylist = [...new Set([...default_denylist, ...denylist])];
 
-  createRunGcloudCommand([], mergedDenylist).register(server);
-  createRunGcloudCommand(allowlist, denylist).register(server);
+  createRunGcloudCommand(allowlist, mergedDenylist).register(server);
   await server.connect(new StdioServerTransport());
   console.log('🚀 gcloud mcp server started');
 };
