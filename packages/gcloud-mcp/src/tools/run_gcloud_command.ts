@@ -99,7 +99,7 @@ export const createRunGcloudCommand = (allowlist: string[] = [], denylist: strin
         }
 
         try {
-          var { code, stdout, stderr } = await gcloud.spawnGcloudMetaLint(command);
+          let { code, stdout, stderr } = await gcloud.spawnGcloudMetaLint(command);
 
           if (stderr) {
             let result = `gcloud process exited with code ${code}. stdout:\n${stdout}`;
@@ -117,7 +117,7 @@ export const createRunGcloudCommand = (allowlist: string[] = [], denylist: strin
             return { content: [{ type: 'text', text: 'Command denied.' }] };
           }
 
-          var { code, stdout, stderr } = await gcloud.invoke(args);
+          ({ code, stdout, stderr } = await gcloud.invoke(args));
           // If the exit status is not zero, an error occurred and the output may be
           // incomplete unless the command documentation notes otherwise. For example,
           // a command that creates multiple resources may only create a few, list them
