@@ -26,7 +26,7 @@ export const init: CommandModule<object, InstallArgs> = {
   describe: 'Initialize the MCP server with an agent.',
   builder: (yargs: Argv) =>
     yargs.option('agent', {
-      describe: 'The agent to initialize the extension for',
+      describe: 'The agent to initialize the extension for.',
       type: 'string',
       choices: ['gemini-cli'] as const,
       demandOption: true,

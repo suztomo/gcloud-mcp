@@ -56,7 +56,7 @@ To use this MCP server as an extension with the Gemini CLI, run the following
 command in your project's root directory, or your user home directory:
 
 ```bash
-npm start -w gcloud-mcp -- install gemini-cli
+npm start -w gcloud-mcp -- init --agent=gemini-cli
 gemini
 ```
 

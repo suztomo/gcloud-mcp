@@ -48,17 +48,17 @@ beforeEach(() => {
 
 test('should initialize Gemini CLI when gcloud-mcp init --agent=gemini-cli is called', async () => {
   process.argv = ['node', 'index.js', 'init', '--agent=gemini-cli'];
-    await import('./index.js');
+  await import('./index.js');
   expect(init.handler).toHaveBeenCalled();
 });
 
 test('should exit if gcloud is not available', async () => {
   process.argv = ['node', 'index.js'];
   vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(false);
-  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
   vi.stubGlobal('process', { ...process, exit: vi.fn() });
 
-    await import('./index.js');
+  await import('./index.js');
 
   expect(gcloud.isAvailable).toHaveBeenCalled();
   expect(consoleErrorSpy).toHaveBeenCalledWith('Unable to start gcloud mcp server: gcloud executable not found.');
@@ -73,7 +73,7 @@ describe('with --config flag', () => {
 
   beforeEach(() => {
     vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(true);
-    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
     // Stub process.exit to avoid test runner termination and to spy on calls
     vi.stubGlobal('process', { ...process, exit: vi.fn() });
   });
@@ -169,7 +169,7 @@ describe('with --config flag', () => {
 test('should start the McpServer if gcloud is available', async () => {
   process.argv = ['node', 'index.js'];
   vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(true);
-    await import('./index.js');
+  await import('./index.js');
   expect(gcloud.isAvailable).toHaveBeenCalled();
   expect(McpServer).toHaveBeenCalledWith({
     name: 'gcloud-mcp-server',
