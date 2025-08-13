@@ -275,7 +275,7 @@ describe('createRunGcloudCommand', () => {
         content: [
           {
             type: 'text',
-            text: `Command is part of this tool's current denylist of disabled commands.`, // Corrected: Removed extra backticks and escaped internal backticks
+            text: `Command is not part of this tool's current allowlist of enabled commands.`, // Corrected: Removed extra backticks and escaped internal backticks
           },
         ],
       });
