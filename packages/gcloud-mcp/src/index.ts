@@ -42,7 +42,9 @@ const main = async () => {
     .option('config', {
       type: 'string',
       description: 'Path to a JSON configuration file (must be an absolute path).',
-    }).argv;
+    })
+    .version(pkg.version)
+    .alias('version', 'v').argv;
 
   if (argv.geminiCliInit) {
     await initializeGeminiCLI();

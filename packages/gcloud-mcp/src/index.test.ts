@@ -46,6 +46,32 @@ beforeEach(() => {
   registerToolSpy.mockClear();
 });
 
+test('should configure yargs with a version flag', async () => {
+  const versionSpy = vi.fn();
+  const aliasSpy = vi.fn();
+  const mockYargs = {
+    option: vi.fn().mockReturnThis(),
+    version: versionSpy,
+    alias: aliasSpy,
+    argv: { help: false }, // prevent yargs from exiting
+  };
+  vi.doMock('yargs', () => ({
+    default: vi.fn(() => mockYargs),
+  }));
+  vi.doMock('yargs/helpers', () => ({
+    hideBin: vi.fn(),
+  }));
+  // @ts-expect-error - The type of process.exit is not assignable to the mock implementation.
+  processExitSpy = vi.spyOn(process, 'exit').mockImplementation((() => {}) as (code?: number) => never);
+
+  await import('./index.js');
+
+  expect(versionSpy).toHaveBeenCalledWith('0.1.0');
+  expect(aliasSpy).toHaveBeenCalledWith('version', 'v');
+
+  vi.unstubAllGlobals();
+});
+
 test('should initialize Gemini CLI when --gemini-cli-init is provided', async () => {
   process.argv = ['node', 'index.js', '--gemini-cli-init'];
   await import('./index.js');
@@ -56,7 +82,7 @@ test('should exit if gcloud is not available', async () => {
   process.argv = ['node', 'index.js'];
   vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(false);
   const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-  vi.stubGlobal('process', { ...process, exit: vi.fn() });
+  vi.stubGlobal('process', { ...process, exit: vi.fn(() => undefined as never) });
 
   await import('./index.js');
 
@@ -75,7 +101,7 @@ describe('with --config flag', () => {
     vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(true);
     consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     // Stub process.exit to avoid test runner termination and to spy on calls
-    vi.stubGlobal('process', { ...process, exit: vi.fn() });
+    vi.stubGlobal('process', { ...process, exit: vi.fn(() => undefined as never) });
   });
 
   afterEach(() => {
