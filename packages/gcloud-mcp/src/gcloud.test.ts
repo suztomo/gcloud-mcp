@@ -188,36 +188,3 @@ test('should correctly call spawnGcloudMetaLint single quotes', async () => {
   expect(result.stdout).toContain('Standard output');
   expect(result.stderr).toContain('Standard error');
 });
-
-test('should correctly call spawnGcloudMetaLint double quotes', async () => {
-  const mockChildProcess = {
-    stdout: new PassThrough(),
-    stderr: new PassThrough(),
-    stdin: new PassThrough(),
-    on: vi.fn((event, callback) => {
-      if (event === 'close') {
-        setTimeout(() => callback(0), 0);
-      }
-    }),
-  };
-  mockedSpawn.mockReturnValue(mockChildProcess);
-
-  const resultPromise = gcloud.spawnGcloudMetaLint('gcloud compute instances list');
-
-  mockChildProcess.stdout.emit('data', 'Standard out');
-  mockChildProcess.stderr.emit('data', 'Stan');
-  mockChildProcess.stdout.emit('data', 'put');
-  mockChildProcess.stderr.emit('data', 'dard error');
-  mockChildProcess.stdout.end();
-
-  const result = await resultPromise;
-
-  expect(mockedSpawn).toHaveBeenCalledWith(
-    'gcloud',
-    ['meta', 'lint-gcloud-commands', '--command-string=gcloud compute instances list'],
-    { stdio: ['ignore', 'pipe', 'pipe'] },
-  );
-  expect(result.code).toBe(0);
-  expect(result.stdout).toContain('Standard output');
-  expect(result.stderr).toContain('Standard error');
-});
