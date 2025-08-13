@@ -23,9 +23,9 @@ import { createRunGcloudCommand } from './tools/run_gcloud_command.js';
 import * as gcloud from './gcloud.js';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { initializeGeminiCLI } from './gemini-cli-init.js';
 import fs from 'fs';
 import path from 'path';
+import { init } from './commands/init.js';
 
 interface GcloudMcpConfig {
   run_gcloud_command?: {
@@ -35,53 +35,60 @@ interface GcloudMcpConfig {
 }
 
 const main = async () => {
-  const argv = await yargs(hideBin(process.argv))
-    .option('gemini-cli-init', {
-      alias: 'init',
-      type: 'boolean',
-      description: 'Initialize the Gemini CLI extension',
-    })
-    .option('config', {
-      type: 'string',
-      description: 'Path to a JSON configuration file (must be an absolute path).',
-    }).argv;
+  yargs(hideBin(process.argv))
+    .command(
+      '$0',
+      'Run the gcloud mcp server',
+      (yargs) =>
+        yargs
+          .option('config', {
+            type: 'string',
+            description:
+              'Path to a JSON configuration file (must be an absolute path).',
+          })
+          .version(pkg.version),
+      async (argv) => {
+        const isAvailable = await gcloud.isAvailable();
+        if (!isAvailable) {
+          console.error(
+            'Unable to start gcloud mcp server: gcloud executable not found.'
+          );
+          process.exit(1);
+        }
 
-  if (argv.geminiCliInit) {
-    await initializeGeminiCLI();
-    return;
-  }
+        let config: GcloudMcpConfig = {};
+        if (argv.config) {
+          if (!path.isAbsolute(argv.config)) {
+            console.error(
+              'Error: The --config path must be an absolute file path.'
+            );
+            process.exit(1);
+          }
+          try {
+            const rawConfig = fs.readFileSync(argv.config, 'utf-8');
+            config = JSON.parse(rawConfig);
+          } catch (e) {
+            console.error(`Error reading or parsing config file: ${e}`);
+            process.exit(1);
+          }
+        }
 
-  const isAvailable = await gcloud.isAvailable();
-  if (!isAvailable) {
-    console.error('Unable to start gcloud mcp server: gcloud executable not found.');
-    process.exit(1);
-  }
+        const allowlist = config.run_gcloud_command?.allowlist || [];
+        const denylist = config.run_gcloud_command?.denylist || [];
 
-  let config: GcloudMcpConfig = {};
-  if (argv.config) {
-    if (!path.isAbsolute(argv.config)) {
-      console.error('Error: The --config path must be an absolute file path.');
-      process.exit(1);
-    }
-    try {
-      const rawConfig = fs.readFileSync(argv.config, 'utf-8');
-      config = JSON.parse(rawConfig);
-    } catch (e) {
-      console.error(`Error reading or parsing config file: ${e}`);
-      process.exit(1);
-    }
-  }
-
-  const allowlist = config.run_gcloud_command?.allowlist || [];
-  const denylist = config.run_gcloud_command?.denylist || [];
-
-  const server = new McpServer({
-    name: 'gcloud-mcp-server',
-    version: pkg.version,
-  });
-  createRunGcloudCommand(allowlist, denylist).register(server);
-  await server.connect(new StdioServerTransport());
-  console.log('🚀 gcloud mcp server started');
+        const server = new McpServer({
+          name: 'gcloud-mcp-server',
+          version: pkg.version,
+        });
+        createRunGcloudCommand(allowlist, denylist).register(server);
+        await server.connect(new StdioServerTransport());
+        console.log('🚀 gcloud mcp server started');
+      }
+    )
+    .command(init)
+    .version(false)
+    .help()
+    .parse();
 };
 
 main();

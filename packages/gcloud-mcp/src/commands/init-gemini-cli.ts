@@ -17,7 +17,7 @@
 import { mkdir, readFile, writeFile } from 'fs/promises';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import pkg from '../package.json' with { type: 'json' };
+import pkg from '../../package.json' with { type: 'json' };
 
 export const initializeGeminiCLI = async () => {
   // When running `npm start -w [workspace]`, npm sets the CWD to the workspace directory.
@@ -49,7 +49,7 @@ export const initializeGeminiCLI = async () => {
   console.log(`Gemini CLI extension initialized at: ${extensionFile}`);
 
   // Create GEMINI.md
-  const geminiMdSrcPath = join(__dirname, '../GEMINI-extension.md');
+  const geminiMdSrcPath = join(__dirname, '../../GEMINI-extension.md');
   const geminiMdDestPath = join(extensionDir, 'GEMINI.md');
   const geminiMdContent = await readFile(geminiMdSrcPath);
   await writeFile(geminiMdDestPath, geminiMdContent);
