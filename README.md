@@ -1,3 +1,6 @@
+![Gemini CLI gcloud-mcp Screenshot](./doc/assets/gemini-gcloud-mcp-screenshot.png)
+
+
 # gcloud MCP server
 
 The gcloud MCP Server is a
@@ -35,16 +38,16 @@ Gemini-compatible extension interface.
 2.  Install the dependencies:
 
     ```bash
-    npm install
+    npm install @google-cloud/gcloud-mcp
     npm run build
     ```
 3. Enable in your MCP configuration file:
 
 ```
 "mcpServers":{
-  "cloud-run": {
+  "gcloud": {
     "command": "npx",
-    "args": ["-y", "https://github.com/googleapis/gcloud-mcp"]
+    "args": ["-y", "@google-cloud/gcloud-mcp"]
   }
 }
 ```

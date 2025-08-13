@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * Copyright 2025 Google LLC
  *
@@ -22,6 +24,15 @@ import * as gcloud from './gcloud.js';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { initializeGeminiCLI } from './gemini-cli-init.js';
+import fs from 'fs';
+import path from 'path';
+
+interface GcloudMcpConfig {
+  run_gcloud_command?: {
+    allowlist?: string[];
+    denylist?: string[];
+  };
+}
 
 export const default_denylist: string[] = [
   'compute start-iap-tunnel',
@@ -41,9 +52,9 @@ const main = async () => {
       type: 'boolean',
       description: 'Initialize the Gemini CLI extension',
     })
-    .option('denylist', {
-      type: 'array',
-      description: 'A list of gcloud commands to denylist.',
+    .option('config', {
+      type: 'string',
+      description: 'Path to a JSON configuration file (must be an absolute path).',
     }).argv;
 
   if (argv.geminiCliInit) {
@@ -53,8 +64,27 @@ const main = async () => {
 
   const isAvailable = await gcloud.isAvailable();
   if (!isAvailable) {
-    console.log('Unable to start gcloud mcp server: gcloud executable not found.');
+    console.error('Unable to start gcloud mcp server: gcloud executable not found.');
+    process.exit(1);
   }
+
+  let config: GcloudMcpConfig = {};
+  if (argv.config) {
+    if (!path.isAbsolute(argv.config)) {
+      console.error('Error: The --config path must be an absolute file path.');
+      process.exit(1);
+    }
+    try {
+      const rawConfig = fs.readFileSync(argv.config, 'utf-8');
+      config = JSON.parse(rawConfig);
+    } catch (e) {
+      console.error(`Error reading or parsing config file: ${e}`);
+      process.exit(1);
+    }
+  }
+
+  const allowlist = config.run_gcloud_command?.allowlist || [];
+  const denylist = config.run_gcloud_command?.denylist || [];
 
   const server = new McpServer({
     name: 'gcloud-mcp-server',
@@ -65,6 +95,7 @@ const main = async () => {
   const mergedDenylist = [...new Set([...default_denylist, ...userDenylist])];
 
   createRunGcloudCommand([], mergedDenylist).register(server);
+  createRunGcloudCommand(allowlist, denylist).register(server);
   await server.connect(new StdioServerTransport());
   console.log('🚀 gcloud mcp server started');
 };

@@ -76,6 +76,28 @@ export const createRunGcloudCommand = (allowlist: string[] = [], denylist: strin
       },
       async ({ args }) => {
         const command = args.join(' ');
+
+        if (!allowedCommands(allowlist).contains(command)) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: `Command is not part of this tool's current allowlist of enabled commands.`,
+              },
+            ],
+          };
+        }
+        if (deniedCommands(denylist).contains(command)) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: `Command is part of this tool's current denylist of disabled commands.`,
+              },
+            ],
+          };
+        }
+
         try {
           var { code, stdout, stderr } = await gcloud.spawnGcloudMetaLint(command);
 

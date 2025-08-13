@@ -1,0 +1,22 @@
+{
+  "extends": "./node_modules/gts/tsconfig-google.json",
+  "compilerOptions": {
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "pretty": true,
+    "outDir": "dist",
+    "sourceMap": true,
+    "lib": [
+      "es2023",
+      "dom"
+    ],
+    "strict": true,
+    "moduleResolution": "nodenext",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "module": "nodenext"
+  },
+  "exclude": ["eslint.config.js", "dist/", "node_modules/", "packages/gcloud-mcp/dist"],
+  "include": ["package.json", "packages/gcloud-mcp/package.json"]
+}
