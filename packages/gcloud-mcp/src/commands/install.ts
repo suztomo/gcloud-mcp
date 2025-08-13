@@ -23,10 +23,9 @@ interface InstallArgs {
 
 export const install: CommandModule<object, InstallArgs> = {
   command: 'install <item>',
-  describe: 'Install a component',
+  describe: 'Install the MCP server on a client.',
   builder: (yargs) =>
     yargs.positional('item', {
-      describe: '',
       description: 'The component to install. Currently only `gemini-cli` is supported, which installs the gcloud-mcp server as a Gemini CLI extension.',
       choices: ['gemini-cli'] as const,
       demandOption: true,
