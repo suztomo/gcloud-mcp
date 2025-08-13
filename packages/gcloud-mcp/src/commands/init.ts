@@ -14,25 +14,28 @@
  * limitations under the License.
  */
 
-import { initializeGeminiCLI } from './install-gemini-cli.js';
-import { ArgumentsCamelCase, CommandModule } from 'yargs';
+import { Argv, ArgumentsCamelCase, CommandModule } from 'yargs';
+import { initializeGeminiCLI } from './init-gemini-cli.js';
 
 interface InstallArgs {
-  item: 'gemini-cli';
+  agent: string;
 }
 
-export const install: CommandModule<object, InstallArgs> = {
-  command: 'install <item>',
-  describe: 'Install the MCP server on an agent.',
-  builder: (yargs) =>
-    yargs.positional('item', {
-      description: 'The agent to setup the MCP server on. Currently only `gemini-cli` is supported, which installs the gcloud-mcp server as a Gemini CLI extension.',
+export const init: CommandModule<object, InstallArgs> = {
+  command: 'init',
+  describe: 'Initialize the MCP server with an agent.',
+  builder: (yargs: Argv) =>
+    yargs.option('agent', {
+      describe: 'The agent to initialize the extension for',
+      type: 'string',
       choices: ['gemini-cli'] as const,
       demandOption: true,
     }),
   handler: async (argv: ArgumentsCamelCase<InstallArgs>) => {
-    if (argv.item === 'gemini-cli') {
+    if (argv.agent === 'gemini-cli'){
       await initializeGeminiCLI();
+    } else {
+      throw new Error(`Unknown agent: ${argv.agent}`);
     }
   },
 };

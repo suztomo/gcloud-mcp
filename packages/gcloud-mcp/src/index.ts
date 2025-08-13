@@ -25,7 +25,7 @@ import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import fs from 'fs';
 import path from 'path';
-import { install } from './commands/install.js';
+import { init } from './commands/init.js';
 
 interface GcloudMcpConfig {
   run_gcloud_command?: {
@@ -35,7 +35,7 @@ interface GcloudMcpConfig {
 }
 
 const main = async () => {
-  await yargs(hideBin(process.argv))
+  yargs(hideBin(process.argv))
     .command(
       '$0',
       'Run the gcloud mcp server',
@@ -85,7 +85,7 @@ const main = async () => {
         console.log('🚀 gcloud mcp server started');
       }
     )
-    .command(install)
+    .command(init)
     .version(false)
     .help()
     .parse();

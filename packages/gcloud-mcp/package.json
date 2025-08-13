@@ -2,7 +2,7 @@
   "name": "@google-cloud/gcloud-mcp",
   "version": "0.1.0",
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "bin": {
     "gcloud-mcp": "./dist/src/index.js"
   },

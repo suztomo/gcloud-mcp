@@ -19,11 +19,8 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { createRunGcloudCommand } from './tools/run_gcloud_command.js';
 import * as gcloud from './gcloud.js';
-
 import fs from 'fs';
-
-import { initializeGeminiCLI } from './commands/install-gemini-cli.js';
-vi.mock('./commands/install-gemini-cli.js');
+import { init } from './commands/init.js';
 
 vi.mock('../package.json', () => ({
   default: {
@@ -41,6 +38,7 @@ vi.mock('./tools/run_gcloud_command.js', () => ({
 }));
 vi.mock('./gcloud.js');
 vi.mock('fs');
+vi.mock('./commands/init.js');
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -48,10 +46,10 @@ beforeEach(() => {
   registerToolSpy.mockClear();
 });
 
-test('should initialize Gemini CLI when gcloud-mcp install gemini-cli is called', async () => {
-  process.argv = ['node', 'index.js', 'install', 'gemini-cli'];
-  await import('./index.js');
-  expect(initializeGeminiCLI).toHaveBeenCalled();
+test('should initialize Gemini CLI when gcloud-mcp init --agent=gemini-cli is called', async () => {
+  process.argv = ['node', 'index.js', 'init', '--agent=gemini-cli'];
+    await import('./index.js');
+  expect(init.handler).toHaveBeenCalled();
 });
 
 test('should exit if gcloud is not available', async () => {
@@ -60,7 +58,7 @@ test('should exit if gcloud is not available', async () => {
   const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
   vi.stubGlobal('process', { ...process, exit: vi.fn() });
 
-  await import('./index.js');
+    await import('./index.js');
 
   expect(gcloud.isAvailable).toHaveBeenCalled();
   expect(consoleErrorSpy).toHaveBeenCalledWith('Unable to start gcloud mcp server: gcloud executable not found.');
@@ -133,9 +131,7 @@ describe('with --config flag', () => {
   test('should use empty lists for partial config', async () => {
     process.argv = ['node', 'index.js', '--config', '/abs/path/config.json'];
     vi.spyOn(fs, 'readFileSync').mockReturnValue('{}'); // Empty JSON
-
     await import('./index.js');
-
     expect(createRunGcloudCommand).toHaveBeenCalledWith([], []);
   });
 
@@ -173,7 +169,7 @@ describe('with --config flag', () => {
 test('should start the McpServer if gcloud is available', async () => {
   process.argv = ['node', 'index.js'];
   vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(true);
-  await import('./index.js');
+    await import('./index.js');
   expect(gcloud.isAvailable).toHaveBeenCalled();
   expect(McpServer).toHaveBeenCalledWith({
     name: 'gcloud-mcp-server',
