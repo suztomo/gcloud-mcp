@@ -24,5 +24,10 @@ Thumbs.db
 # Test report files
 coverage/
 packages/*/coverage/
+
+# Package-lock file
+package-lock.json
+
 junit.xml
 packages/*/junit.xml
+
