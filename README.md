@@ -1,3 +1,6 @@
+![Gemini CLI gcloud-mcp Screenshot](./doc/assets/gemini-gcloud-mcp-screenshot.png)
+
+
 # gcloud MCP server
 
 The gcloud MCP Server is a
