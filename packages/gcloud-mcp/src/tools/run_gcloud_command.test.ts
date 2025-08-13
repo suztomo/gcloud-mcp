@@ -21,6 +21,7 @@ import * as gcloud from '../gcloud.js';
 
 vi.mock('../gcloud.js');
 vi.mock('child_process');
+vi.mock('child_process');
 
 const mockServer = {
   registerTool: vi.fn(),
@@ -33,6 +34,7 @@ const getToolImplementation = () => {
 
 describe('createRunGcloudCommand', () => {
   let gcloudInvoke: Mock;
+  let gcloudSpawnMock: Mock;
   let gcloudSpawnMock: Mock;
 
   beforeEach(() => {
@@ -50,6 +52,11 @@ describe('createRunGcloudCommand', () => {
       gcloudInvoke.mockResolvedValue({
         code: 0,
         stdout: 'output',
+        stderr: '',
+      });
+      gcloudSpawnMock.mockResolvedValue({
+        code: 0,
+        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
         stderr: '',
       });
       gcloudSpawnMock.mockResolvedValue({
@@ -75,7 +82,13 @@ describe('createRunGcloudCommand', () => {
       const allowlist = ['a b'];
       createRunGcloudCommand(allowlist).register(mockServer);
       const inputArgs = ['a', 'c'];
+      const inputArgs = ['a', 'c'];
       const toolImplementation = getToolImplementation();
+      gcloudSpawnMock.mockResolvedValue({
+        code: 0,
+        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+        stderr: '',
+      });
       gcloudSpawnMock.mockResolvedValue({
         code: 0,
         stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
@@ -98,6 +111,8 @@ describe('createRunGcloudCommand', () => {
 
   describe('with denylist', () => {
     test('returns error for denylisted command', async () => {
+      const denylist = ['compute', 'list'];
+      const inputArgs = ['compute', 'list', '--zone', 'eastus1'];
       const denylist = ['compute', 'list'];
       const inputArgs = ['compute', 'list', '--zone', 'eastus1'];
       createRunGcloudCommand([], denylist).register(mockServer);

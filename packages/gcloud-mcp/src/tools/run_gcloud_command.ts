@@ -34,8 +34,22 @@ const deniedCommands = (denylist: string[] = []) => ({
       return false; // No denylist = all commands allowed
     }
     return denylist.some((denied) => shouldDenyCommand(denied, command));
+    return denylist.some((denied) => shouldDenyCommand(denied, command));
   },
 });
+
+function shouldDenyCommand(deniedCommand: string, currentCommand: string): boolean {
+  const possiblePrefixes = ['alpha', 'beta', 'preview'];
+  if (deniedCommand in possiblePrefixes) {
+    return possiblePrefixes.some((prefix) => currentCommand.startsWith(prefix));
+  }
+  // Important because without the space, app would be matched to apphub
+  const commandsToDeny = [deniedCommand + ' '];
+  possiblePrefixes.forEach((prefix) => {
+    commandsToDeny.push(`${prefix} ${deniedCommand}`);
+  });
+  return commandsToDeny.some((cmd) => currentCommand.startsWith(cmd));
+}
 
 function shouldDenyCommand(deniedCommand: string, currentCommand: string): boolean {
   const possiblePrefixes = ['alpha', 'beta', 'preview'];
