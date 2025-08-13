@@ -29,6 +29,7 @@ const allowedCommands = (allowlist: string[] = []) => ({
 
 const deniedCommands = (denylist: string[] = []) => ({
   contains: (command: string): boolean => {
+    command = command + ' ';
     if (denylist.length === 0) {
       return false; // No denylist = all commands allowed
     }
