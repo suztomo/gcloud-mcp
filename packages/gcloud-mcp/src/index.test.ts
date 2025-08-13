@@ -93,10 +93,11 @@ describe('with --config flag', () => {
     };
     vi.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify(config));
 
-    await import('./index.js');
+    const { default_denylist } = await import('./index.js');
+    const expected_deny_list = [...new Set([...default_denylist, ...config.run_gcloud_command.denylist])];
 
     expect(fs.readFileSync).toHaveBeenCalledWith('/abs/path/config.json', 'utf-8');
-    expect(createRunGcloudCommand).toHaveBeenCalledWith(['projects list'], ['projects delete']);
+    expect(createRunGcloudCommand).toHaveBeenCalledWith(['projects list'], expected_deny_list);
     expect(registerToolSpy).toHaveBeenCalled();
   });
 
@@ -109,9 +110,9 @@ describe('with --config flag', () => {
     };
     vi.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify(config));
 
-    await import('./index.js');
+    const { default_denylist } = await import('./index.js');
 
-    expect(createRunGcloudCommand).toHaveBeenCalledWith(['projects list'], []);
+    expect(createRunGcloudCommand).toHaveBeenCalledWith(['projects list'], default_denylist);
   });
 
   test('should handle only a denylist', async () => {
@@ -123,18 +124,18 @@ describe('with --config flag', () => {
     };
     vi.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify(config));
 
-    await import('./index.js');
-
-    expect(createRunGcloudCommand).toHaveBeenCalledWith([], ['projects delete']);
+    const { default_denylist } = await import('./index.js');
+    const expected_deny_list = [...new Set([...default_denylist, ...config.run_gcloud_command.denylist])];
+    expect(createRunGcloudCommand).toHaveBeenCalledWith([], expected_deny_list);
   });
 
   test('should use empty lists for partial config', async () => {
     process.argv = ['node', 'index.js', '--config', '/abs/path/config.json'];
     vi.spyOn(fs, 'readFileSync').mockReturnValue('{}'); // Empty JSON
 
-    await import('./index.js');
-
-    expect(createRunGcloudCommand).toHaveBeenCalledWith([], []);
+    const { default_denylist } = await import('./index.js');
+    const expected_deny_list = [...new Set([...default_denylist, ...[]])];
+    expect(createRunGcloudCommand).toHaveBeenCalledWith([], expected_deny_list);
   });
 
   test('should exit if config path is not absolute', async () => {
@@ -181,14 +182,4 @@ test('should start the McpServer if gcloud is available', async () => {
   expect(registerToolSpy).toHaveBeenCalledWith(vi.mocked(McpServer).mock.instances[0]);
   const serverInstance = vi.mocked(McpServer).mock.instances[0];
   expect(serverInstance!.connect).toHaveBeenCalledWith(expect.any(StdioServerTransport));
-});
-
-test('should merge denylists when provided via argv', async () => {
-  process.argv = ['node', 'index.js', '--denylist', 'gcloud projects list', 'gcloud compute instances list'];
-  vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(true);
-  const { default_denylist } = await import('./index.js');
-
-  const expectedDenylist = [...default_denylist, 'gcloud projects list', 'gcloud compute instances list'];
-
-  expect(createRunGcloudCommand).toHaveBeenCalledWith([], expectedDenylist);
 });
