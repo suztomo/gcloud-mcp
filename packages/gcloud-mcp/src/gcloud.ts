@@ -59,7 +59,7 @@ export const spawnGcloudMetaLint = (
     let stderr = '';
 
     // gcloud meta lint-gcloud-commands --command-string="gcloud compute --log-http false instances list"
-    let invocationArgs = ['meta', 'lint-gcloud-commands', `--command-string=${command}`];
+    const invocationArgs = ['meta', 'lint-gcloud-commands', `--command-string=${command}`];
 
     const gcloud = spawn('gcloud', invocationArgs, { stdio: ['ignore', 'pipe', 'pipe'] });
 

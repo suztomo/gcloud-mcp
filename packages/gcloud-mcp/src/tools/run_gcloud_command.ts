@@ -107,8 +107,8 @@ export const createRunGcloudCommand = (allowlist: string[] = [], denylist: strin
             return { content: [{ type: 'text', text: result }] };
           }
 
-          var parsedJson = JSON.parse(stdout);
-          var commandNoArgs = parsedJson[0]['command_string_no_args'];
+          const parsedJson = JSON.parse(stdout);
+          const commandNoArgs = parsedJson[0]['command_string_no_args'];
 
           if (!allowedCommands(allowlist).contains(commandNoArgs)) {
             return { content: [{ type: 'text', text: 'Command not allowed.' }] };
