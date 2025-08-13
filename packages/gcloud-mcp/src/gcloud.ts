@@ -15,14 +15,16 @@
  */
 
 import { spawn } from 'child_process';
+import os from 'os';
 
 export const isAvailable = (): Promise<boolean> =>
   new Promise((resolve) => {
-    const which = spawn('which', ['gcloud']);
-    which.on('close', (code) => {
+    const command = os.platform() === 'win32' ? 'where' : 'which';
+    const proc = spawn(command, ['gcloud']);
+    proc.on('close', (code) => {
       resolve(code === 0);
     });
-    which.on('error', () => {
+    proc.on('error', () => {
       resolve(false);
     });
   });
