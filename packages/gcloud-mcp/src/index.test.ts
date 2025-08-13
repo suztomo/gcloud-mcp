@@ -19,8 +19,11 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { createRunGcloudCommand } from './tools/run_gcloud_command.js';
 import * as gcloud from './gcloud.js';
-import { initializeGeminiCLI } from './gemini-cli-init.js';
+
 import fs from 'fs';
+
+import { initializeGeminiCLI } from './commands/install-gemini-cli.js';
+vi.mock('./commands/install-gemini-cli.js');
 
 vi.mock('../package.json', () => ({
   default: {
@@ -37,7 +40,6 @@ vi.mock('./tools/run_gcloud_command.js', () => ({
   })),
 }));
 vi.mock('./gcloud.js');
-vi.mock('./gemini-cli-init.js');
 vi.mock('fs');
 
 beforeEach(() => {
@@ -46,8 +48,8 @@ beforeEach(() => {
   registerToolSpy.mockClear();
 });
 
-test('should initialize Gemini CLI when --gemini-cli-init is provided', async () => {
-  process.argv = ['node', 'index.js', '--gemini-cli-init'];
+test('should initialize Gemini CLI when gcloud-mcp install gemini-cli is called', async () => {
+  process.argv = ['node', 'index.js', 'install', 'gemini-cli'];
   await import('./index.js');
   expect(initializeGeminiCLI).toHaveBeenCalled();
 });
