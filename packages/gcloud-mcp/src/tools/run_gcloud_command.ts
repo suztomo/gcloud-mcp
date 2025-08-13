@@ -83,16 +83,12 @@ export const createRunGcloudCommand = (allowlist: string[] = [], denylist: strin
           // Linting helps us remove those flags which simplifies allow/deny list logic.
           let { code, stdout, stderr } = await gcloud.spawnGcloudMetaLint(command);
 
-          if (stderr) {
-            let result = `gcloud process exited with code ${code}. stdout:\n${stdout}`;
-            result += `\nstderr:\n${stderr}`;
-            return { content: [{ type: 'text', text: result }] };
-          }
-
           const parsedJson = JSON.parse(stdout);
           const commandNoArgs = parsedJson[0]['command_string_no_args'];
+          // Remove gcloud as a prefix
+          const commandArgsNoGcloud = commandNoArgs.split(' ').slice(1).join(' ');
 
-          if (!allowedCommands(allowlist).contains(commandNoArgs)) {
+          if (!allowedCommands(allowlist).contains(commandArgsNoGcloud)) {
             return {
               content: [
                 {
@@ -102,7 +98,7 @@ export const createRunGcloudCommand = (allowlist: string[] = [], denylist: strin
               ],
             };
           }
-          if (deniedCommands(denylist).contains(commandNoArgs)) {
+          if (deniedCommands(denylist).contains(commandArgsNoGcloud)) {
             return {
               content: [
                 {
