@@ -55,7 +55,7 @@ test('should initialize Gemini CLI when gcloud-mcp init --agent=gemini-cli is ca
 test('should exit if gcloud is not available', async () => {
   process.argv = ['node', 'index.js'];
   vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(false);
-  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
   vi.stubGlobal('process', { ...process, exit: vi.fn() });
 
   await import('./index.js');
@@ -73,7 +73,7 @@ describe('with --config flag', () => {
 
   beforeEach(() => {
     vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(true);
-    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     // Stub process.exit to avoid test runner termination and to spy on calls
     vi.stubGlobal('process', { ...process, exit: vi.fn() });
   });
@@ -132,15 +132,10 @@ describe('with --config flag', () => {
   test('should use empty lists for partial config', async () => {
     process.argv = ['node', 'index.js', '--config', '/abs/path/config.json'];
     vi.spyOn(fs, 'readFileSync').mockReturnValue('{}'); // Empty JSON
-<<<<<<< HEAD
 
     const { default_denylist } = await import('./index.js');
     const expected_deny_list = [...new Set([...default_denylist, ...[]])];
     expect(createRunGcloudCommand).toHaveBeenCalledWith([], expected_deny_list);
-=======
-    await import('./index.js');
-    expect(createRunGcloudCommand).toHaveBeenCalledWith([], []);
->>>>>>> main
   });
 
   test('should exit if config path is not absolute', async () => {
