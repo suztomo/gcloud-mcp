@@ -26,6 +26,8 @@ import { hideBin } from 'yargs/helpers';
 import fs from 'fs';
 import path from 'path';
 import { init } from './commands/init.js';
+import {checkForUpdates} from './lib/update-check.js';
+
 
 interface GcloudMcpConfig {
   run_gcloud_command?: {
@@ -90,6 +92,7 @@ const main = async () => {
         });
         createRunGcloudCommand(allowlist, mergedDenylist).register(server);
         await server.connect(new StdioServerTransport());
+        await checkForUpdates(pkg);
         console.log('🚀 gcloud mcp server started');
       },
     )
