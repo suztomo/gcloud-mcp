@@ -169,7 +169,7 @@ test('should correctly call spawnGcloudMetaLint double quotes', async () => {
   };
   mockedSpawn.mockReturnValue(mockChildProcess);
 
-  const resultPromise = gcloud.spawnGcloudMetaLint('gcloud compute instances list --project="cloud123"');
+  const resultPromise = gcloud.spawnGcloudMetaLint('compute instances list --project "cloud123"');
 
   mockChildProcess.stdout.emit('data', 'Standard out');
   mockChildProcess.stderr.emit('data', 'Stan');
@@ -181,7 +181,7 @@ test('should correctly call spawnGcloudMetaLint double quotes', async () => {
 
   expect(mockedSpawn).toHaveBeenCalledWith(
     'gcloud',
-    ['meta', 'lint-gcloud-commands', '--command-string=gcloud compute instances list --project=\"cloud123\"'],
+    ['meta', 'lint-gcloud-commands', '--command-string', 'gcloud compute instances list --project "cloud123"'],
     { stdio: ['ignore', 'pipe', 'pipe'] },
   );
   expect(result.code).toBe(0);
@@ -202,7 +202,7 @@ test('should correctly call spawnGcloudMetaLint single quotes', async () => {
   };
   mockedSpawn.mockReturnValue(mockChildProcess);
 
-  const resultPromise = gcloud.spawnGcloudMetaLint("gcloud compute instances list --project='cloud123'");
+  const resultPromise = gcloud.spawnGcloudMetaLint("compute instances list --project 'cloud123'");
 
   mockChildProcess.stdout.emit('data', 'Standard out');
   mockChildProcess.stderr.emit('data', 'Stan');
@@ -214,7 +214,7 @@ test('should correctly call spawnGcloudMetaLint single quotes', async () => {
 
   expect(mockedSpawn).toHaveBeenCalledWith(
     'gcloud',
-    ['meta', 'lint-gcloud-commands', "--command-string=gcloud compute instances list --project=\'cloud123\'"],
+    ['meta', 'lint-gcloud-commands', '--command-string', "gcloud compute instances list --project 'cloud123'"],
     { stdio: ['ignore', 'pipe', 'pipe'] },
   );
   expect(result.code).toBe(0);

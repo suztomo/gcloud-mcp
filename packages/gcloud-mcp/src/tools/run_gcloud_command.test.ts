@@ -21,6 +21,7 @@ import * as gcloud from '../gcloud.js';
 
 vi.mock('../gcloud.js');
 vi.mock('child_process');
+vi.mock('child_process');
 
 const mockServer = {
   registerTool: vi.fn(),
@@ -44,7 +45,7 @@ describe('createRunGcloudCommand', () => {
   describe('with allowlist', () => {
     test('invokes gcloud for allowlisted command', async () => {
       const allowlist = ['a b'];
-      const inputArgs = ['a', 'b', 'c'];
+      const inputArgs = ['gcloud', 'a', 'b', 'c'];
       createRunGcloudCommand(allowlist).register(mockServer);
       const toolImplementation = getToolImplementation();
       gcloudInvoke.mockResolvedValue({
@@ -57,10 +58,15 @@ describe('createRunGcloudCommand', () => {
         stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
         stderr: '',
       });
+      gcloudSpawnMock.mockResolvedValue({
+        code: 0,
+        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+        stderr: '',
+      });
 
-      const result = await toolImplementation({ args: inputArgs });
+      const result = await toolImplementation({ args: inputArgs.slice(1) });
 
-      expect(gcloudInvoke).toHaveBeenCalledWith(inputArgs);
+      expect(gcloudInvoke).toHaveBeenCalledWith(inputArgs.slice(1));
       expect(result).toEqual({
         content: [
           {
@@ -76,6 +82,11 @@ describe('createRunGcloudCommand', () => {
       createRunGcloudCommand(allowlist).register(mockServer);
       const inputArgs = ['a', 'c'];
       const toolImplementation = getToolImplementation();
+      gcloudSpawnMock.mockResolvedValue({
+        code: 0,
+        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+        stderr: '',
+      });
       gcloudSpawnMock.mockResolvedValue({
         code: 0,
         stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
@@ -158,7 +169,7 @@ describe('createRunGcloudCommand', () => {
       const toolImplementation = getToolImplementation();
       gcloudSpawnMock.mockResolvedValue({
         code: 0,
-        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+        stdout: '[{"command_string_no_args": "gcloud ' + inputArgs.join(' ') + '"}]',
         stderr: '',
       });
 
@@ -179,7 +190,7 @@ describe('createRunGcloudCommand', () => {
       const toolImplementation = getToolImplementation();
       gcloudSpawnMock.mockResolvedValue({
         code: 0,
-        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+        stdout: '[{"command_string_no_args": "gcloud ' + inputArgs.join(' ') + '"}]',
         stderr: '',
       });
 
@@ -199,7 +210,7 @@ describe('createRunGcloudCommand', () => {
       const toolImplementation = getToolImplementation();
       gcloudSpawnMock.mockResolvedValue({
         code: 0,
-        stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+        stdout: '[{"command_string_no_args": "gcloud ' + inputArgs.join(' ') + '"}]',
         stderr: '',
       });
 
@@ -245,7 +256,7 @@ describe('createRunGcloudCommand', () => {
         const inputArgs = [version, 'compute', 'list'].filter(Boolean);
         gcloudSpawnMock.mockResolvedValue({
           code: 0,
-          stdout: '[{"command_string_no_args": "' + inputArgs.join(' ') + '"}]',
+          stdout: '[{"command_string_no_args": "gcloud ' + inputArgs.join(' ') + '"}]',
           stderr: '',
         });
 

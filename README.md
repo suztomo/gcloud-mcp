@@ -32,26 +32,31 @@ Gemini-compatible extension interface.
 - Gemini CLI
 - [gcloud](https://cloud.google.com/sdk/docs/install)
 
-## Installation
+## Local Installation
 
 1.  Clone the repository.
 2.  Install the dependencies:
 
     ```bash
-    npm install @google-cloud/gcloud-mcp
-    npm run build
+    npm install
+    npm link
     ```
 3. Enable in your MCP configuration file:
 
 ```
 "mcpServers":{
   "gcloud": {
-    "command": "npx",
-    "args": ["-y", "@google-cloud/gcloud-mcp"]
+    "command": "gcloud-mcp",
   }
 }
 ```
 
+## Remote Installation
+
+1. Install via npm:
+   ```bash
+   npm i -g @google-cloud/gcloud-mcp
+   ```
 
 ## Setting up a Gemini CLI extension
 
@@ -59,7 +64,7 @@ To use this MCP server as an extension with the Gemini CLI, run the following
 command in your project's root directory, or your user home directory:
 
 ```bash
-npm start -w gcloud-mcp -- init --agent=gemini-cli
+gcloud-mcp init --agent=gemini-cli
 gemini
 ```
 
