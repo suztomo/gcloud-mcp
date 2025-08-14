@@ -90,17 +90,47 @@ commands can be executed by the AI agent. By default, the agent has access to a 
 significant changes to your cloud environment. The denylist allows you to explicitly block certain commands or command groups, preventing unintended or unauthorized operations.
 This is particularly useful for production environments or when you want to enforce a more restrictive set of permissions for the AI agent.
 
-gcloud-MCP supports all GCP API operations by default but some commands poses as a security threat. The full default deny list can be found below.
-| Command |
-|---|
-| compute start-iap-tunnel |
-| compute connect-to-serial-port |
-| compute tpus tpu-vm ssh |
-| compute tpus queued-resources ssh |
-| compute ssh |
-| cloud-shell ssh |
-| workstations ssh |
-| app instances ssh |
+The denylist behavior is that if the user block a particular command group, it will block all operations associated with the command.
+
+The user can specify a custom configuration file to the MCP server via the `--config` flag. The user specified denied commands will be merged with the default denied commands.
+
+_Example deny list config file_:
+
+```
+{
+    "run_gcloud_command" : {
+        "denylist" : [
+            "bms",
+            "deploy delete"
+        ]
+    }
+}
+```
+
+In order for the MCP server the utilize the configuration file, the user needs to edit their `gemini-extension.json` that is produced by `gcloud-mcp` init to include the files.
+The path to the configuration file _MUST_ be an absolute path.
+
+_Example gemini-extension.json file with config file argument_
+
+```
+{
+  "name": "@google-cloud/gcloud-mcp",
+  "version": "0.1.0",
+  "description": "Enable MCP-compatible AI agents to interact with Google Cloud.",
+  "contextFileName": "GEMINI.md",
+  "mcpServers": {
+    "gcloud": {
+    "command": "gcloud-mcp",
+    "args" : [
+    "--config",
+    "~/{absolute_path}/config.json"
+    ]
+    }
+  }
+}
+```
+
+gcloud-MCP supports all gcloud commands by default but some commands poses as a security threat. Any command that can open an unrestricted SSH tunnel will be blocked.
 
 ## 💫 Other Google Cloud MCP Servers
 
