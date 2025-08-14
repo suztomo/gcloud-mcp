@@ -136,13 +136,13 @@ _Example gemini-extension.json file with config file argument_
   "description": "Enable MCP-compatible AI agents to interact with Google Cloud.",
   "contextFileName": "GEMINI.md",
   "mcpServers": {
-    "gcloud-mcp": {
-    "command": "gcloud-mcp",
-    "args" : [
-      "-y",
-      "@google-cloud/gcloud-mcp",
-      "--config",
-      "~/{absolute_path}/config.json"
+    "gcloud": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@google-cloud/gcloud-mcp",
+        "--config",
+        "~/{absolute_path}/config.json"
       ]
     }
   }
