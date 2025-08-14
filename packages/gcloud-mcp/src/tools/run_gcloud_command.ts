@@ -16,39 +16,8 @@
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import * as gcloud from '../gcloud.js';
+import { allowedCommands, deniedCommands } from '../denylist.js';
 import { z } from 'zod';
-
-const allowedCommands = (allowlist: string[] = []) => ({
-  contains: (command: string): boolean => {
-    if (allowlist.length === 0) {
-      return true; // No allowlist = all commands allowed
-    }
-    return allowlist.some((allowed) => command.startsWith(allowed));
-  },
-});
-
-const deniedCommands = (denylist: string[] = []) => ({
-  contains: (command: string): boolean => {
-    command = command + ' ';
-    if (denylist.length === 0) {
-      return false; // No denylist = all commands allowed
-    }
-    return denylist.some((denied) => shouldDenyCommand(denied, command));
-  },
-});
-
-function shouldDenyCommand(deniedCommand: string, currentCommand: string): boolean {
-  const possiblePrefixes = ['alpha', 'beta', 'preview'];
-  if (deniedCommand in possiblePrefixes) {
-    return possiblePrefixes.some((prefix) => currentCommand.startsWith(prefix));
-  }
-  // Important because without the space, app would be matched to apphub
-  const commandsToDeny = [deniedCommand + ' '];
-  possiblePrefixes.forEach((prefix) => {
-    commandsToDeny.push(`${prefix} ${deniedCommand}`);
-  });
-  return commandsToDeny.some((cmd) => currentCommand.startsWith(cmd));
-}
 
 export const createRunGcloudCommand = (allowlist: string[] = [], denylist: string[] = []) => ({
   register: (server: McpServer) => {
@@ -78,18 +47,16 @@ export const createRunGcloudCommand = (allowlist: string[] = [], denylist: strin
       async ({ args }) => {
         const command = args.join(' ');
         try {
-          // Linting is necessary because a possible valid gcloud command would be
-          // gcloud compute --log-http=true instance list
-          // There could be global flags in between the command and the group.
-          // Linting helps us remove those flags which simplifies allow/deny list logic.
-          let { code, stdout, stderr } = await gcloud.spawnGcloudMetaLint(command);
-
+          // Lint parses and isolates the gcloud command from flags and positionals.
+          // Example
+          //   Given: gcloud compute --log-http=true instance list
+          //   Desired command string is: compute instances list
+          let { code, stdout, stderr } = await gcloud.lint(command);
           const parsedJson = JSON.parse(stdout);
           const commandNoArgs = parsedJson[0]['command_string_no_args'];
-          // Remove gcloud as a prefix
-          const commandArgsNoGcloud = commandNoArgs.split(' ').slice(1).join(' ');
+          const commandArgsNoGcloud = commandNoArgs.split(' ').slice(1).join(' '); // Remove gcloud prefix
 
-          if (!allowedCommands(allowlist).contains(commandArgsNoGcloud)) {
+          if (!allowedCommands(allowlist).matches(commandArgsNoGcloud)) {
             return {
               content: [
                 {
@@ -99,7 +66,7 @@ export const createRunGcloudCommand = (allowlist: string[] = [], denylist: strin
               ],
             };
           }
-          if (deniedCommands(denylist).contains(commandArgsNoGcloud)) {
+          if (deniedCommands(denylist).matches(commandArgsNoGcloud)) {
             return {
               content: [
                 {

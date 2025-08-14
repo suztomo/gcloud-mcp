@@ -156,7 +156,7 @@ test('should reject when process fails to start', async () => {
   });
 });
 
-test('should correctly call spawnGcloudMetaLint double quotes', async () => {
+test('should correctly call lint double quotes', async () => {
   const mockChildProcess = {
     stdout: new PassThrough(),
     stderr: new PassThrough(),
@@ -169,7 +169,7 @@ test('should correctly call spawnGcloudMetaLint double quotes', async () => {
   };
   mockedSpawn.mockReturnValue(mockChildProcess);
 
-  const resultPromise = gcloud.spawnGcloudMetaLint('compute instances list --project "cloud123"');
+  const resultPromise = gcloud.lint('compute instances list --project "cloud123"');
 
   mockChildProcess.stdout.emit('data', 'Standard out');
   mockChildProcess.stderr.emit('data', 'Stan');
@@ -189,7 +189,7 @@ test('should correctly call spawnGcloudMetaLint double quotes', async () => {
   expect(result.stderr).toContain('Standard error');
 });
 
-test('should correctly call spawnGcloudMetaLint single quotes', async () => {
+test('should correctly call lint single quotes', async () => {
   const mockChildProcess = {
     stdout: new PassThrough(),
     stderr: new PassThrough(),
@@ -202,7 +202,7 @@ test('should correctly call spawnGcloudMetaLint single quotes', async () => {
   };
   mockedSpawn.mockReturnValue(mockChildProcess);
 
-  const resultPromise = gcloud.spawnGcloudMetaLint("compute instances list --project 'cloud123'");
+  const resultPromise = gcloud.lint("compute instances list --project 'cloud123'");
 
   mockChildProcess.stdout.emit('data', 'Standard out');
   mockChildProcess.stderr.emit('data', 'Stan');
