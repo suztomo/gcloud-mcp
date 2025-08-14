@@ -25,7 +25,27 @@ To get started with an MCP server, make sure you have the following installed:
 
 ## ✨ Setup your MCP server
 
-To use an MCP server, add the following configuration:
+### Instructions for Gemini CLI and Gemini Code Assist
+
+The recommended way to configure Gemini CLI or Gemini Code Assist to use the gcloud MCP server is as a
+[Gemini CLI extension](https://github.com/google-gemini/gemini-cli/blob/main/docs/extension.md).
+Refer [here](#gemini-cli) for an alternate configuration method.
+
+The following command sets up the MCP server:
+```
+$ npx -y @google-cloud/gcloud-mcp init --agent=gemini-cli
+```
+
+- Run the command in your project directory to set up for one project
+- Run the command in home directory to set up for all projects
+
+Running the command will create the following files in the directory you ran it from:
+
+- `.gemini/extensions/gcloud-mcp/gemini-extension.json`
+- `.gemini/extensions/gcloud-mcp/GEMINI.md`
+
+### Instructions for other AI Code Assistants
+Add the following configuration to the AI Code Assistant of your choice.
 
 ```
 "mcpServers": {
@@ -42,47 +62,41 @@ To use an MCP server, add the following configuration:
 
 Here are specific instructions for some popular tools:
 
-### Gemini CLI and Gemini Code Assist
 
-To configure Gemini CLI or Gemini Code Assist to use the gcloud MCP server as a
-[Gemini CLI extension](https://github.com/google-gemini/gemini-cli/blob/main/docs/extension.md), run:
-
-```
-$ npm i -g @google-cloud/gcloud-mcp
-$ gcloud-mcp init --agent=gemini-cli
-```
-
-This will create the following files in your current working directory:
-
-- `.gemini/extensions/gcloud-mcp/gemini-extension.json`
-- `.gemini/extensions/gcloud-mcp/GEMINI.md`
-
-### Claude Desktop
+#### Claude Desktop
 
 To configure Claude Desktop to use an MCP server, edit the
 `claude_desktop_config.json` file. You can open or create this file from the
 **Claude > Settings** menu. Select the **Developer** tab, then click **Edit Config**.
 
-### Cline
+#### Cline
 
 To configure Cline to use an MCP server, edit the
 `cline_mcp_settings.json` file. You can open or create this file by clicking the
 MCP Servers icon at the top of the Cline pane, then clicking the **Configure MCP
 Servers button**.
 
-### Cursor
+#### Cursor
 
-To configure Cursor to use an MCP server, edit either the file
-`.cursor/mcp.json` (to configure only a specific project) or the file
-`~/.cursor/mcp.json` (to make the MCP server available in all projects).
+To configure Cursor to use an MCP server, edit either
+- the file `.cursor/mcp.json` (to configure only a specific project) or
+- the file `~/.cursor/mcp.json` (to make the MCP server available in all projects).
 
-### Visual Studio Code Copilot
+#### Visual Studio Code Copilot
 
 To configure a single project, edit the `.vscode/mcp.json` file in your
 workspace.
 
 To make the server available in every project you open, edit your
 [user settings](https://code.visualstudio.com/docs/getstarted/personalize-vscode).
+
+#### Gemini CLI
+
+If you do not wish to use Gemini CLI extensions as described in
+[Instructions for Gemini CLI and Gemini Code Assist](#instructions-for-gemini-cli-and-gemini-code-assist) section, you can
+edit either 
+- the file `.gemini/settings.json` (to configure only a specific project) or
+- the file `~/.gemini/settings.json` (to make the MCP server available in all projects).
 
 ## 💫 Other Google Cloud MCP Servers
 
