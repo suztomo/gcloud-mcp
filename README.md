@@ -13,11 +13,11 @@ Our MCP servers work with any tool that can act as an MCP client, including
 Claude Desktop, Cline, Cursor, Visual Studio Code Copilot, Windsurf Editor, and
 more.
 
+## 🚀 Getting Started
+
 The gcloud MCP Server acts as a bridge between AI agents and the gcloud CLI,
 giving your AI assistant the ability to run commands, access context, and
 interact with Google Cloud resources.
-
-## 🚀 Getting Started
 
 To get started with the gcloud MCP, make sure you have the following installed:
 
