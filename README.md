@@ -83,13 +83,6 @@ workspace.
 To make the server available in every project you open, edit your
 [user settings](https://code.visualstudio.com/docs/getstarted/personalize-vscode).
 
-## ⚙️  gcloud MCP server capabilities
-
-The gcloud MCP server provides the following tools:
-
-- `run_gcloud_command`: Runs gcloud commands from natural language prompts,
-  ensuring the generated command is validated before execution.
-
 ## 💫 Other Google Cloud MCP Servers
 
 You can also try our other MCP servers:
