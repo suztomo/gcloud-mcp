@@ -42,13 +42,10 @@ export const deniedCommands = (denylist: string[] = []) => ({
       return false; // No denylist = all commands allowed
     }
 
-    // Add a space to avoid matching with commands that are substrings.
-    // For example: app and apphub
-    const cmd = normalizeForComparison(command);
-    
     // Denylist'ing a GA command denylists all release tracks.
     // Denylist'ing a pre-GA command only denies the specified release track.
     const releaseTracks = ['', 'alpha ', 'beta ', 'preview '];
+    const cmd = normalizeForComparison(command);
     for (const deniedCommand of denylist) {
       for (const release of releaseTracks) {
         if (cmd.startsWith(normalizeForComparison(`${release}${deniedCommand}`))) {
