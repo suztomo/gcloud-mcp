@@ -1,80 +1,103 @@
-![Gemini CLI gcloud-mcp Screenshot](./doc/assets/gemini-gcloud-mcp-screenshot.png)
+# ☁️  Google Cloud MCP
 
-
-# gcloud MCP server
-
-The gcloud MCP Server is a
+Google Cloud offers a suite of specialized
 [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction)
-server that provides gcloud execution and context to AI agents via a
-Gemini-compatible extension interface.
+servers that make Google Cloud products directly accessible to AI agents.
 
-## Use cases
+Our MCP servers work with any tool that can act as an MCP client, including
+Claude Desktop, Cline, Cursor, Gemini CLI, Gemini Code Assist, Visual Studio
+Code Copilot Editor, Windsurf, and more.
 
-* **Streamlining Cloud Operations**: Automate the setup, management, and
-  scaling of Google Cloud resources and services. Think about automating
-  complex deployment pipelines, configuring infrastructure on demand, or
-  orchestrating data processing workflows across different GCP components.
-* **Deep Cloud Data Insights**: Facilitate the extraction and analysis of
-  valuable information residing within your Google Cloud environment. This
-  could involve real-time monitoring of application performance, comprehensive
-  auditing of resource usage, or deriving business intelligence from large
-  datasets stored in BigQuery or Cloud Storage.
-* **Intelligent Cloud-Native Applications**: Develop advanced applications that
-  leverage AI and machine learning to interact intelligently with Google Cloud
-  services. Envision building tools that can proactively optimize cloud
-  spending, provide smart recommendations for resource allocation, or create
-  intelligent chatbots that manage your GCP projects.
+**Available MCP Servers**
 
-## Prerequisites
+| Name       | Description |
+|-------------------|-------------|
+| gcloud MCP        | Interact with Google Cloud via the gcloud CLI using natural language prompts. |
+| Observability MCP | Access Google Cloud Observability APIs to query logs, metrics, and traces. |
 
-- Node.js
-- npm
-- Gemini CLI
-- [gcloud](https://cloud.google.com/sdk/docs/install)
 
-## Local Installation
+## 🚀 Getting Started
 
-1.  Clone the repository.
-2.  Install the dependencies:
+To get started with an MCP server, make sure you have the following installed:
 
-    ```bash
-    npm install
-    npm link
-    ```
-3. Enable in your MCP configuration file:
+- [Node.js](https://nodejs.org)
+- [gcloud CLI](https://cloud.google.com/sdk/docs/install)
+
+## ✨ Setup your MCP server
+
+To use an MCP server, add the following configuration:
 
 ```
-"mcpServers":{
-  "gcloud": {
-    "command": "gcloud-mcp",
+"mcpServers": {
+  "gcloud-mcp": {
+    "command": "npx",
+    "args": ["-y", "@google-cloud/gcloud-mcp"]
+  },
+  "observability-mcp": {
+    "command": "npx",
+    "args": ["-y", "@google-cloud/observability-mcp"]
   }
 }
 ```
 
-## Remote Installation
+Here are specific instructions for some popular tools:
 
-1. Install via npm:
-   ```bash
-   npm i -g @google-cloud/gcloud-mcp
-   ```
+### Gemini CLI and Gemini Code Assist
 
-## Setting up a Gemini CLI extension
+To configure Gemini CLI or Gemini Code Assist to use the gcloud MCP server as a
+[Gemini CLI extension](https://github.com/google-gemini/gemini-cli/blob/main/docs/extension.md), run:
 
-To use this MCP server as an extension with the Gemini CLI, run the following
-command in your project's root directory, or your user home directory:
-
-```bash
-gcloud-mcp init --agent=gemini-cli
-gemini
+```
+$ npm i -g @google-cloud/gcloud-mcp
+$ gcloud-mcp init --agent=gemini-cli
 ```
 
-This will register the extension with Gemini, making the gcloud tools available
-in your chat sessions.
+This will create the following files in your current working directory:
 
-## Manually Running the Server
+- `.gemini/extensions/gcloud-mcp/gemini-extension.json`
+- `.gemini/extensions/gcloud-mcp/GEMINI.md`
 
-To start the server, run the following command from within packages/gcloud-mcp:
+### Claude Desktop
 
-```bash
-npm run start -w gcloud-mcp
-```
+To configure Claude Desktop to use an MCP server, edit the
+`claude_desktop_config.json` file. You can open or create this file from the
+**Claude > Settings** menu. Select the **Developer** tab, then click **Edit Config**.
+
+### Cline
+
+To configure Cline to use an MCP server, edit the
+`cline_mcp_settings.json` file. You can open or create this file by clicking the
+MCP Servers icon at the top of the Cline pane, then clicking the **Configure MCP
+Servers button**.
+
+### Cursor
+
+To configure Cursor to use an MCP server, edit either the file
+`.cursor/mcp.json` (to configure only a specific project) or the file
+`~/.cursor/mcp.json` (to make the MCP server available in all projects).
+
+### Visual Studio Code Copilot
+
+To configure a single project, edit the `.vscode/mcp.json` file in your
+workspace.
+
+To make the server available in every project you open, edit your
+[user settings](https://code.visualstudio.com/docs/getstarted/personalize-vscode).
+
+## 💫 Other Google Cloud MCP Servers
+
+You can also try our other MCP servers:
+
+- [Cloud Run MCP](https://github.com/GoogleCloudPlatform/cloud-run-mcp)
+- [Databases MCP](https://github.com/googleapis/genai-toolbox)
+- [GKE MCP](https://github.com/GoogleCloudPlatform/gke-mcp)
+
+## 👥 Contributing
+
+We welcome contributions to the gcloud MCP Server! Whether you're fixing bugs,
+sharing feedback, or improving documentation, your contributions are
+welcome.
+
+Please read our
+[Contributing Guide](https://github.com/googleapis/gcloud-mcp/blob/main/CONTRIBUTING.md)
+to get started.
