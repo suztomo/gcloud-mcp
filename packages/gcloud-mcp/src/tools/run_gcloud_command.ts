@@ -19,7 +19,7 @@ import * as gcloud from '../gcloud.js';
 import { z } from 'zod';
 
 const allowedCommands = (allowlist: string[] = []) => ({
-  contains: (command: string): boolean => {
+  matches: (command: string): boolean => {
     if (allowlist.length === 0) {
       return true; // No allowlist = all commands allowed
     }
@@ -28,7 +28,7 @@ const allowedCommands = (allowlist: string[] = []) => ({
 });
 
 const deniedCommands = (denylist: string[] = []) => ({
-  contains: (command: string): boolean => {
+  matches: (command: string): boolean => {
     command = command + ' ';
     if (denylist.length === 0) {
       return false; // No denylist = all commands allowed
@@ -86,7 +86,7 @@ export const createRunGcloudCommand = (allowlist: string[] = [], denylist: strin
           // Remove gcloud as a prefix
           const commandArgsNoGcloud = commandNoArgs.split(' ').slice(1).join(' ');
 
-          if (!allowedCommands(allowlist).contains(commandArgsNoGcloud)) {
+          if (!allowedCommands(allowlist).matches(commandArgsNoGcloud)) {
             return {
               content: [
                 {
@@ -96,7 +96,7 @@ export const createRunGcloudCommand = (allowlist: string[] = [], denylist: strin
               ],
             };
           }
-          if (deniedCommands(denylist).contains(commandArgsNoGcloud)) {
+          if (deniedCommands(denylist).matches(commandArgsNoGcloud)) {
             return {
               content: [
                 {
