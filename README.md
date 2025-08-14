@@ -122,8 +122,8 @@ _Example gemini-extension.json file with config file argument_
    "gcloud": {
    "command": "gcloud-mcp",
    "args" : [
-   "--config",
-   "~/{absolute_path}/config.json"
+      "--config",
+      "~/{absolute_path}/config.json"
    ]
    }
  }
