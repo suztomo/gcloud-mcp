@@ -58,20 +58,20 @@ This will create the following files in your current working directory:
 
 ### Claude Desktop
 
-To configure Claude Desktop to use the Firebase MCP server, edit the
+To configure Claude Desktop to use an MCP server, edit the
 `claude_desktop_config.json` file. You can open or create this file from the
 **Claude > Settings** menu. Select the **Developer** tab, then click **Edit Config**.
 
 ### Cline
 
-To configure Cline to use the Firebase MCP server, edit the
+To configure Cline to use an MCP server, edit the
 `cline_mcp_settings.json` file. You can open or create this file by clicking the
 MCP Servers icon at the top of the Cline pane, then clicking the **Configure MCP
 Servers button**.
 
 ### Cursor
 
-To configure Cursor to use the Firebase MCP server, edit either the file
+To configure Cursor to use an MCP server, edit either the file
 `.cursor/mcp.json` (to configure only a specific project) or the file
 `~/.cursor/mcp.json` (to make the MCP server available in all projects).
 
