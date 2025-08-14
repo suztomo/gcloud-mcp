@@ -40,7 +40,8 @@ export const initializeGeminiCLI = async () => {
     contextFileName: 'GEMINI.md',
     mcpServers: {
       gcloud: {
-        command: 'gcloud-mcp'
+        command: 'npx',
+        args: ['-y', '@google-cloud/gcloud-mcp'],
       },
     },
   };
