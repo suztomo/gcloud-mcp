@@ -8,7 +8,7 @@ Our MCP servers work with any tool that can act as an MCP client, including
 Claude Desktop, Cline, Cursor, Gemini CLI, Gemini Code Assist, Visual Studio
 Code Copilot Editor, Windsurf, and more.
 
-## 📦 Available MCP Servers
+**Available MCP Servers**
 
 | Server Name       | Description |
 |-------------------|-------------|
