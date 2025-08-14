@@ -18,7 +18,7 @@ following installed:
 - [Node.js](https://nodejs.org)
 - [gcloud CLI](https://cloud.google.com/sdk/docs/install)
 
-## Setup your MCP server
+## ✨ Setup your MCP server
 
 The gcloud MCP server can work with any MCP client that supports standard I/O
 (stdio) as the transport medium.
@@ -77,20 +77,22 @@ workspace.
 To make the server available in every project you open, edit your
 [user settings](https://code.visualstudio.com/docs/getstarted/personalize-vscode).
 
-## MCP server capabilities
+## 🌟 MCP server capabilities
 
 The gcloud MCP provides the following tools:
 
 - `run_gcloud_command`: Runs gcloud commands from natural language prompts,
   ensuring the generated command is validated before execution.
 
-## Available MCP servers
+## ☁️  Google Cloud MCP servers
+
+Google Cloud provides these MCP servers:
 
 - [Cloud Run](https://github.com/GoogleCloudPlatform/cloud-run-mcp)
 - [Databases](https://github.com/googleapis/genai-toolbox)
 - [GKE](https://github.com/GoogleCloudPlatform/gke-mcp)
 
-## Contributing
+## 👥 Contributing
 
 We welcome contributions to the gcloud MCP Server! Whether you're fixing bugs,
 sharing feedback, or improving documentation, your contributions are
