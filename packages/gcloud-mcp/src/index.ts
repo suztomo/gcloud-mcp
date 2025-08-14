@@ -93,7 +93,7 @@ const main = async () => {
         createRunGcloudCommand(allowlist, mergedDenylist).register(server);
         await server.connect(new StdioServerTransport());
         await checkForUpdates(pkg);
-        console.log('🚀 gcloud mcp server started');
+        console.debug('🚀 gcloud mcp server started');
       },
     )
     .command(init)
