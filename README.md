@@ -73,8 +73,8 @@ in your chat sessions.
 
 ## Manually Running the Server
 
-To start the server, run the following command:
+To start the server, run the following command from within packages/gcloud-mcp:
 
 ```bash
-npm start -w gcloud-mcp
+npm run start -w gcloud-mcp
 ```
