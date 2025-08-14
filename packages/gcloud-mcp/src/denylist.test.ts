@@ -36,7 +36,25 @@ describe('allowedCommands', () => {
     const allowlist = allowedCommands(['compute', 'storage buckets']);
     expect(allowlist.matches('compute instances list')).toBe(true);
     expect(allowlist.matches('storage buckets list')).toBe(true);
+    expect(allowlist.matches('storage blobs list')).toBe(false);
     expect(allowlist.matches('source repos list')).toBe(false);
+  });
+
+  it('differentiates a command that is a substring of another command', () => {
+    const allowlist = allowedCommands(['app']);
+    expect(allowlist.matches('app')).toBe(true);
+    expect(allowlist.matches('app deploy')).toBe(true);
+    expect(allowlist.matches('alpha app deploy')).toBe(false);
+    expect(allowlist.matches('apphub')).toBe(false);
+    expect(allowlist.matches('beta apphub')).toBe(false);
+  });
+
+  it('is case and padding insensitive', () => {
+    const allowlist = allowedCommands(['STORAGE  \r\n\t   ']);
+    expect(allowlist.matches('storage')).toBe(true);
+    expect(allowlist.matches('Storage')).toBe(true);
+    expect(allowlist.matches('  storAGE ')).toBe(true);
+    expect(allowlist.matches('compute')).toBe(false);
   });
 });
 
@@ -57,9 +75,10 @@ describe('deniedCommands', () => {
   });
 
   it('handles multiple items in the denylist', () => {
-    const denylist = deniedCommands(['compute instances', 'storage']);
+    const denylist = deniedCommands(['compute instances', 'storage buckets list']);
     expect(denylist.matches('compute instances list')).toBe(true);
     expect(denylist.matches('storage buckets list')).toBe(true);
+    expect(denylist.matches('storage buckets update')).toBe(false);
     expect(denylist.matches('source repos list')).toBe(false);
   });
 
@@ -90,5 +109,13 @@ describe('deniedCommands', () => {
     expect(denylist.matches('alpha app deploy')).toBe(true);
     expect(denylist.matches('apphub')).toBe(false);
     expect(denylist.matches('beta apphub')).toBe(false);
+  });
+
+  it('is case and padding insensitive', () => {
+    const denylist = deniedCommands(['\t\n\r   STORAGE   ']);
+    expect(denylist.matches('storage')).toBe(true);
+    expect(denylist.matches('Storage')).toBe(true);
+    expect(denylist.matches('  storAGE ')).toBe(true);
+    expect(denylist.matches('compute')).toBe(false);
   });
 });

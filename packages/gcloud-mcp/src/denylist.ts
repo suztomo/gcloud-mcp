@@ -14,31 +14,44 @@
  * limitations under the License.
  */
 
+// Normalize the string in case the list and LLM formatting differs.
+// Append a space to avoid matching with commands that are substrings.
+// For example: app and apphub
+const normalizeForComparison = (s: string): string => 
+  s.toLowerCase().trim() + ' ' 
+
 export const allowedCommands = (allowlist: string[] = []) => ({
   matches: (command: string): boolean => {
     if (allowlist.length === 0) {
       return true; // No allowlist = all commands allowed
     }
-    return allowlist.some((allowed) => command.startsWith(allowed));
+
+    const cmd = normalizeForComparison(command);
+    for (const allowedCommand of allowlist) {
+      if (cmd.startsWith(normalizeForComparison(allowedCommand))) {
+        return true;
+      }
+    }
+    return false;
   },
 });
 
 export const deniedCommands = (denylist: string[] = []) => ({
   matches: (command: string): boolean => {
-    // Add a space to avoid matching with commands that are substrings.
-    // For example: app and apphub
-    const cmd = command + ' ';
-    
     if (denylist.length === 0) {
       return false; // No denylist = all commands allowed
     }
 
+    // Add a space to avoid matching with commands that are substrings.
+    // For example: app and apphub
+    const cmd = normalizeForComparison(command);
+    
     // Denylist'ing a GA command denylists all release tracks.
     // Denylist'ing a pre-GA command only denies the specified release track.
     const releaseTracks = ['', 'alpha ', 'beta ', 'preview '];
     for (const deniedCommand of denylist) {
       for (const release of releaseTracks) {
-        if (cmd.startsWith(`${release}${deniedCommand} `)) {
+        if (cmd.startsWith(normalizeForComparison(`${release}${deniedCommand}`))) {
           return true;
         }
       }
