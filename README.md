@@ -79,6 +79,8 @@ To make the server available in every project you open, edit your
 
 ## MCP server capabilities
 
+The gcloud MCP provides the following tools:
+
 - `run_gcloud_command`: Runs gcloud commands from natural language prompts,
   ensuring the generated command is validated before execution.
 
