@@ -31,17 +31,15 @@ The recommended way to configure Gemini CLI or Gemini Code Assist to use the gcl
 [Gemini CLI extension](https://github.com/google-gemini/gemini-cli/blob/main/docs/extension.md).
 Refer [here](#gemini-cli) for an alternate configuration method.
 
-**Step 1: Install the MCP Server**
+The following command sets up the MCP server:
 ```
-$ npm i -g @google-cloud/gcloud-mcp
-```
-**Step 2: Configure**
-Run the following in your project directory:
-```
-$ gcloud-mcp init --agent=gemini-cli
+$ npx -y @google-cloud/gcloud-mcp init --agent=gemini-cli
 ```
 
-This will create the following files in your current working directory:
+- Run the command in your project directory to set up for one project
+- Run the command in home directory to set up for all projects
+
+Running the command will create the following files in the directory you ran it from:
 
 - `.gemini/extensions/gcloud-mcp/gemini-extension.json`
 - `.gemini/extensions/gcloud-mcp/GEMINI.md`
