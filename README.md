@@ -1,4 +1,4 @@
-# ☁️ Google Cloud MCP
+# ☁️  Google Cloud MCP
 
 Google Cloud offers a suite of specialized
 [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction)
