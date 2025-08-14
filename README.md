@@ -31,11 +31,11 @@ To use an MCP server, add the following configuration:
 "mcpServers": {
   "gcloud-mcp": {
     "command": "npx",
-    "args": ["-y", "google-cloud@gcloud-mcp"]
+    "args": ["-y", "@google-cloud/gcloud-mcp"]
   },
   "observability-mcp": {
     "command": "npx",
-    "args": ["-y", "google-cloud@observability-mcp"]
+    "args": ["-y", "@google-cloud/observability-mcp"]
   }
 }
 ```
