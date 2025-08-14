@@ -38,6 +38,7 @@ Gemini-compatible extension interface.
 2.  Install the dependencies:
 
     ```bash
+    cd packages/gcloud-mcp
     npm install
     npm link
     ```
