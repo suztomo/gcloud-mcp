@@ -1,5 +1,3 @@
-![Gemini CLI gcloud-mcp Screenshot](./doc/assets/gemini-gcloud-mcp-screenshot.png)
-
 # Google Cloud MCP
 
 Google Cloud offers a suite of specialized
