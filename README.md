@@ -1,19 +1,25 @@
-# ☁️  Google Cloud MCP
+# ☁️  gcloud MCP
 
 Google Cloud offers a suite of specialized
 [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction)
-servers that make Google Cloud products directly accessible to AI agents.
+servers that make Google Cloud products directly accessible to AI agents. This
+includes:
+
+- [Cloud Run MCP](https://github.com/GoogleCloudPlatform/cloud-run-mcp)
+- [Databases MCP](https://github.com/googleapis/genai-toolbox)
+- [GKE MCP](https://github.com/GoogleCloudPlatform/gke-mcp)
 
 Our MCP servers work with any tool that can act as an MCP client, including
 Claude Desktop, Cline, Cursor, Visual Studio Code Copilot, Windsurf Editor, and
 more.
 
-## 🚀 Getting Started
-
 The gcloud MCP Server acts as a bridge between AI agents and the gcloud CLI,
 giving your AI assistant the ability to run commands, access context, and
-interact with Google Cloud resources. To get started, make sure you have the
-following installed:
+interact with Google Cloud resources.
+
+## 🚀 Getting Started
+
+To get started with the gcloud MCP, make sure you have the following installed:
 
 - [Node.js](https://nodejs.org)
 - [gcloud CLI](https://cloud.google.com/sdk/docs/install)
@@ -84,13 +90,6 @@ The gcloud MCP server provides the following tools:
 - `run_gcloud_command`: Runs gcloud commands from natural language prompts,
   ensuring the generated command is validated before execution.
 
-## 💫 Google Cloud MCP servers
-
-Google Cloud also provides these MCP servers:
-
-- [Cloud Run](https://github.com/GoogleCloudPlatform/cloud-run-mcp)
-- [Databases](https://github.com/googleapis/genai-toolbox)
-- [GKE](https://github.com/GoogleCloudPlatform/gke-mcp)
 
 ## 👥 Contributing
 
