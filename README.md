@@ -10,8 +10,8 @@ includes:
 - [GKE MCP](https://github.com/GoogleCloudPlatform/gke-mcp)
 
 Our MCP servers work with any tool that can act as an MCP client, including
-Claude Desktop, Cline, Cursor, Visual Studio Code Copilot, Windsurf Editor, and
-more.
+Claude Desktop, Cline, Cursor, Gemini CLI, Gemini Code Assist, Visual Studio
+Code Copilot Editor, Windsurf, and more.
 
 ## 🚀 Getting Started
 
