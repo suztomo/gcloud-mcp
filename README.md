@@ -1,4 +1,4 @@
-# Google Cloud MCP
+# ☁️ Google Cloud MCP
 
 Google Cloud offers a suite of specialized
 [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction)
@@ -77,16 +77,16 @@ workspace.
 To make the server available in every project you open, edit your
 [user settings](https://code.visualstudio.com/docs/getstarted/personalize-vscode).
 
-## 🌟 MCP server capabilities
+## ⚙️  gcloud MCP server capabilities
 
-The gcloud MCP provides the following tools:
+The gcloud MCP server provides the following tools:
 
 - `run_gcloud_command`: Runs gcloud commands from natural language prompts,
   ensuring the generated command is validated before execution.
 
-## ☁️  Google Cloud MCP servers
+## 💫 Google Cloud MCP servers
 
-Google Cloud provides these MCP servers:
+Google Cloud also provides these MCP servers:
 
 - [Cloud Run](https://github.com/GoogleCloudPlatform/cloud-run-mcp)
 - [Databases](https://github.com/googleapis/genai-toolbox)
