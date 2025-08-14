@@ -49,7 +49,7 @@ test('initializeGeminiCLI should create directory and write files', async () => 
     description: 'Enable MCP-compatible AI agents to interact with Google Cloud.',
     contextFileName: 'GEMINI.md',
     mcpServers: {
-      gcloud: {
+      'gcloud-mcp': {
         command: 'npx',
         args: ['-y', '@google-cloud/gcloud-mcp']
       },
@@ -83,7 +83,7 @@ test('initializeGeminiCLI should create directory and write files when process.e
     description: 'Enable MCP-compatible AI agents to interact with Google Cloud.',
     contextFileName: 'GEMINI.md',
     mcpServers: {
-      gcloud: {
+      'gcloud-mcp': {
         command: 'npx',
         args: ['-y', '@google-cloud/gcloud-mcp']
       },

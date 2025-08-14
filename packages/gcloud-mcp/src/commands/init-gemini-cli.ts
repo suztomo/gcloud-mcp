@@ -39,7 +39,7 @@ export const initializeGeminiCLI = async () => {
     description: 'Enable MCP-compatible AI agents to interact with Google Cloud.',
     contextFileName: 'GEMINI.md',
     mcpServers: {
-      gcloud: {
+      'gcloud-mcp': {
         command: 'npx',
         args: ['-y', '@google-cloud/gcloud-mcp'],
       },
