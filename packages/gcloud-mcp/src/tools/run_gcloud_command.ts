@@ -39,9 +39,6 @@ const deniedCommands = (denylist: string[] = []) => ({
 
 function shouldDenyCommand(deniedCommand: string, currentCommand: string): boolean {
   const possiblePrefixes = ['alpha', 'beta', 'preview'];
-  if (deniedCommand in possiblePrefixes) {
-    return possiblePrefixes.some((prefix) => currentCommand.startsWith(prefix));
-  }
   // Important because without the space, app would be matched to apphub
   const commandsToDeny = [deniedCommand + ' '];
   possiblePrefixes.forEach((prefix) => {
@@ -82,7 +79,7 @@ export const createRunGcloudCommand = (allowlist: string[] = [], denylist: strin
           // gcloud compute --log-http=true instance list
           // There could be global flags in between the command and the group.
           // Linting helps us remove those flags which simplifies allow/deny list logic.
-          let { code, stdout, stderr } = await gcloud.spawnGcloudMetaLint(command);
+          let { code, stdout, stderr } = await gcloud.lint(command);
 
           const parsedJson = JSON.parse(stdout);
           const commandNoArgs = parsedJson[0]['command_string_no_args'];

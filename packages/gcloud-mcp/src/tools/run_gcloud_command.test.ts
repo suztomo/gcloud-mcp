@@ -39,7 +39,7 @@ describe('createRunGcloudCommand', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     gcloudInvoke = gcloud.invoke as Mock;
-    gcloudSpawnMock = gcloud.spawnGcloudMetaLint as Mock;
+    gcloudSpawnMock = gcloud.lint as Mock;
   });
 
   describe('with allowlist', () => {
