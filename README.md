@@ -12,9 +12,8 @@ more.
 
 The gcloud MCP Server acts as a bridge between AI agents and the gcloud CLI,
 giving your AI assistant the ability to run commands, access context, and
-interact with Google Cloud resources—right from your chat interface.
-
-## Prerequisites
+interact with Google Cloud resources. To get started, make sure you have the
+following installed:
 
 - [Node.js](https://nodejs.org)
 - [gcloud CLI](https://cloud.google.com/sdk/docs/install)
