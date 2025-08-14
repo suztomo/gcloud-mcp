@@ -48,7 +48,8 @@ To configure Gemini CLI or Gemini Code Assist to use the gcloud MCP server as a
 [Gemini CLI extension](https://github.com/google-gemini/gemini-cli/blob/main/docs/extension.md), run:
 
 ```
-gcloud-mcp init --agent=gemini-cli
+$ npm i -g @google-cloud/gcloud-mcp
+$ gcloud-mcp init --agent=gemini-cli
 ```
 
 This will create the following files in your current working directory:
