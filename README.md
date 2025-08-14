@@ -1,4 +1,4 @@
-# ☁️  Google Cloud MCP
+# ☁️ Google Cloud MCP
 
 Google Cloud offers a suite of specialized
 [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction)
@@ -10,11 +10,10 @@ Code Copilot Editor, Windsurf, and more.
 
 **Available MCP Servers**
 
-| Name       | Description |
-|-------------------|-------------|
+| Name              | Description                                                                   |
+| ----------------- | ----------------------------------------------------------------------------- |
 | gcloud MCP        | Interact with Google Cloud via the gcloud CLI using natural language prompts. |
-| Observability MCP | Access Google Cloud Observability APIs to query logs, metrics, and traces. |
-
+| Observability MCP | Access Google Cloud Observability APIs to query logs, metrics, and traces.    |
 
 ## 🚀 Getting Started
 
@@ -83,6 +82,25 @@ workspace.
 
 To make the server available in every project you open, edit your
 [user settings](https://code.visualstudio.com/docs/getstarted/personalize-vscode).
+
+## Denylist
+
+The denylist feature provides a powerful security mechanism to control which `gcloud`
+commands can be executed by the AI agent. By default, the agent has access to a wide range of commands, some of which could make
+significant changes to your cloud environment. The denylist allows you to explicitly block certain commands or command groups, preventing unintended or unauthorized operations.
+This is particularly useful for production environments or when you want to enforce a more restrictive set of permissions for the AI agent.
+
+gcloud-MCP supports all GCP API operations by default but some commands poses as a security threat. The full default deny list can be found below.
+| Command |
+|---|
+| compute start-iap-tunnel |
+| compute connect-to-serial-port |
+| compute tpus tpu-vm ssh |
+| compute tpus queued-resources ssh |
+| compute ssh |
+| cloud-shell ssh |
+| workstations ssh |
+| app instances ssh |
 
 ## 💫 Other Google Cloud MCP Servers
 
