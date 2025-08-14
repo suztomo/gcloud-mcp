@@ -10,7 +10,7 @@ Code Copilot Editor, Windsurf, and more.
 
 **Available MCP Servers**
 
-| Server Name       | Description |
+| Name       | Description |
 |-------------------|-------------|
 | gcloud MCP        | Interact with Google Cloud via the gcloud CLI using natural language prompts. |
 | Observability MCP | Access Google Cloud Observability APIs to query logs, metrics, and traces. |
@@ -33,9 +33,9 @@ To use an MCP server, add the following configuration:
     "command": "npx",
     "args": ["-y", "google-cloud@gcloud-mcp"]
   },
-  "cloud-observability-mcp": {
+  "observability-mcp": {
     "command": "npx",
-    "args": ["-y", "google-cloud@cloud-observability-mcp"]
+    "args": ["-y", "google-cloud@observability-mcp"]
   }
 }
 ```
