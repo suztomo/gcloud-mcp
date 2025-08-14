@@ -1,41 +1,41 @@
-# ☁️  gcloud MCP
+# ☁️  Google Cloud MCP
 
 Google Cloud offers a suite of specialized
 [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction)
-servers that make Google Cloud products directly accessible to AI agents. This
-includes:
-
-- [Cloud Run MCP](https://github.com/GoogleCloudPlatform/cloud-run-mcp)
-- [Databases MCP](https://github.com/googleapis/genai-toolbox)
-- [GKE MCP](https://github.com/GoogleCloudPlatform/gke-mcp)
+servers that make Google Cloud products directly accessible to AI agents.
 
 Our MCP servers work with any tool that can act as an MCP client, including
 Claude Desktop, Cline, Cursor, Gemini CLI, Gemini Code Assist, Visual Studio
 Code Copilot Editor, Windsurf, and more.
 
+## 📦 Available MCP Servers
+
+| Server Name       | Description |
+|-------------------|-------------|
+| gcloud MCP        | Interact with Google Cloud via the gcloud CLI using natural language prompts. |
+| Observability MCP | Access Google Cloud Observability APIs to query logs, metrics, and traces. |
+
+
 ## 🚀 Getting Started
 
-The gcloud MCP Server acts as a bridge between AI agents and the gcloud CLI,
-giving your AI assistant the ability to run commands, access context, and
-interact with Google Cloud resources.
-
-To get started with the gcloud MCP, make sure you have the following installed:
+To get started with an MCP server, make sure you have the following installed:
 
 - [Node.js](https://nodejs.org)
 - [gcloud CLI](https://cloud.google.com/sdk/docs/install)
 
 ## ✨ Setup your MCP server
 
-The gcloud MCP server can work with any MCP client that supports standard I/O
-(stdio) as the transport medium.
-
-To use the gcloud MCP server, add the following configuration:
+To use an MCP server, add the following configuration:
 
 ```
 "mcpServers": {
-  "firebase": {
+  "gcloud-mcp": {
     "command": "npx",
     "args": ["-y", "google-cloud@gcloud-mcp"]
+  },
+  "cloud-observability-mcp": {
+    "command": "npx",
+    "args": ["-y", "google-cloud@cloud-observability-mcp"]
   }
 }
 ```
@@ -90,6 +90,13 @@ The gcloud MCP server provides the following tools:
 - `run_gcloud_command`: Runs gcloud commands from natural language prompts,
   ensuring the generated command is validated before execution.
 
+## 💫 Other Google Cloud MCP Servers
+
+You can also try our other MCP servers:
+
+- [Cloud Run MCP](https://github.com/GoogleCloudPlatform/cloud-run-mcp)
+- [Databases MCP](https://github.com/googleapis/genai-toolbox)
+- [GKE MCP](https://github.com/GoogleCloudPlatform/gke-mcp)
 
 ## 👥 Contributing
 
