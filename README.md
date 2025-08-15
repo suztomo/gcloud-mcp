@@ -124,7 +124,7 @@ _Example deny list config file_:
 }
 ```
 
-In order for the MCP server to utilize the configuration file, the user needs to edit their `gemini-extension.json` that is produced by `npx -y @google-cloud/gcloud-mcp init --agent=gemini-cli` to include the files.
+In order for the MCP server to utilize the configuration file, the user needs to edit their `extension.json` that is produced by `npx -y @google-cloud/gcloud-mcp init --agent=gemini-cli` to include the files.
 The path to the configuration file _MUST_ be an absolute path.
 
 _Example gemini-extension.json file with config file argument_
