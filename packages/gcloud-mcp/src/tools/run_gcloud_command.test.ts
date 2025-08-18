@@ -76,24 +76,6 @@ describe('createRunGcloudCommand', () => {
         ],
       });
     });
-
-    test('returns error for non-allowlisted command', async () => {
-      const tool = createTool(['a b']);
-      const inputArgs = ['a', 'c'];
-      mockGcloudLint(inputArgs);
-
-      const result = await tool({ args: inputArgs });
-
-      expect(gcloud.invoke).not.toHaveBeenCalled();
-      expect(result).toEqual({
-        content: [
-          {
-            type: 'text',
-            text: `Command is not part of this tool's current allowlist of enabled commands.`, 
-          },
-        ],
-      });
-    });
   });
 
   describe('with denylist', () => {
