@@ -2,12 +2,12 @@
 
 > [!NOTE]
 > This repository is currently in prerelease, and may see breaking changes
-> until the first stable release (v1.0).
-> - This repository is providing a _solution_, not an officially supported
->   Google _product_. This project is not eligible for the [Google Open Source Software Vulnerability Rewards Program](https://bughunters.google.com/open-source-security).
-> - This project may break when the MCP specification changes, when other
->   SDKs change, or when other solutions or products change.
-> - This solution is expected to be run by customers **at their own risk**.
+> until the first stable release (v1.0). 
+> * This repository is providing a _solution_, not an officially supported 
+> Google _product_. This project is not eligible for the [Google Open Source Software Vulnerability Rewards Program](https://bughunters.google.com/open-source-security).
+> * This project may break when the MCP specification changes, when other 
+> SDKs change, or when other solutions or products change. 
+> * This solution is expected to be run by customers **at their own risk**.
 
 Google Cloud offers a suite of specialized
 [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction)
