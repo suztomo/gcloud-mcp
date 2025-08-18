@@ -2,12 +2,13 @@
 
 > [!NOTE]
 > This repository is currently in prerelease, and may see breaking changes
-> until the first stable release (v1.0). 
-> * This repository is providing a _solution_, not an officially supported 
-> Google _product_. This project is not eligible for the [Google Open Source Software Vulnerability Rewards Program](https://bughunters.google.com/open-source-security).
-> * This project may break when the MCP specification changes, when other 
-> SDKs change, or when other solutions or products change. 
-> * This solution is expected to be run by customers **at their own risk**.
+> until the first stable release (v1.0).
+>
+> - This repository is providing a _solution_, not an officially supported
+>   Google _product_. This project is not eligible for the [Google Open Source Software Vulnerability Rewards Program](https://bughunters.google.com/open-source-security).
+> - This project may break when the MCP specification changes, when other
+>   SDKs change, or when other solutions or products change.
+> - This solution is expected to be run by customers **at their own risk**.
 
 Google Cloud offers a suite of specialized
 [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction)
@@ -111,6 +112,15 @@ edit either
 - the file `.gemini/settings.json` (to configure only a specific project) or
 - the file `~/.gemini/settings.json` (to make the MCP server available in all projects).
 
+To further enhance the experience of gcloud-mcp, you can add an excludeTools configuration to your settings.json file
+to block Gemini-CLI from invoking gcloud commands with the shell tools. A sample configuration is shown below.
+
+```
+{
+    "excludeTools": ["ShellTool(gcloud)"]
+}
+```
+
 ## Denylist
 
 The denylist feature provides a powerful security mechanism to control which `gcloud`
@@ -157,6 +167,8 @@ _Example gemini-extension.json file with config file argument_
 ```
 
 gcloud-MCP supports all gcloud commands by default but some commands pose a security threat. Any command that can open an unrestricted SSH tunnel will be blocked.
+
+›
 
 ## 💫 Other Google Cloud MCP Servers
 
