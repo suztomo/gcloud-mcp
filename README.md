@@ -166,8 +166,6 @@ _Example gemini-extension.json file with config file argument_
 
 gcloud-MCP supports all gcloud commands by default but some commands pose a security threat. Any command that can open an unrestricted SSH tunnel will be blocked.
 
-›
-
 ## 💫 Other Google Cloud MCP Servers
 
 You can also try our other MCP servers:
