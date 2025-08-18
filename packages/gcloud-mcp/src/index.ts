@@ -50,34 +50,16 @@ const main = async () => {
     .command(
       '$0',
       'Run the gcloud mcp server',
-      (yargs) =>
-        yargs
-          .option('config', {
-            type: 'string',
-            description: 'Path to a JSON configuration file (must be an absolute path).',
-          })
-          .version(pkg.version),
-      async (argv) => {
+      async () => {
         const isAvailable = await gcloud.isAvailable();
         if (!isAvailable) {
-          console.error('Unable to start gcloud mcp server: gcloud executable not found.');
+          console.error(
+            'Unable to start gcloud mcp server: gcloud executable not found.'
+          );  
           process.exit(1);
         }
 
         let config: GcloudMcpConfig = {};
-        if (argv.config) {
-          if (!path.isAbsolute(argv.config)) {
-            console.error('Error: The --config path must be an absolute file path.');
-            process.exit(1);
-          }
-          try {
-            const rawConfig = fs.readFileSync(argv.config, 'utf-8');
-            config = JSON.parse(rawConfig);
-          } catch (e) {
-            console.error(`Error reading or parsing config file: ${e}`);
-            process.exit(1);
-          }
-        }
 
         const allowlist = config.run_gcloud_command?.allowlist || [];
         const denylist = config.run_gcloud_command?.denylist || [];
