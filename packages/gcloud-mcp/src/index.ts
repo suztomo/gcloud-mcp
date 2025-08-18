@@ -45,29 +45,23 @@ export const default_denylist: string[] = [
 
 const main = async () => {
   yargs(hideBin(process.argv))
-    .command(
-      '$0',
-      'Run the gcloud mcp server',
-      async () => {
-        const isAvailable = await gcloud.isAvailable();
-        if (!isAvailable) {
-          console.error(
-            'Unable to start gcloud mcp server: gcloud executable not found.'
-          );  
-          process.exit(1);
-        }
+    .command('$0', 'Run the gcloud mcp server', async () => {
+      const isAvailable = await gcloud.isAvailable();
+      if (!isAvailable) {
+        console.error('Unable to start gcloud mcp server: gcloud executable not found.');
+        process.exit(1);
+      }
 
-        const mergedDenylist = [...new Set([...default_denylist])];
+      const mergedDenylist = [...new Set([...default_denylist])];
 
-        const server = new McpServer({
-          name: 'gcloud-mcp-server',
-          version: pkg.version,
-        });
-        createRunGcloudCommand([], mergedDenylist).register(server);
-        await server.connect(new StdioServerTransport());
-        console.log('🚀 gcloud mcp server started');
-      },
-    )
+      const server = new McpServer({
+        name: 'gcloud-mcp-server',
+        version: pkg.version,
+      });
+      createRunGcloudCommand([], mergedDenylist).register(server);
+      await server.connect(new StdioServerTransport());
+      console.log('🚀 gcloud mcp server started');
+    })
     .command(init)
     .version(false)
     .help()
