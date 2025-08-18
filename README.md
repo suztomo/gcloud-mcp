@@ -111,6 +111,16 @@ edit either
 - the file `.gemini/settings.json` (to configure only a specific project) or
 - the file `~/.gemini/settings.json` (to make the MCP server available in all projects).
 
+You can add an excludeTools configuration to your gemini-extensions.json file to block Gemini-CLI from invoking gcloud commands with the shell tools. A sample configuration is shown below.
+
+```
+{
+  "excludeTools": [
+    "run_shell_command(gcloud)"
+  ]
+}
+```
+
 ## Denylist
 
 The denylist feature provides a powerful security mechanism to control which `gcloud`
