@@ -56,16 +56,6 @@ export const createRunGcloudCommand = (allowlist: string[] = [], denylist: strin
           const commandNoArgs = parsedJson[0]['command_string_no_args'];
           const commandArgsNoGcloud = commandNoArgs.split(' ').slice(1).join(' '); // Remove gcloud prefix
 
-          if (!allowedCommands(allowlist).matches(commandArgsNoGcloud)) {
-            return {
-              content: [
-                {
-                  type: 'text',
-                  text: `Command is not part of this tool's current allowlist of enabled commands.`,
-                },
-              ],
-            };
-          }
           if (deniedCommands(denylist).matches(commandArgsNoGcloud)) {
             return {
               content: [
