@@ -112,8 +112,7 @@ edit either
 - the file `.gemini/settings.json` (to configure only a specific project) or
 - the file `~/.gemini/settings.json` (to make the MCP server available in all projects).
 
-To further enhance the experience of gcloud-mcp, you can add an excludeTools configuration to your settings.json file
-to block Gemini-CLI from invoking gcloud commands with the shell tools. A sample configuration is shown below.
+You can add an excludeTools configuration to your gemini-extensions.json file to block Gemini-CLI from invoking gcloud commands with the shell tools. A sample configuration is shown below.
 
 ```
 {
