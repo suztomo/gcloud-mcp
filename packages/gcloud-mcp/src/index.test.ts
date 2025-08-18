@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-import { test, expect, vi, beforeEach, describe, afterEach } from 'vitest';
+import { test, expect, vi, beforeEach} from 'vitest';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { createRunGcloudCommand } from './tools/run_gcloud_command.js';
 import * as gcloud from './gcloud.js';
-import fs from 'fs';
 import { init } from './commands/init.js';
 
 vi.mock('../package.json', () => ({
@@ -51,7 +50,7 @@ test('should initialize Gemini CLI when gcloud-mcp init --agent=gemini-cli is ca
   await import('./index.js');
   expect(init.handler).toHaveBeenCalled();
 });
-
+ƒ
 test('should exit if gcloud is not available', async () => {
   process.argv = ['node', 'index.js'];
   vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(false);

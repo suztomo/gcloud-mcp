@@ -23,8 +23,6 @@ import { createRunGcloudCommand } from './tools/run_gcloud_command.js';
 import * as gcloud from './gcloud.js';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import fs from 'fs';
-import path from 'path';
 import { init } from './commands/init.js';
 
 interface GcloudMcpConfig {
