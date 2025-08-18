@@ -115,7 +115,9 @@ You can add an excludeTools configuration to your gemini-extensions.json file to
 
 ```
 {
-    "excludeTools": ["ShellTool(gcloud)"]
+  "excludeTools": [
+    "run_shell_command(gcloud)"
+  ]
 }
 ```
 
