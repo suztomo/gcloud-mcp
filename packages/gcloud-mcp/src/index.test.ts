@@ -50,7 +50,7 @@ test('should initialize Gemini CLI when gcloud-mcp init --agent=gemini-cli is ca
   await import('./index.js');
   expect(init.handler).toHaveBeenCalled();
 });
-ƒ;
+
 test('should exit if gcloud is not available', async () => {
   process.argv = ['node', 'index.js'];
   vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(false);
