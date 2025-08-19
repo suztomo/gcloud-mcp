@@ -16,12 +16,12 @@ body:
       description: Describe the problem that this feature would solve.
     validations:
         required: true
-- type: textarea
-  id: prompts
-  attributes:
-    label: Example prompts, workflows, or additional information
-    description: |
-      If it's a new tool or improvement, share 3–5 example prompts or workflows it would enable. 
-      You can also include any other relevant context or background information here.
-  validations:
-    required: false
+  - type: textarea
+    id: prompts
+    attributes:
+      label: Example prompts, workflows, or additional information
+      description: |
+        If it's a new tool or improvement, share 3–5 example prompts or workflows it would enable. 
+        You can also include any other relevant context or background information here.
+    validations:
+      required: false
