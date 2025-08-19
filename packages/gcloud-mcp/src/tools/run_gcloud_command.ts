@@ -19,7 +19,7 @@ import * as gcloud from '../gcloud.js';
 import { deniedCommands } from '../denylist.js';
 import { z } from 'zod';
 
-export const createRunGcloudCommand = (allowlist: string[] = [], denylist: string[] = []) => ({
+export const createRunGcloudCommand = (denylist: string[] = []) => ({
   register: (server: McpServer) => {
     server.registerTool(
       'run_gcloud_command',

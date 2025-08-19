@@ -25,13 +25,6 @@ import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { init } from './commands/init.js';
 
-interface GcloudMcpConfig {
-  run_gcloud_command?: {
-    allowlist?: string[];
-    denylist?: string[];
-  };
-}
-
 export const default_denylist: string[] = [
   'compute start-iap-tunnel',
   'compute connect-to-serial-port',
@@ -58,7 +51,7 @@ const main = async () => {
         name: 'gcloud-mcp-server',
         version: pkg.version,
       });
-      createRunGcloudCommand([], denyListSet).register(server);
+      createRunGcloudCommand(denyListSet).register(server);
       await server.connect(new StdioServerTransport());
       console.log('🚀 gcloud mcp server started');
     })
