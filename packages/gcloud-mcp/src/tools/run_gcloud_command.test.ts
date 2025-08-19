@@ -31,8 +31,8 @@ const getToolImplementation = () => {
   return (mockServer.registerTool as Mock).mock.calls[0]![2];
 };
 
-const createTool = (allowlist: string[] = [], denylist: string[] = []) => {
-  createRunGcloudCommand(allowlist, denylist).register(mockServer);
+const createTool = (denylist: string[] = []) => {
+  createRunGcloudCommand(denylist).register(mockServer);
   return getToolImplementation();
 };
 
@@ -50,37 +50,16 @@ const mockGcloudInvoke = (stdout: string, stderr: string = '') => {
     stdout,
     stderr,
   });
-}
+};
 
 describe('createRunGcloudCommand', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  describe('with allowlist', () => {
-    test('invokes gcloud for allowlisted command', async () => {
-      const tool = createTool(['a b']);
-      const inputArgs = ['a', 'b', 'c'];
-      mockGcloudLint(inputArgs);
-      mockGcloudInvoke('output');
-
-      const result = await tool({ args: inputArgs });
-
-      expect(gcloud.invoke).toHaveBeenCalledWith(inputArgs);
-      expect(result).toEqual({
-        content: [
-          {
-            type: 'text',
-            text: 'gcloud process exited with code 0. stdout:\noutput',
-          },
-        ],
-      });
-    });
-  });
-
   describe('with denylist', () => {
     test('returns error for denylisted command', async () => {
-      const tool = createTool([], ['compute list']);
+      const tool = createTool(['compute list']);
       const inputArgs = ['compute', 'list', '--zone', 'eastus1'];
       mockGcloudLint(inputArgs);
 
@@ -91,14 +70,14 @@ describe('createRunGcloudCommand', () => {
         content: [
           {
             type: 'text',
-            text: `Command is part of this tool's current denylist of disabled commands.`, 
+            text: `Command is part of this tool's current denylist of disabled commands.`,
           },
         ],
       });
     });
 
     test('invokes gcloud for non-denylisted command', async () => {
-      const tool = createTool([], ['compute list']);
+      const tool = createTool(['compute list']);
       const inputArgs = ['compute', 'create'];
       mockGcloudLint(inputArgs);
       mockGcloudInvoke('output');
@@ -119,7 +98,7 @@ describe('createRunGcloudCommand', () => {
 
   describe('with allowlist and denylist', () => {
     test('returns error for command in both lists', async () => {
-      const tool = createTool(['a b'], ['a b']);
+      const tool = createTool(['a b']);
       const inputArgs = ['a', 'b', 'c'];
       mockGcloudLint(inputArgs);
 
@@ -130,7 +109,7 @@ describe('createRunGcloudCommand', () => {
         content: [
           {
             type: 'text',
-            text: `Command is part of this tool's current denylist of disabled commands.`, 
+            text: `Command is part of this tool's current denylist of disabled commands.`,
           },
         ],
       });
