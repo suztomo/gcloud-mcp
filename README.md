@@ -1,3 +1,5 @@
+[![CI Pipeline Status](https://github.com/googleapis/gcloud-mcp/actions/workflows/presubmit.yml/badge.svg)](https://github.com/googleapis/gcloud-mcp/actions/workflows/presubmit.yml)
+
 # gcloud MCP ☁️
 
 The gcloud [Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/getting-started/intro) server enables AI assistants to easily interact with the Google Cloud environment using the gcloud CLI. With the gcloud MCP you can:
