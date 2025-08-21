@@ -1,0 +1,15 @@
+steps:
+  - name: 'node:20'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        npm install
+        npm install -g
+        npm run build
+        npm install -g @google/gemini-cli
+        gcloud-mcp init --agent=gemini-cli
+        gemini mcp list
+
+options:
+  logging: CLOUD_LOGGING_ONLY
