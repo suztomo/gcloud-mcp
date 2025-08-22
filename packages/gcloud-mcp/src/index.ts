@@ -47,10 +47,13 @@ const main = async () => {
 
       const denyListSet = [...new Set([...default_denylist])];
 
-      const server = new McpServer({
-        name: 'gcloud-mcp-server',
-        version: pkg.version,
-      });
+      const server = new McpServer(
+        {
+          name: 'gcloud-mcp-server',
+          version: pkg.version,
+        },
+        { capabilities: { tools: {} } },
+      );
       createRunGcloudCommand(denyListSet).register(server);
       await server.connect(new StdioServerTransport());
       console.log('🚀 gcloud mcp server started');
