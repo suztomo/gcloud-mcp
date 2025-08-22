@@ -94,9 +94,12 @@ export class Logger {
       : '';
     
     const errorString = error ? ` | Error: ${error.message}` : '';
-    
-    const logMessage = `[${entry.timestamp}] ${levelString}: ${message}${contextString}${errorString}`;
-    
+
+    const logMessage =
+      process.env.NODE_ENV === 'test'
+        ? `${levelString}: ${message}${contextString}${errorString}`
+        : `[${entry.timestamp}] ${levelString}: ${message}${contextString}${errorString}`;
+
     // Use console.error for all levels to ensure MCP server logs are captured
     console.error(logMessage);
 

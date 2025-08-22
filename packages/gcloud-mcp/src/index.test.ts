@@ -61,7 +61,9 @@ test('should exit if gcloud is not available', async () => {
   await import('./index.js');
 
   expect(gcloud.isAvailable).toHaveBeenCalled();
-  expect(consoleErrorSpy).toHaveBeenCalledWith('Unable to start gcloud mcp server: gcloud executable not found.');
+  expect(consoleErrorSpy).toHaveBeenCalledWith(
+    'ERROR: Unable to start gcloud mcp server: gcloud executable not found.'
+  );
   expect(process.exit).toHaveBeenCalledWith(1);
 
   consoleErrorSpy.mockRestore();
