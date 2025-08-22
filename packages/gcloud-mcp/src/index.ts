@@ -24,6 +24,7 @@ import * as gcloud from './gcloud.js';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { init } from './commands/init.js';
+import { ServerCapabilitiesSchema } from '@modelcontextprotocol/sdk/types.js';
 
 export const default_denylist: string[] = [
   'compute start-iap-tunnel',
@@ -47,10 +48,13 @@ const main = async () => {
 
       const denyListSet = [...new Set([...default_denylist])];
 
-      const server = new McpServer({
-        name: 'gcloud-mcp-server',
-        version: pkg.version,
-      });
+      const server = new McpServer(
+        {
+          name: 'gcloud-mcp-server',
+          version: pkg.version,
+        },
+        { capabilities: { logging: {}, tools: {} } },
+      );
       createRunGcloudCommand(denyListSet).register(server);
       await server.connect(new StdioServerTransport());
       console.log('🚀 gcloud mcp server started');
