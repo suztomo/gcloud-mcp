@@ -40,9 +40,7 @@ export const init: CommandModule<object, InstallArgs> = {
     }
     const isAvailable = await gcloud.isAvailable();
     if (!isAvailable) {
-      console.warn(
-        '⚠️❗ gcloud executable not found. The MCP server may have limited functionality.'
-      );
+      console.warn("⚠️❗ gcloud executable not found. The MCP server won't start unless gcloud is available.");
     }
   },
 };
