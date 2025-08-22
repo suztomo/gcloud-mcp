@@ -24,7 +24,6 @@ import * as gcloud from './gcloud.js';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { init } from './commands/init.js';
-import { ServerCapabilitiesSchema } from '@modelcontextprotocol/sdk/types.js';
 
 export const default_denylist: string[] = [
   'compute start-iap-tunnel',
