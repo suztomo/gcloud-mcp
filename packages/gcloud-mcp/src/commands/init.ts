@@ -16,6 +16,7 @@
 
 import { Argv, ArgumentsCamelCase, CommandModule } from 'yargs';
 import { initializeGeminiCLI } from './init-gemini-cli.js';
+import * as gcloud from '../gcloud.js';
 
 interface InstallArgs {
   agent: string;
@@ -32,10 +33,16 @@ export const init: CommandModule<object, InstallArgs> = {
       demandOption: true,
     }),
   handler: async (argv: ArgumentsCamelCase<InstallArgs>) => {
-    if (argv.agent === 'gemini-cli'){
+    if (argv.agent === 'gemini-cli') {
       await initializeGeminiCLI();
     } else {
       throw new Error(`Unknown agent: ${argv.agent}`);
+    }
+    const isAvailable = await gcloud.isAvailable();
+    if (!isAvailable) {
+      console.warn(
+        '⚠️❗ gcloud executable not found. The MCP server may have limited functionality.'
+      );
     }
   },
 };
