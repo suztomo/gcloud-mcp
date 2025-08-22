@@ -20,6 +20,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { createRunGcloudCommand } from './tools/run_gcloud_command.js';
 import * as gcloud from './gcloud.js';
 import { init } from './commands/init.js';
+import pkg from '../package.json' with { type: 'json' };
 
 vi.mock('../package.json', () => ({
   default: {
@@ -75,9 +76,9 @@ test('should start the McpServer if gcloud is available', async () => {
   expect(McpServer).toHaveBeenCalledWith(
     {
       name: 'gcloud-mcp-server',
-      version: '0.1.0',
+      version: pkg.version,
     },
-    { capabilities: { logging: {}, tools: {} } },
+    { capabilities: { tools: {} } },
   );
   expect(createRunGcloudCommand).toHaveBeenCalledWith(default_denylist);
   expect(registerToolSpy).toHaveBeenCalledWith(vi.mocked(McpServer).mock.instances[0]);

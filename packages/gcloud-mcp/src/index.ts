@@ -52,7 +52,7 @@ const main = async () => {
           name: 'gcloud-mcp-server',
           version: pkg.version,
         },
-        { capabilities: { logging: {}, tools: {} } },
+        { capabilities: { tools: {} } },
       );
       createRunGcloudCommand(denyListSet).register(server);
       await server.connect(new StdioServerTransport());
