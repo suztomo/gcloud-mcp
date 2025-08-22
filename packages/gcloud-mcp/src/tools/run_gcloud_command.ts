@@ -18,6 +18,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import * as gcloud from '../gcloud.js';
 import { deniedCommands } from '../denylist.js';
 import { z } from 'zod';
+import { log } from '../utility/logger.js';
 
 export const createRunGcloudCommand = (denylist: string[] = []) => ({
   register: (server: McpServer) => {
@@ -45,6 +46,8 @@ export const createRunGcloudCommand = (denylist: string[] = []) => ({
 - **No redirection**: Do not use redirection operators (e.g., >, >>, <)`,
       },
       async ({ args }) => {
+        const toolLogger = log.mcp('run_gcloud_command', args);
+        toolLogger.info('run_gcloud_command called');
         const command = args.join(' ');
         try {
           // Lint parses and isolates the gcloud command from flags and positionals.
@@ -67,6 +70,7 @@ export const createRunGcloudCommand = (denylist: string[] = []) => ({
             };
           }
 
+          toolLogger.info('Executing run_gcloud_command');
           ({ code, stdout, stderr } = await gcloud.invoke(args));
           // If the exit status is not zero, an error occurred and the output may be
           // incomplete unless the command documentation notes otherwise. For example,
@@ -79,6 +83,7 @@ export const createRunGcloudCommand = (denylist: string[] = []) => ({
           }
           return { content: [{ type: 'text', text: result }] };
         } catch (e: unknown) {
+          toolLogger.error('run_gcloud_command failed', e instanceof Error ? e : new Error(String(e)));
           const msg = e instanceof Error ? e.message : 'An unknown error occurred.';
           return { content: [{ type: 'text', text: msg }], isError: true };
         }
