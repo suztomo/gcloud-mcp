@@ -65,10 +65,14 @@ describe('Logger', () => {
       logger.setGlobalContext({ global: 'context' });
       const contextualLogger = logger.withContext({ local: 'context' });
       contextualLogger.info('contextual message');
-      expect(console.error).toHaveBeenCalledWith('[2025-01-01T00:00:00.000Z] INFO: contextual message | {"global":"context","local":"context"}');
+      expect(console.error).toHaveBeenCalledWith(
+        '[2025-01-01T00:00:00.000Z] INFO: contextual message | {"global":"context","local":"context"}',
+      );
       // Ensure original logger is not affected
       logger.info('original message');
-      expect(console.error).toHaveBeenCalledWith('[2025-01-01T00:00:00.000Z] INFO: original message | {"global":"context"}');
+      expect(console.error).toHaveBeenCalledWith(
+        '[2025-01-01T00:00:00.000Z] INFO: original message | {"global":"context"}',
+      );
     });
   });
 
@@ -94,10 +98,12 @@ describe('Logger', () => {
     });
 
     test('should log error messages with error object', () => {
-      const error = new Error('test error');
+      const error = new Error('low level err message');
       error.stack = 'stack trace';
-      logger.error('error message', error);
-      expect(console.error).toHaveBeenCalledWith('[2025-01-01T00:00:00.000Z] ERROR: error message | Error: test error');
+      logger.error('high level err message', error);
+      expect(console.error).toHaveBeenCalledWith(
+        '[2025-01-01T00:00:00.000Z] ERROR: high level err message | Message: low level err message',
+      );
       expect(console.error).toHaveBeenCalledWith('Stack trace:', 'stack trace');
     });
   });
@@ -162,7 +168,9 @@ describe('Logger', () => {
     test('mcpTool should handle undefined input', () => {
       const toolLogger = logger.mcpTool('gcloud-run');
       toolLogger.info('tool execution');
-      expect(console.error).toHaveBeenCalledWith('[2025-01-01T00:00:00.000Z] INFO: tool execution | {"operation":"mcp-tool","tool":"gcloud-run"}');
+      expect(console.error).toHaveBeenCalledWith(
+        '[2025-01-01T00:00:00.000Z] INFO: tool execution | {"operation":"mcp-tool","tool":"gcloud-run"}',
+      );
     });
   });
 

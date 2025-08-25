@@ -106,7 +106,7 @@ export class Logger {
     const contextString =
       record.context && Object.keys(record.context).length > 0 ? ` | ${JSON.stringify(record.context)}` : '';
 
-    const errorString = error ? ` | Error: ${error.message}` : '';
+    const errorString = error ? ` | Message: ${error.message}` : '';
 
     const formattedMessage = `[${record.timestamp}] ${record.severity.toUpperCase()}: ${message}${contextString}${errorString}`;
 
