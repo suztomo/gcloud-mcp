@@ -43,6 +43,7 @@ vi.mock('./commands/init.js');
 beforeEach(() => {
   vi.clearAllMocks();
   vi.resetModules();
+  vi.setSystemTime(new Date('2025-01-01T00:00:00.000Z'));
   registerToolSpy.mockClear();
 });
 
@@ -61,7 +62,9 @@ test('should exit if gcloud is not available', async () => {
   await import('./index.js');
 
   expect(gcloud.isAvailable).toHaveBeenCalled();
-  expect(consoleErrorSpy).toHaveBeenCalledWith('Unable to start gcloud mcp server: gcloud executable not found.');
+  expect(consoleErrorSpy).toHaveBeenCalledWith(
+    '[2025-01-01T00:00:00.000Z] ERROR: Unable to start gcloud mcp server: gcloud executable not found.',
+  );
   expect(process.exit).toHaveBeenCalledWith(1);
 
   consoleErrorSpy.mockRestore();

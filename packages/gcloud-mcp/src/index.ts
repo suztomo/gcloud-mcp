@@ -24,6 +24,8 @@ import * as gcloud from './gcloud.js';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { init } from './commands/init.js';
+import {log} from './utility/logger.js';
+
 
 export const default_denylist: string[] = [
   'compute start-iap-tunnel',
@@ -41,7 +43,7 @@ const main = async () => {
     .command('$0', 'Run the gcloud mcp server', async () => {
       const isAvailable = await gcloud.isAvailable();
       if (!isAvailable) {
-        console.error('Unable to start gcloud mcp server: gcloud executable not found.');
+        log.error('Unable to start gcloud mcp server: gcloud executable not found.');
         process.exit(1);
       }
 
@@ -56,7 +58,7 @@ const main = async () => {
       );
       createRunGcloudCommand(denyListSet).register(server);
       await server.connect(new StdioServerTransport());
-      console.log('🚀 gcloud mcp server started');
+      log.info('🚀 gcloud mcp server started');
     })
     .command(init)
     .version(false)
