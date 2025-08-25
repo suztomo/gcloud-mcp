@@ -9,10 +9,6 @@
 > SDKs change, or when other solutions or products change.
 > * This solution is expected to be run by customers **at their own risk**.
 
-[![](https://img.shields.io/github/license/GoogleCloudPlatform/cloud-observability-mcp)](./LICENSE)
-[![](https://img.shields.io/github/discussions/GoogleCloudPlatform/cloud-observability-mcp?style=social&logo=github)](https://github.com/GoogleCloudPlatform/cloud-observability-mcp/discussions)
-[![](https://img.shields.io/github/stars/GoogleCloudPlatform/cloud-observability-mcp?style=social)](https://github.com/GoogleCloudPlatform/cloud-observability-mcp)
-
 This server connects [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) clients (like the [Gemini CLI](https://github.com/google-gemini/gemini-cli)) to various **Google Cloud Observability APIs**. It acts as a local bridge, translating natural language commands from your CLI into the appropriate API calls to help you **understand, manage, and troubleshoot** your Google Cloud environment.
 
 > To learn more about the underlying services, see the official documentation:
@@ -21,36 +17,11 @@ This server connects [Model Context Protocol (MCP)](https://modelcontextprotocol
 > * [Cloud Trace](https://cloud.google.com/trace/docs)
 > * [Error Reporting](https://cloud.google.com/error-reporting/docs)
 
-## Getting Started
+## 🚀 Getting Started
 
-Follow these steps to get the server running and connected to your client.
+For prerequisites and setup instructions, please see the [root README](../../README.md#-getting-started).
 
-### 1. Prerequisites
-
-Before you begin, ensure you have the following:
-
-*   [**Node.js**](https://nodejs.org/en/download) (v18 or later).
-*   [**Google Cloud SDK**](https://cloud.google.com/sdk/docs/install) installed and initialized.
-*   A **Google Cloud Project**.
-*   An **MCP Client**, such as the [**Gemini CLI**](https://github.com/google-gemini/gemini-cli).
-*   Your user account must have the appropriate **IAM roles** for the services you want to access (e.g., `roles/logging.viewer`, `roles/monitoring.viewer`).
-
-### 2. Installation & Configuration
-
-Add the Cloud Observability MCP Server to your client's configuration. For the Gemini CLI, add the following to your `settings.json` file.
-
-```json
-"mcpServers": {
-  "cloud-observability": {
-    "command": "npx",
-    "args": ["-y", "https://github.com/GoogleCloudPlatform/cloud-observability-mcp"]
-  }
-}
-```
-
-That's it! The next time you run your MCP client in interactive mode (e.g., by running `gemini`), it will automatically start this server.
-
-### 3. Authentication
+### Authentication
 
 You need to authenticate twice: once for your user account and once for the application itself.
 
@@ -89,57 +60,27 @@ Your MCP client will translate these questions into the appropriate tool calls t
 
 ## Tools Reference
 
-The server exposes the following tools, with more planned for future releases.
+The server exposes the following tools:
 
 | Service | Tool | Description |
 | --- | --- | --- |
-| **Error Reporting** | `error_reporting.list_error_groups` | Lists the error groups for a project. |
-| **Logging** | `logging.list_log_entries` | Lists log entries from a project. |
-| | `logging.list_log_metrics` | Lists the logs-based metrics in a project. |
-| **Monitoring** | `monitoring.list_time_series` | Lists time series data for a given metric. |
-| | `monitoring.list_metric_descriptors` | Lists metric descriptors for a project. |
-| **Trace** | `trace.list_traces` | Searches for traces in a project. |
+| **Error Reporting** | `list_group_stats` | Lists the error groups for a project. |
+| **Logging** | `list_log_entries` | Lists log entries from a project. |
+| | `list_buckets` | Lists log buckets from a project. |
+| | `list_views` | Lists log views from a project. |
+| | `list_sinks` | Lists log sinks from a project. |
+| | `list_log_scopes` | Lists log scopes from a project. |
+| **Monitoring** | `list_metric_descriptors` | Lists metric descriptors for a project. |
+| | `list_time_series` | Lists time series data for a given metric. |
+| | `list_alert_policies` | Lists the alert policies in a project. |
+| | `list_notification_channels` | Lists the notification channels in a project. |
+| **Trace** | `list_traces` | Searches for traces in a project. |
 
-## Development
 
-If you want to contribute to the development of this server, you can run it locally from the source code.
+## 👥 Contributing
 
-### Installation
+Please read our [Contributing Guide](../../CONTRIBUTING.md) to get started.
 
-1.  Clone the repository:
-    ```shell
-    git clone https://github.com/GoogleCloudPlatform/cloud-observability-mcp.git
-    ```
-2.  Install the dependencies:
-    ```shell
-    cd cloud-observability-mcp
-    npm install
-    ```
+## 📝 License
 
-### Running the Server
-
-To run the server locally, you can use the following command:
-
-```shell
-npm start
-```
-
-This will start the server on the port specified in the `src/server.ts` file.
-
-### Running Tests
-
-To run the tests, use the following command:
-
-```shell
-npm test
-```
-
-## Community & Contributing
-
-*   **Report Issues:** If you encounter a bug, please file an issue on our [GitHub Issues](https://github.com/GoogleCloudPlatform/cloud-observability-mcp/issues) page.
-*   **Ask Questions:** For questions and discussions, please use [GitHub Discussions](https://github.com/GoogleCloudPlatform/cloud-observability-mcp/discussions).
-*   **Contribute:** Before sending a pull request, please review our [Contributing Guide](./docs/contributing.md).
-
-## License
-
-This project is licensed under the Apache 2.0 License - see the [LICENSE](./LICENSE) file for details.
+This project is licensed under the Apache 2.0 License - see the [LICENSE](../../LICENSE) file for details.
