@@ -18,6 +18,7 @@ import { vi, describe, it, expect, afterEach } from 'vitest';
 import { init } from './init.js';
 import { initializeGeminiCLI } from './init-gemini-cli.js';
 import * as gcloud from '../gcloud.js';
+import { log } from '../utility/logger.js';
 
 vi.mock('../gcloud.js', () => ({
   isAvailable: vi.fn(),
@@ -53,7 +54,7 @@ describe('init', () => {
   });
 
   it('should warn if gcloud is not available', async () => {
-    const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const loggerWarnSpy = vi.spyOn(log, 'warn').mockImplementation(() => {});
     vi.mocked(gcloud.isAvailable).mockResolvedValue(false);
     const argv = {
       agent: 'gemini-cli',
@@ -61,13 +62,13 @@ describe('init', () => {
       _: [],
     };
     await init.handler(argv);
-    expect(consoleWarnSpy).toHaveBeenCalledWith(
+    expect(loggerWarnSpy).toHaveBeenCalledWith(
       "⚠️❗ gcloud executable not found. The MCP server won't start unless gcloud is available.",
     );
   });
 
   it('should not warn if gcloud is available', async () => {
-    const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const loggerWarnSpy = vi.spyOn(log, 'warn').mockImplementation(() => {});
     vi.mocked(gcloud.isAvailable).mockResolvedValue(true);
     const argv = {
       agent: 'gemini-cli',
@@ -75,6 +76,6 @@ describe('init', () => {
       _: [],
     };
     await init.handler(argv);
-    expect(consoleWarnSpy).not.toHaveBeenCalled();
+    expect(loggerWarnSpy).not.toHaveBeenCalled();
   });
 });

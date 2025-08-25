@@ -82,6 +82,9 @@ export default tseslint.config(
       ],
       'import/no-relative-packages': 'error',
       'no-cond-assign': 'error',
+      // Do not use console.log in MCP servers. 
+      // See https://modelcontextprotocol.io/quickstart/server#logging-in-mcp-servers
+      'no-console': 'error',
       'no-debugger': 'error',
       'no-duplicate-case': 'error',
       'no-restricted-syntax': [
@@ -110,6 +113,16 @@ export default tseslint.config(
       'prefer-const': ['error', { destructuring: 'all' }],
       radix: 'error',
       'default-case': 'error',
+    },
+  },
+
+  {
+    files: [
+      'packages/gcloud-mcp/src/utility/logger.ts',
+      'packages/gcloud-mcp/src/utility/logger.test.ts',
+    ],
+    rules: {
+      'no-console': 'off',
     },
   },
 
