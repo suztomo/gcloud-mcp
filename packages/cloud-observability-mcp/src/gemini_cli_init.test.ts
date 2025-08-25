@@ -62,8 +62,8 @@ describe('initializeGeminiCLI', () => {
       contextFileName: 'GEMINI.md',
       mcpServers: {
         'cloud-observability-mcp': {
-          command: 'npm',
-          args: ['start', '-w', 'cloud-observability-mcp'],
+          command: 'npx',
+          args: ['-y', '@google-cloud/observability-mcp'],
         },
       },
     });
