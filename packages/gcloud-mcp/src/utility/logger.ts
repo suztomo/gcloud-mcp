@@ -131,7 +131,6 @@ export class Logger {
 
   mcpTool(toolName: string, input?: unknown): Logger {
     return this.withContext({
-      operation: 'mcp-tool',
       tool: toolName,
       input,
     });

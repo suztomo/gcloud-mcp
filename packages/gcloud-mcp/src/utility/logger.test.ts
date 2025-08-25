@@ -153,7 +153,7 @@ describe('Logger', () => {
       const toolLogger = logger.mcpTool('gcloud-run', { project: 'my-proj' });
       toolLogger.info('tool execution');
       expect(console.error).toHaveBeenCalledWith(
-        '[2025-01-01T00:00:00.000Z] INFO: tool execution | {"operation":"mcp-tool","tool":"gcloud-run","input":{"project":"my-proj"}}',
+        '[2025-01-01T00:00:00.000Z] INFO: tool execution | {"tool":"gcloud-run","input":{"project":"my-proj"}}',
       );
     });
 
@@ -161,7 +161,7 @@ describe('Logger', () => {
       const toolLogger = logger.mcpTool('gcloud-run', {});
       toolLogger.info('tool execution');
       expect(console.error).toHaveBeenCalledWith(
-        '[2025-01-01T00:00:00.000Z] INFO: tool execution | {"operation":"mcp-tool","tool":"gcloud-run","input":{}}',
+        '[2025-01-01T00:00:00.000Z] INFO: tool execution | {"tool":"gcloud-run","input":{}}',
       );
     });
 
@@ -169,7 +169,7 @@ describe('Logger', () => {
       const toolLogger = logger.mcpTool('gcloud-run');
       toolLogger.info('tool execution');
       expect(console.error).toHaveBeenCalledWith(
-        '[2025-01-01T00:00:00.000Z] INFO: tool execution | {"operation":"mcp-tool","tool":"gcloud-run"}',
+        '[2025-01-01T00:00:00.000Z] INFO: tool execution | {"tool":"gcloud-run"}',
       );
     });
   });
@@ -184,7 +184,7 @@ describe('Logger', () => {
       const mcpLogger = log.mcp('my-tool', { id: 1 });
       mcpLogger.info('mcp log');
       expect(console.error).toHaveBeenCalledWith(
-        '[2025-01-01T00:00:00.000Z] INFO: mcp log | {"operation":"mcp-tool","tool":"my-tool","input":{"id":1}}',
+        '[2025-01-01T00:00:00.000Z] INFO: mcp log | {"tool":"my-tool","input":{"id":1}}',
       );
     });
   });
