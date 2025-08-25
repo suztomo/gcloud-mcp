@@ -54,6 +54,8 @@ async function main(): Promise<void> {
     const server = getServer();
     await server.connect(stdioTransport);
   } catch (err) {
+    // TODO(https://github.com/googleapis/gcloud-mcp/issues/80): Update to use the custom logger once it's made sharable between packages
+    // eslint-disable-next-line no-console
     console.error('Failed to start MCP server: ', err);
     process.exit(1);
   }

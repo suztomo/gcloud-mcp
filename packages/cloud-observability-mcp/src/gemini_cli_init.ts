@@ -41,11 +41,17 @@ export const initializeGeminiCLI = async () => {
     },
   };
   await writeFile(extensionFile, JSON.stringify(extensionJson, null, 2));
-  console.log(`Gemini CLI extension initialized at: ${extensionFile}`);
+  // TODO(https://github.com/googleapis/gcloud-mcp/issues/80): Update to use the custom logger once it's made sharable between packages.
+  // These should be info logs at that point.
+  // eslint-disable-next-line no-console
+  console.error(`Gemini CLI extension initialized at: ${extensionFile}`);
 
   const geminiMdSrcPath = join(__dirname, '../GEMINI-extension.md');
   const geminiMdDestPath = join(extensionDir, 'GEMINI.md');
   const geminiMdContent = await readFile(geminiMdSrcPath);
   await writeFile(geminiMdDestPath, geminiMdContent);
-  console.log(`Gemini CLI extension initialized at: ${geminiMdDestPath}`);
+  // TODO(https://github.com/googleapis/gcloud-mcp/issues/80): Update to use the custom logger once it's made sharable between packages
+  // These should be info logs at that point.
+  // eslint-disable-next-line no-console
+  console.error(`Gemini CLI extension initialized at: ${geminiMdDestPath}`);
 };

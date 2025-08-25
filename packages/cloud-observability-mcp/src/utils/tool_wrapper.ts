@@ -44,6 +44,8 @@ export async function toolWrapper(
       ],
     };
   } catch (error: unknown) {
+    // TODO(https://github.com/googleapis/gcloud-mcp/issues/80): Update to use the custom logger once it's made sharable between packages
+    // eslint-disable-next-line no-console
     console.error('Error in toolWrapper:', error);
     if (error instanceof Error) {
       return {
