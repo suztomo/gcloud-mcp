@@ -60,14 +60,6 @@ export class Logger {
     return Logger.singletonInstance;
   }
 
-  setGlobalContext(data: Record<string, unknown>): void {
-    this.metadata = { ...this.metadata, ...data };
-  }
-
-  clearGlobalContext(): void {
-    this.metadata = {};
-  }
-
   withContext(data: Record<string, unknown>): Logger {
     const newLogger = Object.create(this);
     newLogger.metadata = { ...this.metadata, ...data };

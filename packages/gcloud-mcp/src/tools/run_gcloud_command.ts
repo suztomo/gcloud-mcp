@@ -47,7 +47,6 @@ export const createRunGcloudCommand = (denylist: string[] = []) => ({
       },
       async ({ args }) => {
         const toolLogger = log.mcp('run_gcloud_command', args);
-        toolLogger.info('run_gcloud_command called');
         const command = args.join(' ');
         try {
           // Lint parses and isolates the gcloud command from flags and positionals.

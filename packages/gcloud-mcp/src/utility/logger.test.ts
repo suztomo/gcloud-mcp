@@ -20,16 +20,14 @@ import type { Logger as LoggerType, log as logType } from './logger.js';
 
 describe('Logger', () => {
   // These will be populated in beforeEach after resetting modules
-  let Logger: typeof LoggerType;
   let log: typeof logType;
   let logger: LoggerType;
 
   beforeEach(async () => {
     vi.resetModules();
     const LoggerModule = await import('./logger.js');
-    Logger = LoggerModule.Logger;
     log = LoggerModule.log;
-    logger = Logger.instance;
+    logger = LoggerModule.logger;
 
     vi.spyOn(console, 'error').mockImplementation(() => {});
     vi.useFakeTimers();
@@ -42,36 +40,17 @@ describe('Logger', () => {
     delete process.env.LOG_LEVEL;
   });
 
-  test('should be a singleton', () => {
-    const anotherInstance = Logger.instance;
-    expect(logger).toBe(anotherInstance);
-  });
-
   describe('Context Management', () => {
-    test('setGlobalContext should add to the context', () => {
-      logger.setGlobalContext({ user: 'test' });
-      logger.info('test message');
-      expect(console.error).toHaveBeenCalledWith('[2025-01-01T00:00:00.000Z] INFO: test message | {"user":"test"}');
-    });
-
-    test('clearGlobalContext should clear the context', () => {
-      logger.setGlobalContext({ user: 'test' });
-      logger.clearGlobalContext();
-      logger.info('test message');
-      expect(console.error).toHaveBeenCalledWith('[2025-01-01T00:00:00.000Z] INFO: test message');
-    });
-
     test('withContext should create a new logger with extended context', () => {
-      logger.setGlobalContext({ global: 'context' });
       const contextualLogger = logger.withContext({ local: 'context' });
       contextualLogger.info('contextual message');
       expect(console.error).toHaveBeenCalledWith(
-        '[2025-01-01T00:00:00.000Z] INFO: contextual message | {"global":"context","local":"context"}',
+        '[2025-01-01T00:00:00.000Z] INFO: contextual message | {"local":"context"}',
       );
       // Ensure original logger is not affected
       logger.info('original message');
       expect(console.error).toHaveBeenCalledWith(
-        '[2025-01-01T00:00:00.000Z] INFO: original message | {"global":"context"}',
+        '[2025-01-01T00:00:00.000Z] INFO: original message',
       );
     });
   });
@@ -81,8 +60,7 @@ describe('Logger', () => {
       process.env.LOG_LEVEL = 'debug';
       // Re-import to pick up env var change
       vi.resetModules();
-      const { Logger: DebugLogger } = await import('./logger.js');
-      const debugLogger = DebugLogger.instance;
+      const { logger: debugLogger } = await import('./logger.js');
       debugLogger.debug('debug message');
       expect(console.error).toHaveBeenCalledWith('[2025-01-01T00:00:00.000Z] DEBUG: debug message');
     });
@@ -126,8 +104,7 @@ describe('Logger', () => {
     test('should only log error if level is error', async () => {
       process.env.LOG_LEVEL = 'error';
       vi.resetModules();
-      const { Logger: ErrorLogger } = await import('./logger.js');
-      const errorLogger = ErrorLogger.instance;
+      const { logger: errorLogger } = await import('./logger.js');
       errorLogger.debug('debug');
       errorLogger.info('info');
       errorLogger.warn('warn');
