@@ -14,148 +14,142 @@
  * limitations under the License.
  */
 
-export enum LogLevel {
-  DEBUG = 0,
-  INFO = 1,
-  WARN = 2,
-  ERROR = 3,
-}
+// Define the severity levels for log messages.
+export type LogSeverity = 'debug' | 'info' | 'warn' | 'error';
 
-export interface LogEntry {
+// Maps severity strings to numerical levels for filtering.
+const SeverityLevels: Record<LogSeverity, number> = {
+  debug: 0,
+  info: 1,
+  warn: 2,
+  error: 3,
+};
+
+/**
+ * Represents a single log record.
+ */
+export interface LogRecord {
   timestamp: string;
-  level: LogLevel;
+  severity: LogSeverity;
   message: string;
   context?: Record<string, unknown>;
   error?: Error;
 }
 
+/**
+ * A flexible logger for recording application events.
+ * This class is designed as a singleton to provide a single logging instance.
+ */
 export class Logger {
-  private static instance: Logger;
-  private logLevel: LogLevel;
-  private context: Record<string, unknown> = {};
+  private static singletonInstance: Logger;
+  private minSeverity: number;
+  private metadata: Record<string, unknown> = {};
 
   private constructor() {
-    const envLevel = process.env.LOG_LEVEL?.toLowerCase();
-    switch (envLevel) {
-      case 'debug':
-        this.logLevel = LogLevel.DEBUG;
-        break;
-      case 'info':
-        this.logLevel = LogLevel.INFO;
-        break;
-      case 'warn':
-        this.logLevel = LogLevel.WARN;
-        break;
-      case 'error':
-        this.logLevel = LogLevel.ERROR;
-        break;
-      default:
-        this.logLevel = LogLevel.INFO;
+    const envSeverity = process.env.LOG_LEVEL?.toLowerCase() as LogSeverity;
+    this.minSeverity = SeverityLevels[envSeverity] ?? SeverityLevels.info;
+  }
+
+  /**
+   * Retrieves the single instance of the Logger.
+   */
+  static get instance(): Logger {
+    if (!Logger.singletonInstance) {
+      Logger.singletonInstance = new Logger();
     }
+    return Logger.singletonInstance;
   }
 
-  static getInstance(): Logger {
-    if (!Logger.instance) {
-      Logger.instance = new Logger();
-    }
-    return Logger.instance;
+  setGlobalContext(data: Record<string, unknown>): void {
+    this.metadata = { ...this.metadata, ...data };
   }
 
-  setContext(context: Record<string, unknown>): void {
-    this.context = { ...this.context, ...context };
+  clearGlobalContext(): void {
+    this.metadata = {};
   }
 
-  clearContext(): void {
-    this.context = {};
+  withContext(data: Record<string, unknown>): Logger {
+    const newLogger = Object.create(this);
+    newLogger.metadata = { ...this.metadata, ...data };
+    return newLogger;
   }
 
-  withContext(context: Record<string, unknown>): Logger {
-    const logger = Object.create(this);
-    logger.context = { ...this.context, ...context };
-    return logger;
+  debug(message: string, data?: Record<string, unknown>): void {
+    this.write('debug', message, data);
   }
 
-  private log(level: LogLevel, message: string, context?: Record<string, unknown>, error?: Error): void {
-    if (level < this.logLevel) {
+  info(message: string, data?: Record<string, unknown>): void {
+    this.write('info', message, data);
+  }
+
+  warn(message: string, data?: Record<string, unknown>): void {
+    this.write('warn', message, data);
+  }
+
+  error(message: string, error?: Error, data?: Record<string, unknown>): void {
+    this.write('error', message, data, error);
+  }
+
+  private write(severity: LogSeverity, message: string, context?: Record<string, unknown>, error?: Error): void {
+    if (SeverityLevels[severity] < this.minSeverity) {
       return;
     }
 
-    const entry: LogEntry = {
+    const record: LogRecord = {
       timestamp: new Date().toISOString(),
-      level,
+      severity,
       message,
-      context: { ...this.context, ...context },
+      context: { ...this.metadata, ...context },
       error,
     };
 
-    const levelString = LogLevel[level];
-    const contextString = Object.keys(entry.context || {}).length > 0 
-      ? ` | ${JSON.stringify(entry.context)}` 
-      : '';
-    
+    const contextString =
+      record.context && Object.keys(record.context).length > 0 ? ` | ${JSON.stringify(record.context)}` : '';
+
     const errorString = error ? ` | Error: ${error.message}` : '';
 
-    const logMessage =
+    const formattedMessage =
       process.env.NODE_ENV === 'test'
-        ? `${levelString}: ${message}${contextString}${errorString}`
-        : `[${entry.timestamp}] ${levelString}: ${message}${contextString}${errorString}`;
+        ? `${record.severity.toUpperCase()}: ${message}${contextString}${errorString}`
+        : `[${record.timestamp}] ${record.severity.toUpperCase()}: ${message}${contextString}${errorString}`;
 
     // Use console.error for all levels to ensure MCP server logs are captured
-    console.error(logMessage);
+    console.error(formattedMessage);
 
-    if (error && error.stack) {
+    if (error?.stack) {
       console.error('Stack trace:', error.stack);
     }
   }
 
-  debug(message: string, context?: Record<string, unknown>): void {
-    this.log(LogLevel.DEBUG, message, context);
-  }
-
-  info(message: string, context?: Record<string, unknown>): void {
-    this.log(LogLevel.INFO, message, context);
-  }
-
-  warn(message: string, context?: Record<string, unknown>): void {
-    this.log(LogLevel.WARN, message, context);
-  }
-
-  error(message: string, error?: Error, context?: Record<string, unknown>): void {
-    this.log(LogLevel.ERROR, message, context, error);
-  }
-
-  // Performance logging helpers
   startTimer(operation: string): () => void {
-    const startTime = Date.now();
+    const startTime = performance.now();
     return () => {
-      const duration = Date.now() - startTime;
-      this.info(`Operation completed`, { 
-        operation, 
-        duration: `${duration}ms` 
+      const duration = performance.now() - startTime;
+      this.info(`Operation completed`, {
+        operation,
+        duration: `${duration.toFixed(2)}ms`,
       });
     };
   }
 
-  // MCP tool logging
   mcpTool(toolName: string, input?: unknown): Logger {
     return this.withContext({
       operation: 'mcp-tool',
       tool: toolName,
-      inputKeys: input ? Object.keys(input) : [],
+      input,
     });
   }
-
 }
 
-// Export singleton instance
-export const logger = Logger.getInstance();
+// Export a singleton instance for convenience.
+export const logger = Logger.instance;
 
-// Export convenience functions
+// Export a collection of convenience functions for easy access.
 export const log = {
-  debug: (message: string, context?: Record<string, unknown>) => logger.debug(message, context),
-  info: (message: string, context?: Record<string, unknown>) => logger.info(message, context),
-  warn: (message: string, context?: Record<string, unknown>) => logger.warn(message, context),
-  error: (message: string, error?: Error, context?: Record<string, unknown>) => logger.error(message, error, context),
-  timer: (operation: string) => logger.startTimer(operation),
-  mcp: (toolName: string, input?: unknown) => logger.mcpTool(toolName, input),
+  debug: logger.debug.bind(logger),
+  info: logger.info.bind(logger),
+  warn: logger.warn.bind(logger),
+  error: logger.error.bind(logger),
+  timer: logger.startTimer.bind(logger),
+  mcp: logger.mcpTool.bind(logger),
 };
