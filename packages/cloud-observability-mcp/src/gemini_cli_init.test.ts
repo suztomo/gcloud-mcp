@@ -18,6 +18,8 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { initializeGeminiCLI } from './gemini_cli_init.js';
 import { vol } from 'memfs';
 import pkg from '../package.json' with { type: 'json' };
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
 vi.mock('fs/promises', async () => {
   const memfs = await vi.importActual<typeof import('memfs')>('memfs');
@@ -26,12 +28,14 @@ vi.mock('fs/promises', async () => {
 
 describe('initializeGeminiCLI', () => {
   const CWD = '/test/cwd';
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
 
   beforeEach(() => {
     process.env['INIT_CWD'] = CWD;
+    const geminiMdPath = join(__dirname, '../GEMINI-extension.md');
     vol.fromJSON({
-      '/usr/local/google/home/wjacquette/gcloud-mcp/packages/cloud-observability-mcp/GEMINI-extension.md':
-        'gemini md content',
+      [geminiMdPath]: 'gemini md content',
     });
   });
 
