@@ -108,10 +108,7 @@ export class Logger {
 
     const errorString = error ? ` | Error: ${error.message}` : '';
 
-    const formattedMessage =
-      process.env.NODE_ENV === 'test'
-        ? `${record.severity.toUpperCase()}: ${message}${contextString}${errorString}`
-        : `[${record.timestamp}] ${record.severity.toUpperCase()}: ${message}${contextString}${errorString}`;
+    const formattedMessage = `[${record.timestamp}] ${record.severity.toUpperCase()}: ${message}${contextString}${errorString}`;
 
     // Use console.error for all levels to ensure MCP server logs are captured
     console.error(formattedMessage);
