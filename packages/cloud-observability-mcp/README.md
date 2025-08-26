@@ -1,15 +1,21 @@
 # Google Cloud Observability MCP Server
 
 > [!NOTE]
-> Like the overall repository, this MCP server is currently in prerelease, and may see breaking changes
-> until the first stable release (v1.0).
+> Like the overall repository, this MCP server is currently in prerelease, and
+> may see breaking changes until the first stable release (v1.0).
 > * This repository is providing a _solution_, not an officially supported
-> Google _product_. This project is not eligible for the [Google Open Source Software Vulnerability Rewards Program](https://bughunters.google.com/open-source-security).
+> Google _product_. This project is not eligible for the
+> [Google Open Source Software Vulnerability Rewards Program](https://bughunters.google.com/open-source-security).
 > * This project may break when the MCP specification changes, when other
 > SDKs change, or when other solutions or products change.
 > * This solution is expected to be run by customers **at their own risk**.
 
-This server connects [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) clients (like the [Gemini CLI](https://github.com/google-gemini/gemini-cli)) to various **Google Cloud Observability APIs**. It acts as a local bridge, translating natural language commands from your CLI into the appropriate API calls to help you **understand, manage, and troubleshoot** your Google Cloud environment.
+This server connects
+[Model Context Protocol (MCP)](https://modelcontextprotocol.io/) clients (like
+the [Gemini CLI](https://github.com/google-gemini/gemini-cli)) to various
+**Google Cloud Observability APIs**. It acts as a local bridge, translating
+natural language commands from your CLI into the appropriate API calls to help
+you **understand, manage, and troubleshoot** your Google Cloud environment.
 
 > To learn more about the underlying services, see the official documentation:
 > * [Cloud Logging](https://cloud.google.com/logging/docs)
@@ -36,7 +42,13 @@ gcloud auth application-default login
 
 #### Setting the Quota Project
 
-All API requests made by this server require a Google Cloud project for billing and API quota management. This is known as the "quota project". This project will likely already be set in the gcloud CLI. The project selected as the quota project will need to have the APIs you wish to use in Observability enabled or you will see errors when attempting to use their related tools (e.g. you need the Cloud Logging API enabled in the quota project to use the list_log_entries tool).
+All API requests made by this server require a Google Cloud project for
+billing and API quota management. This is known as the "quota project". This
+project will likely already be set in the gcloud CLI. The project selected as
+the quota project will need to have the APIs you wish to use in Observability
+enabled or you will see errors when attempting to use their related tools (e.g.
+you need the Cloud Logging API enabled in the quota project to use the
+list_log_entries tool).
 
 If you need to control which project is used for quotas, run the following command (https://cloud.google.com/sdk/gcloud/reference/auth/application-default/set-quota-project):
 
@@ -62,19 +74,19 @@ Your MCP client will translate these questions into the appropriate tool calls t
 
 The server exposes the following tools:
 
-| Service | Tool | Description |
-| --- | --- | --- |
-| **Error Reporting** | `list_group_stats` | Lists the error groups for a project. |
-| **Logging** | `list_log_entries` | Lists log entries from a project. |
-| | `list_buckets` | Lists log buckets from a project. |
-| | `list_views` | Lists log views from a project. |
-| | `list_sinks` | Lists log sinks from a project. |
-| | `list_log_scopes` | Lists log scopes from a project. |
-| **Monitoring** | `list_metric_descriptors` | Lists metric descriptors for a project. |
-| | `list_time_series` | Lists time series data for a given metric. |
-| | `list_alert_policies` | Lists the alert policies in a project. |
-| | `list_notification_channels` | Lists the notification channels in a project. |
-| **Trace** | `list_traces` | Searches for traces in a project. |
+| Service             | Tool                         | Description                                   |
+|---------------------|------------------------------|-----------------------------------------------|
+| **Logging**         | `list_log_entries`           | Lists log entries from a project.             |
+|                     | `list_buckets`               | Lists log buckets from a project.             |
+|                     | `list_views`                 | Lists log views from a project.               |
+|                     | `list_sinks`                 | Lists log sinks from a project.               |
+|                     | `list_log_scopes`            | Lists log scopes from a project.              |
+| **Monitoring**      | `list_metric_descriptors`    | Lists metric descriptors for a project.       |
+|                     | `list_time_series`           | Lists time series data for a given metric.    |
+|                     | `list_alert_policies`        | Lists the alert policies in a project.        |
+|                     | `list_notification_channels` | Lists the notification channels in a project. |
+| **Trace**           | `list_traces`                | Searches for traces in a project.             |
+| **Error Reporting** | `list_group_stats`           | Lists the error groups for a project.         |
 
 
 ## 👥 Contributing

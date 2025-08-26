@@ -41,8 +41,8 @@ export const registerTools = (server: McpServer): void => {
       resourceNames: z
         .array(z.string())
         .describe(
-          `Required. Names of one or more parent resources from which to retrieve log entries (e.g. 'projects/[PROJECT_ID]').
-          Resources may either be resource containers or specific LogViews.
+          `Required. Names of one or more parent resources from which to retrieve log entries.
+          Resources may either be resource containers (e.g. 'projects/[PROJECT_ID]') or specific LogViews (e.g. 'projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]').
           For the case of resource containers, all logs ingested into that container will be returned regardless of which LogBuckets they are actually stored in - i.e. these queries may fan out to multiple regions.
           Projects listed in the project_ids field are added to this list.
           A maximum of 100 resources may be specified in a single request.`

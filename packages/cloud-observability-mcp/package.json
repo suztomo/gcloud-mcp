@@ -26,7 +26,6 @@
     "directory": "packages/cloud-observability-mcp"
   },
   "keywords": [
-    "gcloud",
     "gcp",
     "google cloud",
     "mcp",
