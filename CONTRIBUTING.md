@@ -100,119 +100,6 @@ https://go.dev/ref/mod#versions.
 Fixes https://github.com/googleapis/gcloud-mcp/issues/12345
 ```
 
-## Filing a new issue
-
-All changes, except trivial ones, should start with a GitHub issue.
-
-This process gives everyone a chance to validate the design, helps prevent
-duplication of effort, and ensures that the idea fits inside the goals for the
-language and tools. It also checks that the design is sound before code is
-written; the code review tool is not the place for high-level discussions.
-
-Significant changes must go through a design review process before they are
-accepted.
-
-All issues should have a path prefix to indicate the relevant domain. For
-issues related to the gcloud-mcp codebase, use the package name as a prefix (for
-example, `gcloud-mcp:` or `cli:`). For issues related to code outside this
-repository, use the repository name (for example, `google-cloud-python`).
-
-Aside from proper nouns, issue titles should use lowercase.
-
-Always include a clear description in the body of the issue. The description
-should provide enough context for any team member to understand the problem or
-request without needing to contact you directly for clarification.
-
-Default to assigning the issue to someone if there’s a clear owner. Otherwise,
-leave it for triage.
-
-## Leaving a TODO
-
-When adding a TODO to the codebase, always include a link to an issue, no
-matter how small the task.
-
-Use the format:
-
-```
-// TODO(https://github.com/googleapis/gcloud-mcp/issues/<number>): explain what needs to be done
-```
-
-This helps provide context for future readers and keeps the TODO relevant and
-actionable as the project evolves.
-
-## Sending a pull request
-
-All code changes must go through a pull request. First-time contributors should
-review
-[GitHub flow](https://docs.github.com/en/get-started/using-github/github-flow).
-
-Before sending a pull request, it should include tests if there are logic
-changes, copyright headers in every file, and a commit message following the
-conventions in "Commit messages" section below.
-
-A pull request can be opened from a branch within the repository or from a
-fork. External contributors are only able to open pull requests from forks,
-but team members with write access can choose to open a pull request from a
-repository branch.
-
-### Pull request from a fork
-
-If you open a pull request from a personal fork, you should allow repository
-maintainers to make edits to your fork by turning on
-"Allow edits from maintainers".
-
-Please see [creating a pull request from a fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)
-in the official GitHub documentation for details.
-
-### Pull request from a branch
-
-If you are a team member with write access, you can create a branch within the
-repository with your changes and open a pull request from it. After the pull
-request is merged, the branch will be automatically deleted.
-
-You should not have any long-lived branches within the repository without an
-open pull request. Such non-protected branches that don't have an associated
-open pull request, will be periodically cleaned up.
-
-Please see [changing the branch range and destination repository](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request#changing-the-branch-range-and-destination-repository)
-in the official GitHub documentation for details.
-
-### Pull requests with multiple commits
-
-When opening a pull request, it can be helpful to structure the commits for review. If
-your pull request has multiple commits, note in the description whether reviewers should
-review them individually or just focus on the final result. (For example, if
-earlier commits are exploratory and only the end state matters, make that clear
-to avoid wasting reviewer time.)
-
-### Keeping pull requests up to date with base branch
-
-The repository is configured to not require branches to be up to date before merging.
-This means that you do not have to have the latest changes from the base branch
-integrated, unless GitHub detects merge conflicts.
-
-To minimize the risk of the pull request getting out of date with the base branch, enable
-[auto-merge](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/automatically-merging-a-pull-request)
-so that the pull request submits as soon as it is approved and the checks pass.
-
-## Commit messages
-
-Commit messages for gcloud-mcp follow the conventions below.
-
-Here is an example:
-
-```
-feat(internal/gcloud-mcp): add version subcommand
-
-A version subcommand is added to gcloud-mcp, which prints the current version of
-the tool.
-
-The version follows the versioning conventions described at
-https://go.dev/ref/mod#versions.
-
-Fixes https://github.com/googleapis/gcloud-mcp/issues/12345
-```
-
 ### First line
 
 The first line of the change description is a short one-line summary of the
@@ -225,12 +112,12 @@ https://www.conventionalcommits.org/en/v1.0.0/#summary.
 
 #### package
 
-The name of the package affected by the change, and should by provided in
+The name of the package affected by the change, and should be provided in
 parentheses before the colon.
 
 #### description
 
-A short one-line summary of the change, that it should be written so to complete
+A short one-line summary of the change, that should be written to complete
 the sentence "This change modifies gcloud-mcp to ..." That means it does not
 start with a capital letter, is not a complete sentence, and actually
 summarizes the result of the change. Note that the verb after the colon is
@@ -264,6 +151,32 @@ applied.
 
 Please don’t use alternate GitHub-supported aliases like Close or Resolves
 instead of Fixes.
+
+## Filing a new issue
+
+All changes, except trivial ones, should start with a GitHub issue.
+
+This process gives everyone a chance to validate the design, helps prevent
+duplication of effort, and ensures that the idea fits inside the goals for the
+language and tools. It also checks that the design is sound before code is
+written; the code review tool is not the place for high-level discussions.
+
+Significant changes must go through a design review process before they are
+accepted.
+
+All issues should have a path prefix to indicate the relevant domain. For
+issues related to the gcloud-mcp codebase, use the package name as a prefix (for
+example, `gcloud-mcp:` or `cli:`). For issues related to code outside this
+repository, use the repository name (for example, `google-cloud-python`).
+
+Aside from proper nouns, issue titles should use lowercase.
+
+Always include a clear description in the body of the issue. The description
+should provide enough context for any team member to understand the problem or
+request without needing to contact you directly for clarification.
+
+Default to assigning the issue to someone if there’s a clear owner. Otherwise,
+leave it for triage.
 
 ## The review process
 
@@ -327,49 +240,16 @@ After pushing,
 [click the button](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/requesting-a-pull-request-review#requesting-reviews-from-collaborators-and-organization-members)
 to ask a reviewer to re-request your review.
 
-## Language guidelines
+## Leaving a TODO
 
-Unless there is a clear reason otherwise, all new code should be written in Go.
-Please avoid writing Bash scripts. If you believe non-Go code is necessary,
-file an issue following the guidelines above and include a clear justification.
+When adding a TODO to the codebase, always include a link to an issue, no
+matter how small the task.
 
-See the guidelines for
-[How We Write Go](https://github.com/googleapis/gcloud-mcp/blob/main/doc/how-we-write-go.md).
+Use the format:
 
-## Expectations for the team
+```
+// TODO(https://github.com/googleapis/gcloud-mcp/issues/<number>): explain what needs to be done
+```
 
-A lot of our communication will happen on GitHub issues. Team members are
-expected to configure their inboxes to receive GitHub notifications alerts for
-all issues and pull requests to ensure effective communication.
-
-If a pull request becomes inactive or misaligned with current priorities, we
-may close it to respect contributor and reviewer time. If you’d like to revisit
-it, just comment and reopen the conversation.
-
-If your pull request or issue is stuck, feel free to follow up over chat. We
-encourage it!
-
-### Reviewing a pull request
-
-While we don’t have strict SLOs, we aim to review pull requests within **4
-business hours**.
-
-When reviewing a pull request:
-
-- Start by reading the PR description to understand the purpose and context. If
-  the commit message doesn’t follow the
-  [commit message guidelines](https://github.com/googleapis/gcloud-mcp/blob/main/CONTRIBUTING.md#commit-messages),
-  request changes.
-- Use `Approve` or `Request changes` explicitly. Avoid leaving ambiguous
-  feedback.
-- Focus on what is in scope. If unrelated issues arise, suggest filing a
-  separate PR or issue.
-- If you’ve requested changes, approve the PR once the updates are
-  satisfactory, even if the author forgot to click the re-request review.
-- If a review has stalled or the context has shifted, leave a comment to
-  clarify expectations, or close the PR. Keeping the
-  [dashboard clean](https://github.com/googleapis/gcloud-mcp/blob/main/CONTRIBUTING.md#keeping-the-pull-request-dashboard-clean)
-  is encouraged, and new PRs are easy to open.
-- The
-  [user-review-requested:@me](https://github.com/googleapis/gcloud-mcp/pulls?q=is%3Apr+is%3Aopen+user-review-requested%3A%40me)
-  search view is helpful for tracking PRs awaiting your review.
+This helps provide context for future readers and keeps the TODO relevant and
+actionable as the project evolves.
