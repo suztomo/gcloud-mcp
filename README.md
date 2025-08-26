@@ -6,8 +6,6 @@ The gcloud [Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/g
 - **Automate and simplify complex workflows.** Chain multiple cloud operations into a single, repeatable command to reduce manual effort and the chance of error.
 - **Lower the barrier to entry for cloud management.** Empower team members who are less familiar with gcloud to perform powerful actions confidently and safely.
 
-![Google Cloud MCP screenshot](./doc/assets/gemini-gcloud-mcp-screenshot.png)
-
 ## 🚀 Getting Started
 
 ### Prerequisites
