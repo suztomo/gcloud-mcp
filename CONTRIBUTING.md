@@ -152,32 +152,6 @@ applied.
 Please don’t use alternate GitHub-supported aliases like Close or Resolves
 instead of Fixes.
 
-## Filing a new issue
-
-All changes, except trivial ones, should start with a GitHub issue.
-
-This process gives everyone a chance to validate the design, helps prevent
-duplication of effort, and ensures that the idea fits inside the goals for the
-language and tools. It also checks that the design is sound before code is
-written; the code review tool is not the place for high-level discussions.
-
-Significant changes must go through a design review process before they are
-accepted.
-
-All issues should have a path prefix to indicate the relevant domain. For
-issues related to the gcloud-mcp codebase, use the package name as a prefix (for
-example, `gcloud-mcp:` or `cli:`). For issues related to code outside this
-repository, use the repository name (for example, `google-cloud-python`).
-
-Aside from proper nouns, issue titles should use lowercase.
-
-Always include a clear description in the body of the issue. The description
-should provide enough context for any team member to understand the problem or
-request without needing to contact you directly for clarification.
-
-Default to assigning the issue to someone if there’s a clear owner. Otherwise,
-leave it for triage.
-
 ## The review process
 
 This section explains the review process in detail and how to approach reviews
