@@ -38,26 +38,14 @@ export interface LogRecord {
 
 /**
  * A flexible logger for recording application events.
- * This class is designed as a singleton to provide a single logging instance.
  */
 export class Logger {
-  private static singletonInstance: Logger;
   private minSeverity: number;
   private metadata: Record<string, unknown> = {};
 
-  private constructor() {
+  constructor() {
     const envSeverity = process.env.LOG_LEVEL?.toLowerCase() as LogSeverity;
     this.minSeverity = SeverityLevels[envSeverity] ?? SeverityLevels.info;
-  }
-
-  /**
-   * Retrieves the single instance of the Logger.
-   */
-  static get instance(): Logger {
-    if (!Logger.singletonInstance) {
-      Logger.singletonInstance = new Logger();
-    }
-    return Logger.singletonInstance;
   }
 
   withContext(data: Record<string, unknown>): Logger {
@@ -129,8 +117,8 @@ export class Logger {
   }
 }
 
-// Export a singleton instance for convenience.
-export const logger = Logger.instance;
+// Export a default logger instance for convenience.
+export const logger = new Logger();
 
 // Export a collection of convenience functions for easy access.
 export const log = {
