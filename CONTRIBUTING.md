@@ -23,7 +23,6 @@ two reviewers. Consult
 [GitHub Help](https://help.github.com/articles/about-pull-requests/) for more
 information on using pull requests.
 
-
 ### Multi-Approvers Check
 
 Each pull request must be approved by two Googlers. This is enforced by an
@@ -50,22 +49,9 @@ expect when engaging with this repository.
 
 ---
 
-# How We Work
+## Contribution Process
 
-The gcloud-mcp project is maintained primarily by the internal Cloud SDK team. 
-While the repository is open source, we operate with a limited contribution model.
-
-## Becoming a contributor
-
-Review the guide for
-[Onboarding to gcloud-mcp](https://github.com/googleapis/gcloud-mcp/blob/main/doc/onboarding.md).
-
-To contribute to this repository, ask a member of
-[gcloud-mcp-admin](https://github.com/orgs/googleapis/teams/gcloud-mcp-admin)
-to add you to the
-[gcloud-mcp-team](https://github.com/orgs/googleapis/teams/gcloud-mcp-team).
-
-## Before contributing code
+### Before contributing code
 
 Before doing any significant work, open an issue to propose your idea and
 ensure alignment. You can either
@@ -76,22 +62,43 @@ A pull request (PR) that does not go through this coordination process may be
 closed to avoid wasted effort.
 
 Make sure your code follows the guidelines at
-[How We Write Go](https://github.com/googleapis/gcloud-mcp/blob/main/doc/how-we-write-go.md).
+[How We Write Typescript](doc/how-we-write-typescript.md).
 
 ## Checking the issue tracker
 
 We use GitHub issues to track tasks, bugs, and discussions.
 
-> _If it didn’t happen in a GitHub issue, it never happened._
+All changes, except trivial ones, should start with a GitHub issue. This process gives everyone a chance to validate the design, helps prevent duplication of effort, and ensures that the idea fits inside the goals for the language and tools. It also checks that the design is sound before code is written; the code review tool is not the place for high-level discussions.
 
-Use the [issue tracker](https://github.com/googleapis/gcloud-mcp/issues) as your
-source of truth.
+Always include a clear description in the body of the issue. The description should provide enough context for any team member to understand the problem or request without needing to contact you directly for clarification.
 
-Every issue will also have an associated
-[milestone](https://github.com/googleapis/gcloud-mcp/milestones). If an issue is
-not our roadmap, it will be under
-[Unplanned](https://github.com/googleapis/gcloud-mcp/milestone/1).
+## Sending a pull request
 
+All code changes must go through a pull request. First-time contributors should review [GitHub flow](https://docs.github.com/en/get-started/using-github/github-flow).
+
+Before sending a pull request, it should include tests if there are logic changes, copyright headers in every file, and a commit message following the conventions in "Commit messages" section below.
+
+A pull request can be opened from a branch within the repository or from a fork. External contributors are only able to open pull requests from forks, but team members with write access can choose to open a pull request from a repository branch.
+
+If you open a pull request from a personal fork, you should allow repository maintainers to make edits to your fork by turning on "Allow edits from maintainers".
+Please see [creating a pull request from a fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork) in the official GitHub documentation for details.
+
+## Commit messages
+
+Commit messages for gcloud-mcp follow the conventions below.
+Here is an example:
+
+```
+feat(internal/gcloud-mcp): add version subcommand
+
+A version subcommand is added to gcloud-mcp, which prints the current version of
+the tool.
+
+The version follows the versioning conventions described at
+https://go.dev/ref/mod#versions.
+
+Fixes https://github.com/googleapis/gcloud-mcp/issues/12345
+```
 
 ## Filing a new issue
 
@@ -116,7 +123,7 @@ Always include a clear description in the body of the issue. The description
 should provide enough context for any team member to understand the problem or
 request without needing to contact you directly for clarification.
 
-Default to assigning the issue to someone if there’s a clear owner. Otherwise, 
+Default to assigning the issue to someone if there’s a clear owner. Otherwise,
 leave it for triage.
 
 ## Leaving a TODO
@@ -287,9 +294,10 @@ If a merged pull request needs to be undone, for reasons such as breaking the bu
 standard process is to [revert it through the GitHub interface](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/reverting-a-pull-request).
 
 To revert a pull request:
+
 1.  Navigate to the merged pull request on GitHub.
 2.  Click the **Revert** button. This action automatically creates a new branch and a pull request containing the revert commit.
-3.  Edit the pull request title and description to comply with the [commit message guidelines](#commit-messages). 
+3.  Edit the pull request title and description to comply with the [commit message guidelines](#commit-messages).
 4.  The newly created revert pull request should be reviewed and merged following the same process as any other pull request.
 
 Using the GitHub "Revert" button is the preferred method over manually creating a revert commit using `git revert`.
@@ -327,7 +335,6 @@ file an issue following the guidelines above and include a clear justification.
 
 See the guidelines for
 [How We Write Go](https://github.com/googleapis/gcloud-mcp/blob/main/doc/how-we-write-go.md).
-
 
 ## Expectations for the team
 
