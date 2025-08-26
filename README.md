@@ -1,4 +1,4 @@
-# Gcloud MCP ☁️
+# gcloud MCP ☁️
 
 The gcloud [Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/getting-started/intro) server enables AI assistants to easily interact with the Google Cloud environment using the gcloud CLI. With the gcloud MCP you can:
 
@@ -33,7 +33,7 @@ To use gcloud MCP with other clients, add the following to their respective JSON
 
 ```json
 "mcpServers": {
-  "gcloud-mcp": {
+  "gcloud": {
     "command": "npx",
     "args": ["-y", "@google-cloud/gcloud-mcp"]
   }
