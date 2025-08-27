@@ -11,8 +11,7 @@
     "url": "https://github.com/googleapis/gcloud-mcp.git"
   },
   "bin": {
-    "gcloud-mcp": "./packages/gcloud-mcp/dist/src/index.js",
-    "cloud-observability-mcp": "./packages/cloud-observability-mcp/dist/src/server.js"
+    "gcloud-mcp": "./packages/gcloud-mcp/dist/src/index.js"
   },
   "scripts": {
     "build": "turbo run build",
