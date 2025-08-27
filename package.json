@@ -23,7 +23,7 @@
     "clean": "gts clean",
     "compile": "tsc -p .",
     "fix": "gts fix",
-    "prepare": "npm run compile && npm install",
+    "prepare": "npm run compile && node esbuild.config.js",
     "pretest": "npm run compile",
     "posttest": "npm run lint"
   },
