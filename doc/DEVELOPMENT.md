@@ -18,8 +18,6 @@ cd gcloud-mcp
 
 ```shell
 npm install
-npm install -g
-npm run build
 npm install -g @google/gemini-cli # If not already installed
 ```
 
