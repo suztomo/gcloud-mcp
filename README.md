@@ -46,6 +46,10 @@ Instructions for popular tools:
 - **Visual Studio Code:** Edit `.vscode/mcp.json` for a single project or your global user settings file for all projects.
 - **Gemini CLI (Manual Setup):** If not using extensions, edit `.gemini/settings.json` for a single project or `~/.gemini/settings.json` for all projects.
 
+## 🛠️ Local Development
+
+For more information regarding installing the repository locally, please see [development.md](doc/DEVELOPMENT.md)
+
 ## 🧰 Available MCP Tools
 
 This server exposes a single tool, `run_gcloud_command`, which executes a gcloud command. Some commands have been restricted from execution by the agent. See [denylist.md](doc/denylist.md) for more information.
