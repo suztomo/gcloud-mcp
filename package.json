@@ -11,7 +11,6 @@
     "url": "https://github.com/googleapis/gcloud-mcp.git"
   },
   "bin": {
-    // "gcloud-mcp": "./bundle/gcloud.js"
     "gcloud-mcp": "./packages/gcloud-mcp/dist/src/index.js"
   },
   "scripts": {
@@ -24,7 +23,7 @@
     "clean": "gts clean",
     "compile": "tsc -p .",
     "fix": "gts fix",
-    "prepare": "npm run compile && node install",
+    "prepare": "npm run compile && npm install",
     "pretest": "npm run compile",
     "posttest": "npm run lint"
   },
