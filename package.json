@@ -23,7 +23,7 @@
     "clean": "gts clean",
     "compile": "tsc -p .",
     "fix": "gts fix",
-    "prepare": "npm run compile && npm run install",
+    "prepare": "npm run compile && npm run build && npm run install",
     "pretest": "npm run compile",
     "posttest": "npm run lint"
   },
