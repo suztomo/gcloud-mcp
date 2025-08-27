@@ -1,21 +1,12 @@
-# Google Cloud Observability MCP Server
-
-> [!NOTE]
-> Like the overall repository, this MCP server is currently in prerelease, and
-> may see breaking changes until the first stable release (v1.0).
-> * This repository is providing a _solution_, not an officially supported
-> Google _product_. This project is not eligible for the
-> [Google Open Source Software Vulnerability Rewards Program](https://bughunters.google.com/open-source-security).
-> * This project may break when the MCP specification changes, when other
-> SDKs change, or when other solutions or products change.
-> * This solution is expected to be run by customers **at their own risk**.
+# Google Cloud Observability MCP Server ☁️
 
 This server connects
 [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) clients (like
-the [Gemini CLI](https://github.com/google-gemini/gemini-cli)) to various
-**Google Cloud Observability APIs**. It acts as a local bridge, translating
-natural language commands from your CLI into the appropriate API calls to help
-you **understand, manage, and troubleshoot** your Google Cloud environment.
+the [Gemini CLI](https://github.com/google-gemini/gemini-cli)) to Cloud
+Oservability APIs to search for logs, view metrics, return traces and view error
+reports.  It acts as a local bridge, translating natural language commands 
+from your CLI into the appropriate API calls to help you
+**understand, manage, and troubleshoot** your Google Cloud environment.
 
 > To learn more about the underlying services, see the official documentation:
 > * [Cloud Logging](https://cloud.google.com/logging/docs)
@@ -46,7 +37,7 @@ All API requests made by this server require a Google Cloud project for
 billing and API quota management. This is known as the "quota project". This
 project will likely already be set in the gcloud CLI. The project selected as
 the quota project will need to have the APIs you wish to use in Observability
-enabled or you will see errors when attempting to use their related tools (e.g.
+**enabled** or you will see errors when attempting to use their related tools (e.g.
 you need the Cloud Logging API enabled in the quota project to use the
 list_log_entries tool).
 
@@ -66,7 +57,7 @@ Once the server is configured, you can ask your MCP client natural language ques
 *   **"Show me all logs with a severity of ERROR."**
 *   **"What is the average CPU utilization for my GCE instances over the last hour?"**
 *   **"List all traces from the past 30 minutes."**
-*   **"Are there any new error groups in the last day?"**
+*   **"Are there any new stack traces in my logs in the last day?"**
 
 Your MCP client will translate these questions into the appropriate tool calls to fetch the data from Google Cloud.
 
@@ -88,6 +79,11 @@ The server exposes the following tools:
 | **Trace**           | `list_traces`                | Searches for traces in a project.             |
 | **Error Reporting** | `list_group_stats`           | Lists the error groups for a project.         |
 
+## 🛡️ Important Notes
+
+This repository is currently in prerelease and may see breaking changes until the first stable release (v1.0).
+
+This repository is providing a solution, not an officially supported Google product. It may break when the MCP specification, other SDKs, or when other solutions and products change.
 
 ## 👥 Contributing
 
