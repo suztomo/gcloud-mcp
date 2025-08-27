@@ -48,7 +48,7 @@ Instructions for popular tools:
 
 ## 🛠️ Local Development
 
-For more information regarding install the repository locally, please see [development.md](doc/DEVELOPMENT.md)
+For more information regarding installing the repository locally, please see [development.md](doc/DEVELOPMENT.md)
 
 ## 🧰 Available MCP Tools
 
