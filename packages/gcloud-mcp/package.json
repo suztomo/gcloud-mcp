@@ -4,7 +4,7 @@
   "type": "module",
   "main": "dist/src/index.js",
   "bin": {
-    "gcloud-mcp": "./dist/src/index.js"
+    "gcloud-mcp-mama": "./dist/src/index.js"
   },
   "scripts": {
     "build": "tsc -p . && cp GEMINI-extension.md dist/",

@@ -11,11 +11,12 @@
     "url": "https://github.com/googleapis/gcloud-mcp.git"
   },
   "bin": {
-    "gcloud-mcp": "./packages/gcloud-mcp/dist/src/index.js",
+    "gcloud-mcp-potato": "./packages/gcloud-mcp/dist/src/index.js",
     "cloud-observability-mcp": "./packages/cloud-observability-mcp/dist/src/server.js"
   },
   "scripts": {
     "build": "turbo run build",
+    "bundle": "npm run generate && node esbuild.config.js && node scripts/copy_bundle_assets.js",
     "dev": "turbo run dev --parallel",
     "lint": "gts lint",
     "preflight": "npm ci && npm run format && npm run lint && npm run build && npm run test:ci",
@@ -24,7 +25,7 @@
     "clean": "gts clean",
     "compile": "tsc -p .",
     "fix": "gts fix",
-    "prepare": "npm run compile",
+    "prepare": "npm run bundle",
     "pretest": "npm run compile",
     "posttest": "npm run lint"
   },
