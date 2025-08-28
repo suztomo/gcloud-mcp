@@ -22,7 +22,7 @@ To integrate gcloud MCP with Gemini CLI or Gemini Code Assist, you can run a sin
 Run this command from your project's root directory (for a single project) or your home directory (for all projects):
 
 ```shell
-$ npx -y @google-cloud/gcloud-mcp init --agent=gemini-cli
+npx -y @google-cloud/gcloud-mcp init --agent=gemini-cli
 ```
 
 ### For other AI clients
