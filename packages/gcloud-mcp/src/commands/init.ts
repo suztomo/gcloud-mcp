@@ -37,7 +37,7 @@ export const init: CommandModule<object, InstallArgs> = {
         demandOption: true,
       })
       .option('local', {
-        describe: 'Use a local gcloud-mcp server for development.',
+        describe: '(Development only) Use a local build of the gcloud-mcp server.',
         type: 'boolean',
         default: false,
       }),
