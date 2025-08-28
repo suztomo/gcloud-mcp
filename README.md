@@ -25,6 +25,14 @@ Run this command from your project's root directory (for a single project) or yo
 npx -y @google-cloud/gcloud-mcp init --agent=gemini-cli
 ```
 
+After the initialization process, you can verify that the gcloud-mcp server has started by running the following command within the Gemini CLI:
+
+```
+/mcp
+```
+
+You should be able to see that the run_gcloud_command tool is now available.
+
 ### For other AI clients
 
 To use gcloud MCP with other clients, add the following to their respective JSON configuration files:
