@@ -4,4 +4,4 @@ The denylist feature serves as a robust security mechanism, regulating the execu
 
 **It is important to note that the denylist is not configurable by the user.**
 
-Due to security concerns, certain commands that allow for unauthorized access to remote machines or spawn subprocesses are prohibited. This is to protect the integrity of the agent and the systems it interacts with. The list of denied commands can be found in [index.ts](packages/gcloud-mcp/src/index.ts), the list is not comprehensive and may be updated in the future.
+For security and operational reasons, the MCP server is restricted from executing certain commands. Prohibited actions include any command that allows for arbitrary code execution on remote systems or spawns continuous, interactive subprocesses. A list of these commands can be found in [index.ts](packages/gcloud-mcp/src/index.ts). This list is not exhaustive and may be updated to reflect new security and operational requirements.
