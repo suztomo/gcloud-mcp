@@ -10,7 +10,7 @@ The gcloud [Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/g
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org)
+- [Node.js](https://nodejs.org). Version 20 or higher
 - [gcloud CLI](https://cloud.google.com/sdk/docs/install)
 
 ## ✨ Setup your MCP server
