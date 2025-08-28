@@ -4,7 +4,7 @@ The denylist feature serves as a robust security mechanism, regulating the execu
 
 **It is important to note that the denylist is not configurable by the user.**
 
-The following commands/groups have been identified as unsuitable for execution by any agent:
+Due to security concerns, certain commands that allow for unauthorized access to remote machines or spawn subprocesses are prohibited. This is to protect the integrity of the agent and the systems it interacts with. The following list contains examples of such commands, but this is not a complete list and may be updated as new security risks are identified.
 
 ```json
 default_denylist = [
