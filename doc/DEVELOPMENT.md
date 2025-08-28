@@ -29,7 +29,7 @@ npm install -g @google/gemini-cli  # If not already installed
 npx gcloud-mcp init --agent=gemini-cli --local
 ```
 
-NOTE: The `--local` flag changes what installation the client's MCP server configuration is pointing to (local or global).
+**NOTE: The `--local` flag changes what installation the client's MCP server configuration is pointing to (local or global).**
 
 **WITHOUT the `--local` flag:**
 
@@ -71,7 +71,7 @@ gemini # The client will reflect local changes since the extension file was init
 
 cd ~/usr/local/username/development/my-other-project
 npx gcloud-mcp init --agent=gemini-cli
-gemini  # The client will reflect local changes since the extension file is pointing to the REMOTE registry.
+gemini  # The client will NOT reflect local changes since the extension file is pointing to the REMOTE registry.
 npx gcloud-mcp init --agent=gemini-cli --local 
 gemini  # The client will reflect local changes since the extension file is pointing to the LOCAL install.
 ```
