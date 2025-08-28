@@ -79,7 +79,7 @@ export const createRunGcloudCommand = (denylist: string[] = []) => ({
           // See https://cloud.google.com/sdk/docs/scripting-gcloud#best_practices
           let result = stdout;
           if (code !== 0 || stderr) {
-            result += ` stderr:\n${stderr}`;
+            result += `\nstderr:\n${stderr}`;
           }
           return { content: [{ type: 'text', text: result }] };
         } catch (e: unknown) {

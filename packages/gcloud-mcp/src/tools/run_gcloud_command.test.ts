@@ -130,7 +130,7 @@ describe('createRunGcloudCommand', () => {
         content: [
           {
             type: 'text',
-            text: 'stderr:\nerror',
+            text: 'output\nstderr:\nerror',
           },
         ],
       });
