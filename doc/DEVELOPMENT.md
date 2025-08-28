@@ -62,7 +62,7 @@ The above server configuration will always be pulling from the remote npm regist
 }
 ```
 
-Let's run through an example:
+### Let's run through an example:
 
 ```shell
 # Inside ~/usr/local/username/development/gcloud-mcp
