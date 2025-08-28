@@ -75,8 +75,3 @@ gemini  # The client will NOT reflect local changes since the extension file is 
 npx gcloud-mcp init --agent=gemini-cli --local 
 gemini  # The client will reflect local changes since the extension file is pointing to the LOCAL install.
 ```
-
-
-
-
----
