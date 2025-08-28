@@ -19,34 +19,27 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import pkg from '../../package.json' with { type: 'json' };
 
-export const initializeGeminiCLI = async (
-  fs = { mkdir, readFile, writeFile }
-) => {
+export const initializeGeminiCLI = async (fs = { mkdir, readFile, writeFile }, local = false) => {
   try {
     const cwd = process.env['INIT_CWD'] || process.cwd();
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
 
     // Create directory
-    const extensionDir = join(
-      cwd,
-      '.gemini',
-      'extensions',
-      'cloud-observability-mcp'
-    );
+    const extensionDir = join(cwd, '.gemini', 'extensions', 'cloud-observability-mcp');
     await fs.mkdir(extensionDir, { recursive: true });
 
     // Create gemini-extension.json
     const extensionFile = join(extensionDir, 'gemini-extension.json');
     const extensionJson = {
-      name: pkg.name,
+      name: pkg.name + (local ? ' [LOCAL]' : ''),
       version: pkg.version,
       description: 'Enable MCP-compatible AI agents to interact with Google Cloud Observability.',
       contextFileName: 'GEMINI.md',
       mcpServers: {
-        'observability': {
+        observability: {
           command: 'npx',
-          args: ['-y', '@google-cloud/observability-mcp'],
+          args: local ? ['-y', 'cloud-observability-mcp'] : ['-y', '@google-cloud/observability-mcp'],
         },
       },
     };
@@ -64,16 +57,11 @@ export const initializeGeminiCLI = async (
     console.log(`Created: ${geminiMdDestPath}`);
     // Intentional output to stdin. Not part of the MCP server.
     // eslint-disable-next-line no-console
-    console.log(
-      `🌱 cloud-observability-mcp Gemini CLI extension initialized.`
-    );
+    console.log(`🌱 cloud-observability-mcp Gemini CLI extension initialized.`);
   } catch (err: unknown) {
     const error = err instanceof Error ? err : undefined;
     // TODO(https://github.com/googleapis/gcloud-mcp/issues/80): Update to use the custom logger once it's made sharable between packages
     // eslint-disable-next-line no-console
-    console.error(
-      '❌ cloud-observability-mcp Gemini CLI extension initialized failed.',
-      error
-    );
+    console.error('❌ cloud-observability-mcp Gemini CLI extension initialized failed.', error);
   }
 };

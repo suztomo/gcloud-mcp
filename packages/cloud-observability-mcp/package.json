@@ -6,7 +6,7 @@
   "description": "MCP Server for GCP environment for interacting with various Observability APIs.",
   "main": "dist/src/server.js",
   "bin": {
-    "observability-mcp": "./dist/src/server.js"
+    "cloud-observability-mcp": "./dist/src/server.js"
   },
   "scripts": {
     "build": "tsc -p . && cp GEMINI-extension.md dist/",
