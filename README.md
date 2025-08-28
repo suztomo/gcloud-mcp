@@ -13,7 +13,7 @@ The gcloud [Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/g
 - [Node.js](https://nodejs.org): version 20 or higher
 - [gcloud CLI](https://cloud.google.com/sdk/docs/install)
 
-## ✨ Setup your MCP server
+## ✨ Set up your MCP server
 
 ### Gemini CLI and Gemini Code Assist
 
