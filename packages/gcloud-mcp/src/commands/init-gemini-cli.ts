@@ -20,9 +20,7 @@ import { fileURLToPath } from 'url';
 import pkg from '../../package.json' with { type: 'json' };
 import { log } from '../utility/logger.js';
 
-export const initializeGeminiCLI = async (
-  fs = { mkdir, readFile, writeFile }
-) => {
+export const initializeGeminiCLI = async (fs = { mkdir, readFile, writeFile }, local = false) => {
   try {
     // When running `npm start -w [workspace]`, npm sets the CWD to the workspace directory.
     // INIT_CWD is an environment variable set by npm that holds the original CWD.
@@ -38,14 +36,14 @@ export const initializeGeminiCLI = async (
     // Create gemini-extension.json
     const extensionFile = join(extensionDir, 'gemini-extension.json');
     const extensionJson = {
-      name: pkg.name,
+      name: pkg.name + (local ? ' [LOCAL]' : ''),
       version: pkg.version,
       description: 'Enable MCP-compatible AI agents to interact with Google Cloud.',
       contextFileName: 'GEMINI.md',
       mcpServers: {
         gcloud: {
           command: 'npx',
-          args: ['-y', '@google-cloud/gcloud-mcp'],
+          args: local ? ['-y', 'gcloud-mcp'] : ['-y', '@google-cloud/gcloud-mcp'],
         },
       },
     };
@@ -64,10 +62,9 @@ export const initializeGeminiCLI = async (
     console.log(`Created: ${geminiMdDestPath}`);
     // Intentional output to stdin. Not part of the MCP server.
     // eslint-disable-next-line no-console
-    console.log(`🌱 gcloud-mcp Gemini CLI extension initialized.`)
-
+    console.log(`🌱 gcloud-mcp Gemini CLI extension initialized.`);
   } catch (err: unknown) {
     const error = err instanceof Error ? err : undefined;
-    log.error("❌ gcloud-mcp Gemini CLI extension initialized failed.", error)
+    log.error('❌ gcloud-mcp Gemini CLI extension initialized failed.', error);
   }
 };

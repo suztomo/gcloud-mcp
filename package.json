@@ -1,5 +1,5 @@
 {
-  "name": "@google-cloud/gcloud-mcp",
+  "name": "@google-cloud/gcloud-mcp-servers",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -9,10 +9,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/googleapis/gcloud-mcp.git"
-  },
-  "bin": {
-    "gcloud-mcp": "./packages/gcloud-mcp/dist/src/index.js",
-    "cloud-observability-mcp": "./packages/cloud-observability-mcp/dist/src/server.js"
   },
   "scripts": {
     "build": "turbo run build",
