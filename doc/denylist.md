@@ -4,17 +4,4 @@ The denylist feature serves as a robust security mechanism, regulating the execu
 
 **It is important to note that the denylist is not configurable by the user.**
 
-Due to security concerns, certain commands that allow for unauthorized access to remote machines or spawn subprocesses are prohibited. This is to protect the integrity of the agent and the systems it interacts with. The following list contains examples of such commands, but this is not a complete list and may be updated as new security risks are identified.
-
-```json
-default_denylist = [
-    "compute start-iap-tunnel",
-    "compute connect-to-serial-port",
-    "compute tpus tpu-vm ssh",
-    "compute tpus queued-resources ssh",
-    "compute ssh",
-    "cloud-shell ssh",
-    "workstations ssh",
-    "app instances ssh"
-]
-```
+Due to security concerns, certain commands that allow for unauthorized access to remote machines or spawn subprocesses are prohibited. This is to protect the integrity of the agent and the systems it interacts with. The list of denied commands can be found in [index.ts](packages/gcloud-mcp/src/index.ts), the list is not comprehensive and may be updated in the future.
