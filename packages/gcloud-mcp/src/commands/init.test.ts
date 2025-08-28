@@ -38,9 +38,21 @@ describe('init', () => {
       agent: 'gemini-cli',
       $0: 'test',
       _: [],
+      local: false,
     };
     await init.handler(argv);
     expect(initializeGeminiCLI).toHaveBeenCalled();
+  });
+
+  it('should initialize gemini when agent is gemini-cli and local is true', async () => {
+    const argv = {
+      agent: 'gemini-cli',
+      $0: 'test',
+      _: [],
+      local: true,
+    };
+    await init.handler(argv);
+    expect(initializeGeminiCLI).toHaveBeenCalledWith(undefined, true);
   });
 
   it('should throw an error if agent is not gemini-cli', async () => {
@@ -48,6 +60,7 @@ describe('init', () => {
       agent: 'not-gemini-cli',
       $0: 'test',
       _: [],
+      local: false,
     };
     await expect(init.handler(argv)).rejects.toThrow('Unknown agent: not-gemini-cli');
     expect(initializeGeminiCLI).not.toHaveBeenCalled();
@@ -60,6 +73,7 @@ describe('init', () => {
       agent: 'gemini-cli',
       $0: 'test',
       _: [],
+      local: false,
     };
     await init.handler(argv);
     expect(loggerWarnSpy).toHaveBeenCalledWith(
@@ -74,6 +88,7 @@ describe('init', () => {
       agent: 'gemini-cli',
       $0: 'test',
       _: [],
+      local: false,
     };
     await init.handler(argv);
     expect(loggerWarnSpy).not.toHaveBeenCalled();

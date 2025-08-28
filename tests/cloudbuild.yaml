@@ -18,12 +18,13 @@ steps:
 
         echo "--- Installing Node dependencies and building ---"
         npm install
-        npm install -g
-        npm run build
+        cd packages/gcloud-mcp
+        npm link
+        cd ../..
         npm install -g @google/gemini-cli
 
         echo "--- Initializing gcloud-mcp with Gemini CLI"
-        npx -y --no-install @google-cloud/gcloud-mcp init --agent=gemini-cli
+        npx gcloud-mcp init --agent=gemini-cli --local
 
         echo "--- Installing Go ---"
         apt-get install -y golang
