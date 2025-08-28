@@ -31,10 +31,10 @@ func main() {
 		expectedOutput := fmt.Sprintf("%s: npx -y %s (stdio) - Connected", serverName, binCommand)
 		if strings.Contains(string(output), expectedOutput) {
 			fmt.Printf("✅ Assertion passed: Output contains the connected %s server line.\n", serverName)
-			os.Exit(0)
 		} else {
 			fmt.Printf("❌ Assertion failed: Output did not contain the connected %s server line.\n", serverName)
 			os.Exit(1)
 		}
 	}
+	os.Exit(0)
 }
