@@ -33,7 +33,7 @@ export interface LogRecord {
   severity: LogSeverity;
   message: string;
   context?: Record<string, unknown>;
-  error?: Error;
+  error?: Error | undefined;
 }
 
 /**
@@ -44,7 +44,7 @@ export class Logger {
   private metadata: Record<string, unknown> = {};
 
   constructor() {
-    const envSeverity = process.env.LOG_LEVEL?.toLowerCase() as LogSeverity;
+    const envSeverity = process.env['LOG_LEVEL']?.toLowerCase() as LogSeverity;
     this.minSeverity = SeverityLevels[envSeverity] ?? SeverityLevels.info;
   }
 
@@ -70,7 +70,12 @@ export class Logger {
     this.write('error', message, data, error);
   }
 
-  private write(severity: LogSeverity, message: string, context?: Record<string, unknown>, error?: Error): void {
+  private write(
+    severity: LogSeverity,
+    message: string,
+    context?: Record<string, unknown>,
+    error?: Error,
+  ): void {
     if (SeverityLevels[severity] < this.minSeverity) {
       return;
     }
@@ -84,7 +89,9 @@ export class Logger {
     };
 
     const contextString =
-      record.context && Object.keys(record.context).length > 0 ? ` | ${JSON.stringify(record.context)}` : '';
+      record.context && Object.keys(record.context).length > 0
+        ? ` | ${JSON.stringify(record.context)}`
+        : '';
 
     const errorString = error ? ` | Message: ${error.message}` : '';
 

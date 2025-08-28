@@ -37,7 +37,7 @@ describe('Logger', () => {
   afterEach(() => {
     vi.useRealTimers();
     vi.restoreAllMocks();
-    delete process.env.LOG_LEVEL;
+    delete process.env['LOG_LEVEL'];
   });
 
   describe('Context Management', () => {
@@ -57,7 +57,7 @@ describe('Logger', () => {
 
   describe('Logging Levels', () => {
     test('should log debug messages', async () => {
-      process.env.LOG_LEVEL = 'debug';
+      process.env['LOG_LEVEL'] = 'debug';
       // Re-import to pick up env var change
       vi.resetModules();
       const { logger: debugLogger } = await import('./logger.js');
@@ -102,7 +102,7 @@ describe('Logger', () => {
     });
 
     test('should only log error if level is error', async () => {
-      process.env.LOG_LEVEL = 'error';
+      process.env['LOG_LEVEL'] = 'error';
       vi.resetModules();
       const { logger: errorLogger } = await import('./logger.js');
       errorLogger.debug('debug');
@@ -154,7 +154,9 @@ describe('Logger', () => {
   describe('Exported `log` object', () => {
     test('log.info should call logger.info', () => {
       log.info('test from exported object');
-      expect(console.error).toHaveBeenCalledWith('[2025-01-01T00:00:00.000Z] INFO: test from exported object');
+      expect(console.error).toHaveBeenCalledWith(
+        '[2025-01-01T00:00:00.000Z] INFO: test from exported object',
+      );
     });
 
     test('log.mcp should create a contextual logger', () => {

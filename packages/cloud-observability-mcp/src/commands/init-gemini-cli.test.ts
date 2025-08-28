@@ -30,18 +30,13 @@ test('initializeGeminiCLI should create directory and write files', async () => 
   const mockWriteFile = vi.fn();
   const mockReadFile = vi.fn().mockResolvedValue('Test content for GEMINI.md');
 
-  await initializeGeminiCLI({
+  await initializeGeminiCLI(undefined, {
     mkdir: mockMkdir,
     writeFile: mockWriteFile,
     readFile: mockReadFile,
   });
 
-  const extensionDir = join(
-    '/test/cwd',
-    '.gemini',
-    'extensions',
-    'cloud-observability-mcp'
-  );
+  const extensionDir = join('/test/cwd', '.gemini', 'extensions', 'cloud-observability-mcp');
   const extensionFile = join(extensionDir, 'gemini-extension.json');
   const geminiMdDestPath = join(extensionDir, 'GEMINI.md');
 
@@ -55,7 +50,7 @@ test('initializeGeminiCLI should create directory and write files', async () => 
     description: 'Enable MCP-compatible AI agents to interact with Google Cloud Observability.',
     contextFileName: 'GEMINI.md',
     mcpServers: {
-      'observability': {
+      observability: {
         command: 'npx',
         args: ['-y', '@google-cloud/observability-mcp'],
       },
@@ -63,15 +58,12 @@ test('initializeGeminiCLI should create directory and write files', async () => 
   };
   expect(mockWriteFile).toHaveBeenCalledWith(
     extensionFile,
-    JSON.stringify(expectedExtensionJson, null, 2)
+    JSON.stringify(expectedExtensionJson, null, 2),
   );
 
   // Verify GEMINI.md reading and writing
   expect(mockReadFile).toHaveBeenCalled();
-  expect(mockWriteFile).toHaveBeenCalledWith(
-    geminiMdDestPath,
-    'Test content for GEMINI.md'
-  );
+  expect(mockWriteFile).toHaveBeenCalledWith(geminiMdDestPath, 'Test content for GEMINI.md');
 });
 
 test('initializeGeminiCLI should create directory and write files when process.env[init_cwd] is not set', async () => {
@@ -83,18 +75,13 @@ test('initializeGeminiCLI should create directory and write files when process.e
   const mockWriteFile = vi.fn();
   const mockReadFile = vi.fn().mockResolvedValue('Test content for GEMINI.md');
 
-  await initializeGeminiCLI({
+  await initializeGeminiCLI(undefined, {
     mkdir: mockMkdir,
     writeFile: mockWriteFile,
     readFile: mockReadFile,
   });
 
-  const extensionDir = join(
-    fakecwd,
-    '.gemini',
-    'extensions',
-    'cloud-observability-mcp'
-  );
+  const extensionDir = join(fakecwd, '.gemini', 'extensions', 'cloud-observability-mcp');
   const extensionFile = join(extensionDir, 'gemini-extension.json');
   const geminiMdDestPath = join(extensionDir, 'GEMINI.md');
 
@@ -108,7 +95,7 @@ test('initializeGeminiCLI should create directory and write files when process.e
     description: 'Enable MCP-compatible AI agents to interact with Google Cloud Observability.',
     contextFileName: 'GEMINI.md',
     mcpServers: {
-      'observability': {
+      observability: {
         command: 'npx',
         args: ['-y', '@google-cloud/observability-mcp'],
       },
@@ -116,15 +103,12 @@ test('initializeGeminiCLI should create directory and write files when process.e
   };
   expect(mockWriteFile).toHaveBeenCalledWith(
     extensionFile,
-    JSON.stringify(expectedExtensionJson, null, 2)
+    JSON.stringify(expectedExtensionJson, null, 2),
   );
 
   // Verify GEMINI.md reading and writing
   expect(mockReadFile).toHaveBeenCalled();
-  expect(mockWriteFile).toHaveBeenCalledWith(
-    geminiMdDestPath,
-    'Test content for GEMINI.md'
-  );
+  expect(mockWriteFile).toHaveBeenCalledWith(geminiMdDestPath, 'Test content for GEMINI.md');
 });
 
 test('initializeGeminiCLI should log error if mkdir fails', async () => {
@@ -132,11 +116,9 @@ test('initializeGeminiCLI should log error if mkdir fails', async () => {
   const mockMkdir = vi.fn().mockRejectedValue(error);
   const mockWriteFile = vi.fn();
   const mockReadFile = vi.fn();
-  const consoleErrorSpy = vi
-    .spyOn(console, 'error')
-    .mockImplementation(() => {});
+  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-  await initializeGeminiCLI({
+  await initializeGeminiCLI(undefined, {
     mkdir: mockMkdir,
     writeFile: mockWriteFile,
     readFile: mockReadFile,
@@ -144,13 +126,12 @@ test('initializeGeminiCLI should log error if mkdir fails', async () => {
 
   expect(consoleErrorSpy).toHaveBeenCalledWith(
     '❌ cloud-observability-mcp Gemini CLI extension initialized failed.',
-    error
+    error,
   );
   expect(mockWriteFile).not.toHaveBeenCalled();
 
   consoleErrorSpy.mockRestore();
 });
-
 
 test('initializeGeminiCLI should create directory and write files with local=true', async () => {
   process.env['INIT_CWD'] = '/test/cwd';
@@ -158,14 +139,11 @@ test('initializeGeminiCLI should create directory and write files with local=tru
   const mockWriteFile = vi.fn();
   const mockReadFile = vi.fn().mockResolvedValue('Test content for GEMINI.md');
 
-  await initializeGeminiCLI(
-    {
-      mkdir: mockMkdir,
-      writeFile: mockWriteFile,
-      readFile: mockReadFile,
-    },
-    true
-  );
+  await initializeGeminiCLI(true, {
+    mkdir: mockMkdir,
+    writeFile: mockWriteFile,
+    readFile: mockReadFile,
+  });
 
   const extensionDir = join('/test/cwd', '.gemini', 'extensions', 'cloud-observability-mcp');
   const extensionFile = join(extensionDir, 'gemini-extension.json');
@@ -178,8 +156,7 @@ test('initializeGeminiCLI should create directory and write files with local=tru
   const expectedExtensionJson = {
     name: pkg.name + ' [LOCAL]',
     version: pkg.version,
-    description:
-      'Enable MCP-compatible AI agents to interact with Google Cloud Observability.',
+    description: 'Enable MCP-compatible AI agents to interact with Google Cloud Observability.',
     contextFileName: 'GEMINI.md',
     mcpServers: {
       observability: {
@@ -190,13 +167,10 @@ test('initializeGeminiCLI should create directory and write files with local=tru
   };
   expect(mockWriteFile).toHaveBeenCalledWith(
     extensionFile,
-    JSON.stringify(expectedExtensionJson, null, 2)
+    JSON.stringify(expectedExtensionJson, null, 2),
   );
 
   // Verify GEMINI.md reading and writing
   expect(mockReadFile).toHaveBeenCalled();
-  expect(mockWriteFile).toHaveBeenCalledWith(
-    geminiMdDestPath,
-    'Test content for GEMINI.md'
-  );
+  expect(mockWriteFile).toHaveBeenCalledWith(geminiMdDestPath, 'Test content for GEMINI.md');
 });
