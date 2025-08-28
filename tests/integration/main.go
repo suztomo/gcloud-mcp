@@ -22,12 +22,19 @@ func main() {
 	fmt.Println("Command output:")
 	fmt.Println(string(output))
 
-	expectedOutput := "gcloud: npx -y gcloud-mcp (stdio) - Connected"
-	if strings.Contains(string(output), expectedOutput) {
-		fmt.Println("✅ Assertion passed: Output contains the connected gcloud server line.")
-		os.Exit(0)
-	} else {
-		fmt.Println("❌ Assertion failed: Output did not contain the connected gcloud server line.")
-		os.Exit(1)
+	expectedMCPServers := map[string]string{
+		"gcloud":        "gcloud-mcp",
+		"observability": "cloud-observability-mcp",
 	}
+
+	for serverName, binCommand := range expectedMCPServers {
+		expectedOutput := fmt.Sprintf("%s: npx -y %s (stdio) - Connected", serverName, binCommand)
+		if strings.Contains(string(output), expectedOutput) {
+			fmt.Printf("✅ Assertion passed: Output contains the connected %s server line.\n", serverName)
+		} else {
+			fmt.Printf("❌ Assertion failed: Output did not contain the connected %s server line.\n", serverName)
+			os.Exit(1)
+		}
+	}
+	os.Exit(0)
 }

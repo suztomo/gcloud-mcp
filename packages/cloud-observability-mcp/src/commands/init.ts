@@ -25,15 +25,21 @@ export const init: CommandModule<object, InstallArgs> = {
   command: 'init',
   describe: 'Initialize the MCP server with an agent.',
   builder: (yargs: Argv) =>
-    yargs.option('agent', {
-      describe: 'The agent to initialize the MCP server with.',
-      type: 'string',
-      choices: ['gemini-cli'] as const,
-      demandOption: true,
-    }),
+    yargs
+      .option('agent', {
+        describe: 'The agent to initialize the MCP server with.',
+        type: 'string',
+        choices: ['gemini-cli'] as const,
+        demandOption: true,
+      })
+      .option('local', {
+        describe: '(Development only) Use a local build of the cloud-observability-mcp server.',
+        type: 'boolean',
+        default: false,
+      }),
   handler: async (argv: ArgumentsCamelCase<InstallArgs>) => {
     if (argv.agent === 'gemini-cli') {
-      await initializeGeminiCLI();
+      await initializeGeminiCLI(undefined, argv.local as boolean);
     } else {
       throw new Error(`Unknown agent: ${argv.agent}`);
     }
