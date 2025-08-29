@@ -33,7 +33,7 @@
     "url": "https://github.com/googleapis/gcloud-mcp/issues"
   },
   "homepage": "https://github.com/googleapis/gcloud-mcp#readme",
-  "description": "",
+  "description": "Model Context Protocol (MCP) Server for interacting with GCP APIs",
   "devDependencies": {
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.39.0",
