@@ -50,8 +50,6 @@ gemini mcp list
 > ✓ gcloud: npx -y gcloud-mcp (stdio) - Connected
 ```
 
-You should be able to see that the run_gcloud_command tool is now available.
-
 ### For other AI clients
 
 To use MCP servers in this repo with other clients, add the following snippet to their respective JSON configuration files for each MCP server:
