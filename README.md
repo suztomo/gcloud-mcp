@@ -104,7 +104,7 @@ For example, for gcloud and observability:
 }
 ```
 
-## 🛠️ Local Development
+## 🛠 Local Development
 
 For more information regarding installing the repository locally, please see [development.md](doc/DEVELOPMENT.md)
 
