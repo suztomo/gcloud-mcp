@@ -1,5 +1,5 @@
 {
-  "name": "@google-cloud/observability-mcp",
+  "name": "@google-cloud/cloud-observability-mcp",
   "displayName": "Cloud Observability MCP",
   "version": "0.1.0",
   "type": "module",

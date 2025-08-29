@@ -13,7 +13,7 @@ This repository also hosts other MCP servers in addition to the gcloud MCP serve
 | MCP Server Name | Description                                                                   | Package Name        |
 | :-------------- | :---------------------------------------------------------------------------- | :------------------ |
 | gcloud          | Interact with Google Cloud via the gcloud CLI using natural language prompts. | `gcloud-mcp`        |
-| observability   | An MCP server for interacting with Google Cloud Observability APIs.           | `observability-mcp` |
+| observability   | An MCP server for interacting with Google Cloud Observability APIs.           | `cloud-observability-mcp` |
 
 ## 🚀 Getting Started
 
@@ -99,7 +99,7 @@ For example, for gcloud and observability:
   },
   "observability": {
     "command": "npx",
-    "args": ["-y", "@google-cloud/observability-mcp"]
+    "args": ["-y", "@google-cloud/cloud-observability-mcp"]
   },
 }
 ```
