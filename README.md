@@ -8,7 +8,7 @@ The gcloud [Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/g
 
 ## 📡 Available MCP Servers
 
-This repository also hosts other MCP servers in addition to the gcloud MCP server. An up to date list is below, and links to other Google Cloud MCP servers hosted outside of this repo are [here](#other-google-cloud-mcp-servers).
+This repository also hosts other MCP servers in addition to the gcloud MCP server. An up to date list is below, and links to other Google Cloud MCP servers hosted outside of this repo are [here](#-other-google-cloud-mcp-servers).
 
 | MCP Server Name | Description                                                                   | Package Name        |
 | :-------------- | :---------------------------------------------------------------------------- | :------------------ |
@@ -40,7 +40,7 @@ For example, for gcloud:
 npx @google-cloud/gcloud-mcp init --agent=gemini-cli
 ```
 
-See [Local Development](#local-development) for help installing from source.
+See [Local Development](#-local-development) for help installing from source.
 
 After the initialization process, you can verify that the gcloud-mcp server is configured correctly by running the following command:
 
