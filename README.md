@@ -1,10 +1,19 @@
-# gcloud MCP ☁️
+# gcloud MCP Server ☁️
 
 The gcloud [Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/getting-started/intro) server enables AI assistants to easily interact with the Google Cloud environment using the gcloud CLI. With the gcloud MCP you can:
 
 - **Interact with Google Cloud using natural language.** Describe the outcome you want instead of memorizing complex command syntax, flags, and arguments.
 - **Automate and simplify complex workflows.** Chain multiple cloud operations into a single, repeatable command to reduce manual effort and the chance of error.
 - **Lower the barrier to entry for cloud management.** Empower team members who are less familiar with gcloud to perform powerful actions confidently and safely.
+
+## 📡 Available MCP Servers
+
+This repository also hosts other MCP servers in addition to the gcloud MCP server. An up to date list is below, and links to other Google Cloud MCP servers hosted outside of this repo are [here](#other-google-cloud-mcp-servers).
+
+| MCP Server Name | Description                                                                   | Package Name        |
+| :-------------- | :---------------------------------------------------------------------------- | :------------------ |
+| gcloud          | Interact with Google Cloud via the gcloud CLI using natural language prompts. | `gcloud-mcp`        |
+| observability   | An MCP server for interacting with Google Cloud Observability APIs.           | `observability-mcp` |
 
 ## 🚀 Getting Started
 
@@ -19,30 +28,47 @@ The gcloud [Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/g
 
 To integrate gcloud MCP with Gemini CLI or Gemini Code Assist, you can run a single setup command. This will configure it as a [Gemini CLI extension](https://github.com/google-gemini/gemini-cli/blob/main/docs/extension.md).
 
-Run this command from your project's root directory (for a single project) or your home directory (for all projects):
+Run this command from your project's root directory (for a single project) or your home directory (for all projects) for each MCP server you would like to install from the list above:
 
 ```shell
-npx -y @google-cloud/gcloud-mcp init --agent=gemini-cli
+npx @google-cloud/[PACKAGE_NAME] init --agent=gemini-cli
 ```
 
-After the initialization process, you can verify that the gcloud-mcp server has started by running the following command within the Gemini CLI:
+For example, for gcloud:
+
+```shell
+npx @google-cloud/gcloud-mcp init --agent=gemini-cli
+```
+
+See [Local Development](#local-development) for help installing from source.
+
+After the initialization process, you can verify that the gcloud-mcp server is configured correctly by running the following command:
 
 ```
-/mcp
+gemini mcp list
+
+> ✓ gcloud: npx -y gcloud-mcp (stdio) - Connected
 ```
 
 You should be able to see that the run_gcloud_command tool is now available.
 
 ### For other AI clients
 
-To use gcloud MCP with other clients, add the following to their respective JSON configuration files:
+To use MCP servers in this repo with other clients, add the following snippet to their respective JSON configuration files for each MCP server:
 
 ```json
-"mcpServers": {
-  "gcloud": {
-    "command": "npx",
-    "args": ["-y", "@google-cloud/gcloud-mcp"]
-  }
+"[SERVER_NAME]": {
+  "command": "npx",
+  "args": ["-y", "@google-cloud/[PACKAGE_NAME]"]
+}
+```
+
+For example, for gcloud:
+
+```json
+"gcloud": {
+  "command": "npx",
+  "args": ["-y", "@google-cloud/gcloud-mcp"]
 }
 ```
 
@@ -54,13 +80,52 @@ Instructions for popular tools:
 - **Visual Studio Code:** Edit `.vscode/mcp.json` for a single project or your global user settings file for all projects.
 - **Gemini CLI (Manual Setup):** If not using extensions, edit `.gemini/settings.json` for a single project or `~/.gemini/settings.json` for all projects.
 
+For **Visual Studio Code** edit the `.vscode/mcp.json` file in your workspace for a single project or your global user settings file for all projects:
+
+```json
+"servers": {
+  "[SERVER_NAME]": {
+    "command": "npx",
+    "args": ["-y", "@google-cloud/[PACKAGE_NAME]"]
+  }
+}
+```
+
+For example, for gcloud and observability:
+
+```json
+"servers": {
+  "gcloud": {
+    "command": "npx",
+    "args": ["-y", "@google-cloud/gcloud-mcp"]
+  },
+  "observability": {
+    "command": "npx",
+    "args": ["-y", "@google-cloud/observability-mcp"]
+  },
+}
+```
+
 ## 🛠️ Local Development
 
 For more information regarding installing the repository locally, please see [development.md](doc/DEVELOPMENT.md)
 
 ## 🧰 Available MCP Tools
 
-This server exposes a single tool, `run_gcloud_command`, which executes a gcloud command. Some commands have been restricted from execution by the agent. See [denylist.md](doc/denylist.md) for more information.
+| MCP Server    | Tool                         | Description                                                                                                                                             |
+| :------------ | :--------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| gcloud        | `run_gcloud_command`         | Executes a gcloud command. Some commands have been restricted from execution by the agent. See [doc/denylist.md](doc/denylist.md) for more information. |
+| observability | `list_log_entries`           | Lists log entries from a project.                                                                                                                       |
+|               | `list_buckets`               | Lists log buckets from a project.                                                                                                                       |
+|               | `list_views`                 | Lists log views from a project.                                                                                                                         |
+|               | `list_sinks`                 | Lists log sinks from a project.                                                                                                                         |
+|               | `list_log_scopes`            | Lists log scopes from a project.                                                                                                                        |
+|               | `list_metric_descriptors`    | Lists metric descriptors for a project.                                                                                                                 |
+|               | `list_time_series`           | Lists time series data for a given metric.                                                                                                              |
+|               | `list_alert_policies`        | Lists the alert policies in a project.                                                                                                                  |
+|               | `list_notification_channels` | Lists the notification channels in a project.                                                                                                           |
+|               | `list_traces`                | Searches for traces in a project.                                                                                                                       |
+|               | `list_group_stats`           | Lists the error groups for a project.                                                                                                                   |
 
 ## 🔑 MCP Permissions
 
