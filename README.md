@@ -10,9 +10,9 @@ The gcloud [Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/g
 
 This repository also hosts other MCP servers in addition to the gcloud MCP server. An up to date list is below, and links to other Google Cloud MCP servers hosted outside of this repo are [here](#-other-google-cloud-mcp-servers).
 
-| MCP Server Name | Description                                                                   | Package Name        |
-| :-------------- | :---------------------------------------------------------------------------- | :------------------ |
-| gcloud          | Interact with Google Cloud via the gcloud CLI using natural language prompts. | `gcloud-mcp`        |
+| MCP Server Name | Description                                                                   | Package Name              |
+| :-------------- | :---------------------------------------------------------------------------- | :------------------------ |
+| gcloud          | Interact with Google Cloud via the gcloud CLI using natural language prompts. | `gcloud-mcp`              |
 | observability   | An MCP server for interacting with Google Cloud Observability APIs.           | `cloud-observability-mcp` |
 
 ## 🚀 Getting Started
