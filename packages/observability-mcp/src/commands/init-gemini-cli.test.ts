@@ -36,7 +36,7 @@ test('initializeGeminiCLI should create directory and write files', async () => 
     readFile: mockReadFile,
   });
 
-  const extensionDir = join('/test/cwd', '.gemini', 'extensions', 'cloud-observability-mcp');
+  const extensionDir = join('/test/cwd', '.gemini', 'extensions', 'observability-mcp');
   const extensionFile = join(extensionDir, 'gemini-extension.json');
   const geminiMdDestPath = join(extensionDir, 'GEMINI.md');
 
@@ -81,7 +81,7 @@ test('initializeGeminiCLI should create directory and write files when process.e
     readFile: mockReadFile,
   });
 
-  const extensionDir = join(fakecwd, '.gemini', 'extensions', 'cloud-observability-mcp');
+  const extensionDir = join(fakecwd, '.gemini', 'extensions', 'observability-mcp');
   const extensionFile = join(extensionDir, 'gemini-extension.json');
   const geminiMdDestPath = join(extensionDir, 'GEMINI.md');
 
@@ -125,7 +125,7 @@ test('initializeGeminiCLI should log error if mkdir fails', async () => {
   });
 
   expect(consoleErrorSpy).toHaveBeenCalledWith(
-    '❌ cloud-observability-mcp Gemini CLI extension initialized failed.',
+    '❌ observability-mcp Gemini CLI extension initialized failed.',
     error,
   );
   expect(mockWriteFile).not.toHaveBeenCalled();
@@ -145,7 +145,7 @@ test('initializeGeminiCLI should create directory and write files with local=tru
     readFile: mockReadFile,
   });
 
-  const extensionDir = join('/test/cwd', '.gemini', 'extensions', 'cloud-observability-mcp');
+  const extensionDir = join('/test/cwd', '.gemini', 'extensions', 'observability-mcp');
   const extensionFile = join(extensionDir, 'gemini-extension.json');
   const geminiMdDestPath = join(extensionDir, 'GEMINI.md');
 
@@ -161,7 +161,7 @@ test('initializeGeminiCLI should create directory and write files with local=tru
     mcpServers: {
       observability: {
         command: 'npx',
-        args: ['-y', 'cloud-observability-mcp'],
+        args: ['-y', 'observability-mcp'],
       },
     },
   };

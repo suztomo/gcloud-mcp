@@ -7,4 +7,4 @@
 
 # Folder specific owners. Order is important; the last matching pattern takes
 # the most precedence.
-/packages/cloud-observability-mcp/ @googleapis/cloud-observability-team
+/packages/observability-mcp/ @googleapis/cloud-observability-team

@@ -34,7 +34,7 @@ export const init: CommandModule<object, InstallArgs> = {
         demandOption: true,
       })
       .option('local', {
-        describe: '(Development only) Use a local build of the cloud-observability-mcp server.',
+        describe: '(Development only) Use a local build of the observability-mcp server.',
         type: 'boolean',
         default: false,
       }),
