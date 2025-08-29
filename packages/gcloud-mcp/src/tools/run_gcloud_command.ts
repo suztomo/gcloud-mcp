@@ -77,8 +77,8 @@ export const createRunGcloudCommand = (denylist: string[] = []) => ({
           // a command that creates multiple resources may only create a few, list them
           // on the standard output, and then exit with a non-zero status.
           // See https://cloud.google.com/sdk/docs/scripting-gcloud#best_practices
-          let result = `gcloud process exited with code ${code}. stdout:\n${stdout}`;
-          if (stderr) {
+          let result = stdout;
+          if (code !== 0 || stderr) {
             result += `\nstderr:\n${stderr}`;
           }
           return { content: [{ type: 'text', text: result }] };

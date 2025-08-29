@@ -89,7 +89,7 @@ describe('createRunGcloudCommand', () => {
         content: [
           {
             type: 'text',
-            text: 'gcloud process exited with code 0. stdout:\noutput',
+            text: 'output',
           },
         ],
       });
@@ -130,7 +130,7 @@ describe('createRunGcloudCommand', () => {
         content: [
           {
             type: 'text',
-            text: 'gcloud process exited with code 0. stdout:\noutput\nstderr:\nerror',
+            text: 'output\nstderr:\nerror',
           },
         ],
       });
