@@ -40,7 +40,7 @@ For example, for gcloud:
 npx @google-cloud/gcloud-mcp init --agent=gemini-cli
 ```
 
-See [Local Development](#-local-development) for help installing from source.
+See [Local Development](doc/DEVELOPMENT.md) for help installing from source.
 
 After the initialization process, you can verify that the gcloud-mcp server is configured correctly by running the following command:
 
