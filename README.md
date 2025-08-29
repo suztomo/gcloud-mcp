@@ -47,7 +47,7 @@ After the initialization process, you can verify that the gcloud-mcp server is c
 ```
 gemini mcp list
 
-> ✓ gcloud: npx -y gcloud-mcp (stdio) - Connected
+> ✓ gcloud: npx -y @google-cloud/gcloud-mcp (stdio) - Connected
 ```
 
 ### For other AI clients
