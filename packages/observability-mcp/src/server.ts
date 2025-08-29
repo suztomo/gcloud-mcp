@@ -26,7 +26,7 @@ import { init } from './commands/init.js';
 
 const getServer = (): McpServer => {
   const server = new McpServer({
-    name: 'cloud-observability-mcp',
+    name: 'observability-mcp',
     version: pkg.version,
     title: 'Cloud Observability MCP',
     description: 'MCP Server for GCP environment for interacting with various Observability APIs',

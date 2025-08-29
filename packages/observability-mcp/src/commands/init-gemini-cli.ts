@@ -26,7 +26,7 @@ export const initializeGeminiCLI = async (local = false, fs = { mkdir, readFile,
     const __dirname = dirname(__filename);
 
     // Create directory
-    const extensionDir = join(cwd, '.gemini', 'extensions', 'cloud-observability-mcp');
+    const extensionDir = join(cwd, '.gemini', 'extensions', 'observability-mcp');
     await fs.mkdir(extensionDir, { recursive: true });
 
     // Create gemini-extension.json
@@ -39,9 +39,7 @@ export const initializeGeminiCLI = async (local = false, fs = { mkdir, readFile,
       mcpServers: {
         observability: {
           command: 'npx',
-          args: local
-            ? ['-y', 'cloud-observability-mcp']
-            : ['-y', '@google-cloud/observability-mcp'],
+          args: local ? ['-y', 'observability-mcp'] : ['-y', '@google-cloud/observability-mcp'],
         },
       },
     };
@@ -59,11 +57,11 @@ export const initializeGeminiCLI = async (local = false, fs = { mkdir, readFile,
     console.log(`Created: ${geminiMdDestPath}`);
     // Intentional output to stdin. Not part of the MCP server.
     // eslint-disable-next-line no-console
-    console.log(`🌱 cloud-observability-mcp Gemini CLI extension initialized.`);
+    console.log(`🌱 observability-mcp Gemini CLI extension initialized.`);
   } catch (err: unknown) {
     const error = err instanceof Error ? err : undefined;
     // TODO(https://github.com/googleapis/gcloud-mcp/issues/80): Update to use the custom logger once it's made sharable between packages
     // eslint-disable-next-line no-console
-    console.error('❌ cloud-observability-mcp Gemini CLI extension initialized failed.', error);
+    console.error('❌ observability-mcp Gemini CLI extension initialized failed.', error);
   }
 };
