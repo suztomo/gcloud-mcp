@@ -26,7 +26,7 @@ import {
   listSinks,
   listLogScopes,
   listMetricDescriptors,
-  listTimeSeries,
+  // listTimeSeries,
   listAlertPolicies,
   listTraces,
   getTrace,
