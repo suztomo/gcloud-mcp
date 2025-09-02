@@ -317,121 +317,121 @@ export const registerTools = (server: McpServer): void => {
       ),
   );
 
-  server.tool(
-    'list_time_series',
-    `Use this as the primary tool to retrieve metric data over a specific time period.
-    This is the core tool for monitoring and observability, allowing you to get the actual data points for a given metric.`,
-    {
-      name: z.string().describe(
-        `Required. The project, organization or folder on which to execute the request. The format is:
-        projects/[PROJECT_ID_OR_NUMBER]
-        organizations/[ORGANIZATION_ID]
-        folders/[FOLDER_ID]`,
-      ),
-      filter: z.string().describe(
-        `Required. A monitoring filter that specifies which time series should be returned.
-        (https://cloud.google.com/monitoring/api/v3/filters#time-series-filter).
-        Examples:
-        - To get CPU usage:
-            'metric.type = "compute.googleapis.com/instance/cpu/usage_time"'
-        - To return all time series from a specific Compute Engine instance, use the following filter:
-            'metric.type = "compute.googleapis.com/instance/cpu/usage_time" AND metric.labels.instance_name = "my-instance-name"'
-        - To return all time series from Compute Engine instances whose names start with frontend-, use the following filter:
-            'metric.type = "compute.googleapis.com/instance/cpu/usage_time" AND metric.labels.instance_name = starts_with("frontend-")'`,
-      ),
-      interval: z
-        .object({
-          startTime: z
-            .string()
-            .optional()
-            .describe(
-              `Optional. Start of the time interval (inclusive) during which the time series data was collected.
-              Must be in RFC 3339 format.`,
-            ),
-          endTime: z.string().describe(
-            `Required. End of the time interval (inclusive) during which the time series data was collected.
-            Must be in RFC 3339 format.`,
-          ),
-        })
-        .describe(
-          `Required. The time interval for which results should be returned.
-        Only time series that contain data points in the specified interval are included in the response.`,
-        ),
-      aggregation: z
-        .object({
-          alignmentPeriod: z
-            .string()
-            .optional()
-            .default('60')
-            .describe(
-              `The alignmentPeriod specifies a time interval, in seconds, that is used to divide the data in all the time series into consistent blocks of time.
-              The value must be at least 60 seconds.`,
-            ),
-          perSeriesAligner: z
-            .enum([
-              'ALIGN_NONE',
-              'ALIGN_DELTA',
-              'ALIGN_RATE',
-              'ALIGN_INTERPOLATE',
-              'ALIGN_NEXT_OLDER',
-              'ALIGN_MIN',
-              'ALIGN_MAX',
-              'ALIGN_MEAN',
-              'ALIGN_COUNT',
-              'ALIGN_SUM',
-              'ALIGN_STDDEV',
-              'ALIGN_PERCENTILE_99',
-              'ALIGN_PERCENTILE_95',
-              'ALIGN_PERCENTILE_50',
-              'ALIGN_PERCENT_CHANGE',
-            ])
-            .optional()
-            .describe(
-              `An Aligner describes how to bring the data points in a single time series into temporal alignment.
-              Except for ALIGN_NONE, all alignments cause all the data points in an alignmentPeriod to be mathematically grouped together, resulting in a single data point for each alignmentPeriod with end timestamp at the end of the period.`,
-            ),
-        })
-        .optional()
-        .describe(
-          'Optional. Specifies the alignment of data points in individual time series. By default (if no aggregation is explicitly specified), the raw time series data is returned.',
-        ),
-      pageSize: z
-        .number()
-        .optional()
-        .default(50)
-        .describe('Optional. A positive number that is the maximum number of results to return.'),
-      pageToken: z
-        .string()
-        .optional()
-        .describe(
-          `Optional. If this field is not empty then it must contain the nextPageToken value returned by a previous call to this method.`,
-        ),
-    },
-    (params: {
-      name: string;
-      filter: string;
-      interval: {
-        startTime?: string;
-        endTime: string;
-      };
-      aggregation?: {
-        alignmentPeriod?: string;
-        perSeriesAligner?: string;
-      };
-      pageSize?: number;
-      pageToken?: string;
-    }) =>
-      toolWrapper(async () =>
-        listTimeSeries(
-          params.name,
-          params.filter,
-          params.interval,
-          params.aggregation,
-          params.pageSize,
-          params.pageToken,
-        ),
-      ),
-  );
+  // server.tool(
+  //   'list_time_series',
+  //   `Use this as the primary tool to retrieve metric data over a specific time period.
+  //   This is the core tool for monitoring and observability, allowing you to get the actual data points for a given metric.`,
+  //   {
+  //     name: z.string().describe(
+  //       `Required. The project, organization or folder on which to execute the request. The format is:
+  //       projects/[PROJECT_ID_OR_NUMBER]
+  //       organizations/[ORGANIZATION_ID]
+  //       folders/[FOLDER_ID]`,
+  //     ),
+  //     filter: z.string().describe(
+  //       `Required. A monitoring filter that specifies which time series should be returned.
+  //       (https://cloud.google.com/monitoring/api/v3/filters#time-series-filter).
+  //       Examples:
+  //       - To get CPU usage:
+  //           'metric.type = "compute.googleapis.com/instance/cpu/usage_time"'
+  //       - To return all time series from a specific Compute Engine instance, use the following filter:
+  //           'metric.type = "compute.googleapis.com/instance/cpu/usage_time" AND metric.labels.instance_name = "my-instance-name"'
+  //       - To return all time series from Compute Engine instances whose names start with frontend-, use the following filter:
+  //           'metric.type = "compute.googleapis.com/instance/cpu/usage_time" AND metric.labels.instance_name = starts_with("frontend-")'`,
+  //     ),
+  //     interval: z
+  //       .object({
+  //         startTime: z
+  //           .string()
+  //           .optional()
+  //           .describe(
+  //             `Optional. Start of the time interval (inclusive) during which the time series data was collected.
+  //             Must be in RFC 3339 format.`,
+  //           ),
+  //         endTime: z.string().describe(
+  //           `Required. End of the time interval (inclusive) during which the time series data was collected.
+  //           Must be in RFC 3339 format.`,
+  //         ),
+  //       })
+  //       .describe(
+  //         `Required. The time interval for which results should be returned.
+  //       Only time series that contain data points in the specified interval are included in the response.`,
+  //       ),
+  //     aggregation: z
+  //       .object({
+  //         alignmentPeriod: z
+  //           .string()
+  //           .optional()
+  //           .default('60')
+  //           .describe(
+  //             `The alignmentPeriod specifies a time interval, in seconds, that is used to divide the data in all the time series into consistent blocks of time.
+  //             The value must be at least 60 seconds.`,
+  //           ),
+  //         perSeriesAligner: z
+  //           .enum([
+  //             'ALIGN_NONE',
+  //             'ALIGN_DELTA',
+  //             'ALIGN_RATE',
+  //             'ALIGN_INTERPOLATE',
+  //             'ALIGN_NEXT_OLDER',
+  //             'ALIGN_MIN',
+  //             'ALIGN_MAX',
+  //             'ALIGN_MEAN',
+  //             'ALIGN_COUNT',
+  //             'ALIGN_SUM',
+  //             'ALIGN_STDDEV',
+  //             'ALIGN_PERCENTILE_99',
+  //             'ALIGN_PERCENTILE_95',
+  //             'ALIGN_PERCENTILE_50',
+  //             'ALIGN_PERCENT_CHANGE',
+  //           ])
+  //           .optional()
+  //           .describe(
+  //             `An Aligner describes how to bring the data points in a single time series into temporal alignment.
+  //             Except for ALIGN_NONE, all alignments cause all the data points in an alignmentPeriod to be mathematically grouped together, resulting in a single data point for each alignmentPeriod with end timestamp at the end of the period.`,
+  //           ),
+  //       })
+  //       .optional()
+  //       .describe(
+  //         'Optional. Specifies the alignment of data points in individual time series. By default (if no aggregation is explicitly specified), the raw time series data is returned.',
+  //       ),
+  //     pageSize: z
+  //       .number()
+  //       .optional()
+  //       .default(50)
+  //       .describe('Optional. A positive number that is the maximum number of results to return.'),
+  //     pageToken: z
+  //       .string()
+  //       .optional()
+  //       .describe(
+  //         `Optional. If this field is not empty then it must contain the nextPageToken value returned by a previous call to this method.`,
+  //       ),
+  //   },
+  //   (params: {
+  //     name: string;
+  //     filter: string;
+  //     interval: {
+  //       startTime?: string;
+  //       endTime: string;
+  //     };
+  //     aggregation?: {
+  //       alignmentPeriod?: string;
+  //       perSeriesAligner?: string;
+  //     };
+  //     pageSize?: number;
+  //     pageToken?: string;
+  //   }) =>
+  //     toolWrapper(async () =>
+  //       listTimeSeries(
+  //         params.name,
+  //         params.filter,
+  //         params.interval,
+  //         params.aggregation,
+  //         params.pageSize,
+  //         params.pageToken,
+  //       ),
+  //     ),
+  // );
 
   server.tool(
     'list_alert_policies',
