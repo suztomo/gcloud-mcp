@@ -30,6 +30,7 @@ import {
   listAlertPolicies,
   listTraces,
   getTrace,
+  queryRange,
 } from './index.js';
 
 export const registerTools = (server: McpServer): void => {
@@ -640,5 +641,42 @@ export const registerTools = (server: McpServer): void => {
           params.pageToken,
         ),
       ),
+  );
+
+  server.tool(
+    'query_range',
+    `Use this tool to query Prometheus metrics over a time range from Google Cloud Monitoring.`,
+    {
+      name: z.string().describe(
+        `Required. The project on which to execute the request.
+        The format is: projects/[PROJECT_ID_OR_NUMBER]`
+      ),
+      query: z.string().describe('Required. The Prometheus query string.'),
+      start: z.string().optional().describe(
+        'Optional. The start time of the query range. RFC 3339 format or a Unix timestamp.'
+      ),
+      end: z.string().optional().describe(
+        'Optional. The end time of the query range. RFC 3339 format or a Unix timestamp.'
+      ),
+      step: z.string().optional().describe(
+        'Optional. The step size for the query. A duration string (e.g. "1m", "5m").'
+      ),
+    },
+    (params: {
+      name: string;
+      query: string;
+      start?: string;
+      end?: string;
+      step?: string;
+    }) =>
+      toolWrapper(async () =>
+        queryRange(
+          params.name,
+          params.query,
+          params.start,
+          params.end,
+          params.step
+        )
+      )
   );
 };

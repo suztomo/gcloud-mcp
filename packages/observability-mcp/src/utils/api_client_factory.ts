@@ -19,6 +19,7 @@ import {
   clouderrorreporting_v1beta1,
   logging_v2,
   monitoring_v3,
+  monitoring_v1,
   cloudtrace_v1,
   google,
 } from 'googleapis';
@@ -31,6 +32,7 @@ export class ApiClientFactory {
   private loggingClient?: logging_v2.Logging;
   private errorReportingClient?: clouderrorreporting_v1beta1.Clouderrorreporting;
   private traceClient?: cloudtrace_v1.Cloudtrace;
+  private prometheusClient?: monitoring_v1.Monitoring;
 
   private constructor() {
     this.auth = new GoogleAuth({
@@ -83,6 +85,16 @@ export class ApiClientFactory {
       });
     }
     return this.traceClient;
+  }
+
+  getPrometheusClient(): monitoring_v1.Monitoring {
+    if (!this.prometheusClient) {
+      this.prometheusClient = google.monitoring({
+        version: 'v1',
+        auth: this.auth,
+      });
+    }
+    return this.prometheusClient;
   }
 }
 

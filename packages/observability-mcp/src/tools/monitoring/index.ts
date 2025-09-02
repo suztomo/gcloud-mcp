@@ -15,3 +15,4 @@
  */
 
 export * from './monitoring_api_tools.js';
+export * from './prometheus_api_tools.js';
