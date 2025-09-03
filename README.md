@@ -124,7 +124,7 @@ For example, for gcloud and observability:
     "args": ["-y", "@google-cloud/gcloud-mcp"]
   },
   "observability": {
-    "command": "npx",f
+    "command": "npx",
     "args": ["-y", "@google-cloud/observability-mcp"]
   },
 }
