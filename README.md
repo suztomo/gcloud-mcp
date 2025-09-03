@@ -124,7 +124,7 @@ For example, for gcloud and observability:
     "args": ["-y", "@google-cloud/gcloud-mcp"]
   },
   "observability": {
-    "command": "npx",
+    "command": "npx",f
     "args": ["-y", "@google-cloud/observability-mcp"]
   },
 }
@@ -137,21 +137,21 @@ For more information regarding installing the repository locally, please see
 
 ## 🧰 Available MCP Tools
 
-| MCP Server    | Tool                      | Description                                                                                                                                             |
-| :------------ | :------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| gcloud        | `run_gcloud_command`      | Executes a gcloud command. Some commands have been restricted from execution by the agent. See [doc/denylist.md](doc/denylist.md) for more information. |
-| observability | `list_log_entries`        | Lists log entries from a project.                                                                                                                       |
-|               | `list_log_names`          | Lists log names from a project.                                                                                                                         |
-|               | `list_buckets`            | Lists log buckets from a project.                                                                                                                       |
-|               | `list_views`              | Lists log views from a project.                                                                                                                         |
-|               | `list_sinks`              | Lists log sinks from a project.                                                                                                                         |
-|               | `list_log_scopes`         | Lists log scopes from a project.                                                                                                                        |
-|               | `list_metric_descriptors` | Lists metric descriptors for a project.                                                                                                                 |
-|               | `list_time_series`        | Lists time series data for a given metric.                                                                                                              |
-|               | `list_alert_policies`     | Lists the alert policies in a project.                                                                                                                  |
-|               | `list_traces`             | Searches for traces in a project.                                                                                                                       |
-|               | `get_trace`               | Gets a specific trace by id in a project.                                                                                                               |
-|               | `list_group_stats`        | Lists the error groups for a project.                                                                                                                   |
+| MCP Server    | Tool                      | Description                                                                                                                                               |
+| :------------ | :------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| gcloud        | `run_gcloud_command`      | Executes a gcloud command. Some commands have been restricted from execution by the agent. See [MCP Permissions](#-mcp-permissions) for more information. |
+| observability | `list_log_entries`        | Lists log entries from a project.                                                                                                                         |
+|               | `list_log_names`          | Lists log names from a project.                                                                                                                           |
+|               | `list_buckets`            | Lists log buckets from a project.                                                                                                                         |
+|               | `list_views`              | Lists log views from a project.                                                                                                                           |
+|               | `list_sinks`              | Lists log sinks from a project.                                                                                                                           |
+|               | `list_log_scopes`         | Lists log scopes from a project.                                                                                                                          |
+|               | `list_metric_descriptors` | Lists metric descriptors for a project.                                                                                                                   |
+|               | `list_time_series`        | Lists time series data for a given metric.                                                                                                                |
+|               | `list_alert_policies`     | Lists the alert policies in a project.                                                                                                                    |
+|               | `list_traces`             | Searches for traces in a project.                                                                                                                         |
+|               | `get_trace`               | Gets a specific trace by id in a project.                                                                                                                 |
+|               | `list_group_stats`        | Lists the error groups for a project.                                                                                                                     |
 
 ## 🔑 MCP Permissions
 
