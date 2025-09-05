@@ -645,17 +645,17 @@ export const registerTools = (server: McpServer): void => {
 
   server.tool(
     'query_range',
-    `Use this tool to get metric data ONLY when you have an EXISTING PromQL query. 
-    It runs the PromQL query to get time series data. 
+    `Use this tool to get metric data using a PromQL query.
+    It runs the PromQL query to get time series data.
 
-    DO NOT build a PromQL from natural language query, you MUST use list_time_series if no PromQL is provided in prompt.
+    This is a more powerful tool than list_time_series, but harder to formulate a request to.
     `,
     {
       name: z.string().describe(
         `Required. The project on which to execute the request.
         The format is: projects/[PROJECT_ID_OR_NUMBER]`
       ),
-      query: z.string().describe('A PromQL query string. Query lanauge documentation: https://prometheus.io/docs/prometheus/latest/querying/basics/.'),
+      query: z.string().describe('A PromQL query string. Query langauge documentation: https://prometheus.io/docs/prometheus/latest/querying/basics/.'),
       start: z.string().optional().describe(
         'The start time to evaluate the query for. Either floating point UNIX seconds or RFC3339 formatted timestamp.'
       ),
