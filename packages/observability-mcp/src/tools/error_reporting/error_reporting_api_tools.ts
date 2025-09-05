@@ -16,8 +16,6 @@
 
 import { apiClientFactory } from '../../utils/api_client_factory.js';
 
-const errorReporting = apiClientFactory.getErrorReportingClient();
-
 /**
  * Lists group stats from the Google Cloud Error Reporting API.
  * @param projectName The resource name of the Google Cloud Platform project.
@@ -35,6 +33,7 @@ export async function listGroupStats(
   pageSize?: number,
   pageToken?: string,
 ): Promise<string> {
+  const errorReporting = apiClientFactory.getErrorReportingClient();
   const request = {
     projectName,
     ...(timeRangePeriod && { 'timeRange.period': timeRangePeriod }),

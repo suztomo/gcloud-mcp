@@ -16,8 +16,6 @@
 
 import { apiClientFactory } from '../../utils/api_client_factory.js';
 
-const logging = apiClientFactory.getLoggingClient();
-
 /**
  * Lists log entries from the Google Cloud Logging API.
  * @param resourceNames The resource names to search for log entries (e.g.,
@@ -36,6 +34,7 @@ export async function listLogEntries(
   pageSize = 50,
   pageToken?: string,
 ): Promise<string> {
+  const logging = apiClientFactory.getLoggingClient();
   const request = {
     requestBody: {
       resourceNames,
@@ -70,6 +69,7 @@ export async function listLogNames(
   pageSize?: number,
   pageToken?: string,
 ): Promise<string> {
+  const logging = apiClientFactory.getLoggingClient();
   const request = {
     parent,
     pageSize,
@@ -100,6 +100,7 @@ export async function listBuckets(
   pageSize?: number,
   pageToken?: string,
 ): Promise<string> {
+  const logging = apiClientFactory.getLoggingClient();
   const request = {
     parent,
     pageSize,
@@ -130,6 +131,7 @@ export async function listViews(
   pageSize?: number,
   pageToken?: string,
 ): Promise<string> {
+  const logging = apiClientFactory.getLoggingClient();
   const request = {
     parent,
     pageSize,
@@ -160,6 +162,7 @@ export async function listSinks(
   pageSize?: number,
   pageToken?: string,
 ): Promise<string> {
+  const logging = apiClientFactory.getLoggingClient();
   const request = {
     parent,
     pageSize,
@@ -190,6 +193,7 @@ export async function listLogScopes(
   pageSize?: number,
   pageToken?: string,
 ): Promise<string> {
+  const logging = apiClientFactory.getLoggingClient();
   const request = {
     parent,
     pageSize,
