@@ -44,7 +44,7 @@ beforeEach(() => {
   registerToolSpy.mockClear();
 });
 
-test('should initialize Gemini CLI when gcloud-mcp init --agent=gemini-cli is called', async () => {
+test('should initialize Gemini CLI when new-server-mcp init --agent=gemini-cli is called', async () => {
   process.argv = ['node', 'index.js', 'init', '--agent=gemini-cli'];
   vi.stubGlobal('process', { ...process, exit: vi.fn() });
 
