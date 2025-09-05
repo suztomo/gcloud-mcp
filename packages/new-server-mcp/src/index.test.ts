@@ -60,7 +60,7 @@ test('should start the McpServer', async () => {
 
   expect(McpServer).toHaveBeenCalledWith(
     {
-      name: 'my-server-mcp-server',
+      name: 'new-server-mcp-server',
       version: '9.4.1998',
     },
     { capabilities: { tools: {} } },

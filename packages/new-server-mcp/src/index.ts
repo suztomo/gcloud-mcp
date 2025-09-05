@@ -35,7 +35,7 @@ const exitProcessAfter = <T, U>(cmd: CommandModule<T, U>): CommandModule<T, U> =
 
 const main = async () => {
   await yargs(hideBin(process.argv))
-    .command('$0', 'Run the my-server mcp server')
+    .command('$0', 'Run the new-server mcp server')
     .command(exitProcessAfter(init))
     .version(pkg.version)
     .help()
@@ -43,14 +43,14 @@ const main = async () => {
 
   const server = new McpServer(
     {
-      name: 'my-server-mcp-server',
+      name: 'new-server-mcp-server',
       version: pkg.version,
     },
     { capabilities: { tools: {} } },
   );
   createRunMyTool().register(server);
   await server.connect(new StdioServerTransport());
-  log.info('🚀 my-server mcp server started');
+  log.info('🚀 new-server mcp server started');
 
   process.on('uncaughtException', async (err: unknown) => {
     await server.close();
@@ -76,6 +76,6 @@ const main = async () => {
 
 main().catch((err: unknown) => {
   const error = err instanceof Error ? err : undefined;
-  log.error('❌ Unable to start my-server-mcp server.', error);
+  log.error('❌ Unable to start new-server-mcp server.', error);
   process.exit(1);
 });

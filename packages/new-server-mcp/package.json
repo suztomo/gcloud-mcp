@@ -1,5 +1,5 @@
 {
-  "name": "@google-cloud/my-server-mcp",
+  "name": "@google-cloud/new-server-mcp",
   "version": "0.1.0",
   "type": "module",
   "main": "dist/src/index.js",
@@ -19,10 +19,10 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/googleapis/gcloud-mcp.git",
-    "directory": "packages/my-server-mcp"
+    "directory": "packages/new-server-mcp"
   },
   "keywords": [
-    "my-server",
+    "new-server",
     "gcp",
     "google cloud",
     "mcp",

@@ -43,7 +43,7 @@ test('initializeGeminiCLI should create directory and write files', async () => 
     readFile: mockReadFile,
   });
 
-  const extensionDir = join('/test/cwd', '.gemini', 'extensions', 'my-server-mcp');
+  const extensionDir = join('/test/cwd', '.gemini', 'extensions', 'new-server-mcp');
   const extensionFile = join(extensionDir, 'gemini-extension.json');
   const geminiMdDestPath = join(extensionDir, 'GEMINI.md');
 
@@ -57,9 +57,9 @@ test('initializeGeminiCLI should create directory and write files', async () => 
     description: 'Enable MCP-compatible AI agents to interact with Google Cloud.',
     contextFileName: 'GEMINI.md',
     mcpServers: {
-      'my-server': {
+      'new-server': {
         command: 'npx',
-        args: ['-y', '@google-cloud/my-server-mcp'],
+        args: ['-y', '@google-cloud/new-server-mcp'],
       },
     },
   };
@@ -88,7 +88,7 @@ test('initializeGeminiCLI should create directory and write files when process.e
     readFile: mockReadFile,
   });
 
-  const extensionDir = join(fakecwd, '.gemini', 'extensions', 'my-server-mcp');
+  const extensionDir = join(fakecwd, '.gemini', 'extensions', 'new-server-mcp');
   const extensionFile = join(extensionDir, 'gemini-extension.json');
   const geminiMdDestPath = join(extensionDir, 'GEMINI.md');
 
@@ -102,9 +102,9 @@ test('initializeGeminiCLI should create directory and write files when process.e
     description: 'Enable MCP-compatible AI agents to interact with Google Cloud.',
     contextFileName: 'GEMINI.md',
     mcpServers: {
-      'my-server': {
+      'new-server': {
         command: 'npx',
-        args: ['-y', '@google-cloud/my-server-mcp'],
+        args: ['-y', '@google-cloud/new-server-mcp'],
       },
     },
   };
@@ -131,7 +131,7 @@ test('initializeGeminiCLI should log error if mkdir fails', async () => {
   });
 
   expect(log.error).toHaveBeenCalledWith(
-    '❌ my-server-mcp Gemini CLI extension initialized failed.',
+    '❌ new-server-mcp Gemini CLI extension initialized failed.',
     error,
   );
   expect(mockWriteFile).not.toHaveBeenCalled();
@@ -149,7 +149,7 @@ test('initializeGeminiCLI should create directory and write files with local=tru
     readFile: mockReadFile,
   });
 
-  const extensionDir = join('/test/cwd', '.gemini', 'extensions', 'my-server-mcp');
+  const extensionDir = join('/test/cwd', '.gemini', 'extensions', 'new-server-mcp');
   const extensionFile = join(extensionDir, 'gemini-extension.json');
   const geminiMdDestPath = join(extensionDir, 'GEMINI.md');
 
@@ -163,9 +163,9 @@ test('initializeGeminiCLI should create directory and write files with local=tru
     description: 'Enable MCP-compatible AI agents to interact with Google Cloud.',
     contextFileName: 'GEMINI.md',
     mcpServers: {
-      'my-server': {
+      'new-server': {
         command: 'npx',
-        args: ['-y', 'my-server-mcp'],
+        args: ['-y', 'new-server-mcp'],
       },
     },
   };

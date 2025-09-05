@@ -24,7 +24,7 @@ steps:
         cd packages/observability-mcp
         npm link
         cd ../..
-        cd packages/my-server-mcp
+        cd packages/new-server-mcp
         npm link
         cd ../..
         npm install -g @google/gemini-cli
@@ -32,7 +32,7 @@ steps:
         echo "--- Initializing servers with Gemini CLI"
         npx gcloud-mcp init --agent=gemini-cli --local
         npx observability-mcp init --agent=gemini-cli --local
-        npx my-server-mcp init --agent=gemini-cli --local
+        npx new-server-mcp init --agent=gemini-cli --local
 
         echo "--- Installing Go ---"
         apt-get install -y golang
