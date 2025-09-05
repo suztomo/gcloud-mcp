@@ -22,21 +22,10 @@ import {
   cloudtrace_v1,
   google,
 } from 'googleapis';
-import { GoogleAuth } from 'google-auth-library';
+import { execSync } from 'node:child_process';
 
 export class ApiClientFactory {
   private static instance: ApiClientFactory;
-  private readonly auth: Auth.GoogleAuth;
-  private monitoringClient?: monitoring_v3.Monitoring;
-  private loggingClient?: logging_v2.Logging;
-  private errorReportingClient?: clouderrorreporting_v1beta1.Clouderrorreporting;
-  private traceClient?: cloudtrace_v1.Cloudtrace;
-
-  private constructor() {
-    this.auth = new GoogleAuth({
-      scopes: 'https://www.googleapis.com/auth/cloud-platform',
-    });
-  }
 
   static getInstance(): ApiClientFactory {
     if (!ApiClientFactory.instance) {
@@ -46,44 +35,41 @@ export class ApiClientFactory {
   }
 
   getMonitoringClient(): monitoring_v3.Monitoring {
-    if (!this.monitoringClient) {
-      this.monitoringClient = google.monitoring({
-        version: 'v3',
-        auth: this.auth,
-      });
-    }
-    return this.monitoringClient;
+    return google.monitoring({
+      version: 'v3',
+      auth: printAccessToken(),
+    });
   }
 
   getLoggingClient(): logging_v2.Logging {
-    if (!this.loggingClient) {
-      this.loggingClient = google.logging({
-        version: 'v2',
-        auth: this.auth,
-      });
-    }
-    return this.loggingClient;
+    return google.logging({
+      version: 'v2',
+      auth: printAccessToken(),
+    });
   }
 
   getErrorReportingClient(): clouderrorreporting_v1beta1.Clouderrorreporting {
-    if (!this.errorReportingClient) {
-      this.errorReportingClient = google.clouderrorreporting({
-        version: 'v1beta1',
-        auth: this.auth,
-      });
-    }
-    return this.errorReportingClient;
+    return google.clouderrorreporting({
+      version: 'v1beta1',
+      auth: printAccessToken(),
+    });
   }
 
   getTraceClient(): cloudtrace_v1.Cloudtrace {
-    if (!this.traceClient) {
-      this.traceClient = google.cloudtrace({
-        version: 'v1',
-        auth: this.auth,
-      });
-    }
-    return this.traceClient;
+    return google.cloudtrace({
+      version: 'v1',
+      auth: printAccessToken(),
+    });
   }
 }
+
+const printAccessToken = (): Auth.OAuth2Client => {
+  const token = execSync('gcloud auth print-access-token');
+  const auth = new google.auth.OAuth2();
+  auth.setCredentials({
+    access_token: token.toString().trim(),
+  });
+  return auth;
+};
 
 export const apiClientFactory = ApiClientFactory.getInstance();
