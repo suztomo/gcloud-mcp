@@ -17,25 +17,22 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { ApiClientFactory as ApiClientFactoryClass } from './api_client_factory.js';
 
-// Mock the googleapis library
-vi.mock('googleapis', () => {
-  const setCredentials = vi.fn();
-  const OAuth2 = vi.fn(() => ({
-    setCredentials,
-  }));
+const mockSetCredentials = vi.fn();
+const mockOAuth2 = vi.fn(() => ({
+  setCredentials: mockSetCredentials,
+}));
 
-  return {
-    google: {
-      auth: {
-        OAuth2,
-      },
-      monitoring: vi.fn(() => ({})),
-      logging: vi.fn(() => ({})),
-      clouderrorreporting: vi.fn(() => ({})),
-      cloudtrace: vi.fn(() => ({})),
+vi.mock('googleapis', () => ({
+  google: {
+    auth: {
+      OAuth2: mockOAuth2,
     },
-  };
-});
+    monitoring: vi.fn(() => ({})),
+    logging: vi.fn(() => ({})),
+    clouderrorreporting: vi.fn(() => ({})),
+    cloudtrace: vi.fn(() => ({})),
+  },
+}));
 
 // Mock the google-auth-library
 vi.mock('google-auth-library');
@@ -59,5 +56,17 @@ describe('ApiClientFactory', () => {
     const instance1 = ApiClientFactory.getInstance();
     const instance2 = ApiClientFactory.getInstance();
     expect(instance1).toBe(instance2);
+  });
+
+  it('should call setCredentials with the correct token', async () => {
+    const { execSync } = await import('node:child_process');
+    const factory = ApiClientFactory.getInstance();
+    factory.getMonitoringClient();
+
+    expect(execSync).toHaveBeenCalledWith('gcloud auth print-access-token');
+    expect(mockOAuth2).toHaveBeenCalled();
+    expect(mockSetCredentials).toHaveBeenCalledWith({
+      access_token: 'test-token',
+    });
   });
 });
