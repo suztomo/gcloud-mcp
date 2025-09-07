@@ -15,3 +15,4 @@
  */
 
 export { logger, log } from './logger.js';
+export * as gcloud from './gcloud.js';
