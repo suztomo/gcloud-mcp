@@ -98,10 +98,10 @@ export class Logger {
     const formattedMessage = `[${record.timestamp}] ${record.severity.toUpperCase()}: ${message}${contextString}${errorString}`;
 
     // Use console.error for all levels to ensure MCP server logs are captured
-    console.error(formattedMessage);
+    console.error(formattedMessage); // eslint-disable-line no-console
 
     if (error?.stack) {
-      console.error('Stack trace:', error.stack);
+      console.error('Stack trace:', error.stack); // eslint-disable-line no-console
     }
   }
 

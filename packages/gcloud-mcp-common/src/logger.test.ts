@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable no-console */ // This file is an exception to the rule.
+
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 // Use type-only imports to avoid loading the module at the top level
 import type { Logger as LoggerType, log as logType } from './logger.js';
