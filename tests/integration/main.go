@@ -25,7 +25,7 @@ func main() {
 	expectedMCPServers := map[string]string{
 		"gcloud":        "gcloud-mcp",
 		"observability": "observability-mcp",
-		"my-server":     "my-server-mcp",
+		"new-server":    "new-server-mcp",
 	}
 
 	for serverName, binCommand := range expectedMCPServers {
