@@ -16,10 +16,22 @@
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { Mock, beforeEach, describe, expect, test, vi } from 'vitest';
-import * as gcloud from '../gcloud.js';
+import { gcloud } from '@google-cloud/gcloud-mcp-common';
 import { createRunGcloudCommand } from './run_gcloud_command.js';
 
-vi.mock('../gcloud.js');
+vi.mock('@google-cloud/gcloud-mcp-common', () => ({
+  gcloud: {
+    lint: vi.fn(),
+    invoke: vi.fn(),
+    isAvailable: vi.fn(),
+  },
+  log: {
+    mcp: vi.fn(() => ({
+      info: vi.fn(),
+      error: vi.fn(),
+    })),
+  },
+}));
 vi.mock('child_process');
 
 const mockServer = {

@@ -18,8 +18,8 @@ import { test, expect, vi, beforeEach } from 'vitest';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { createRunGcloudCommand } from './tools/run_gcloud_command.js';
-import * as gcloud from './gcloud.js';
 import { init } from './commands/init.js';
+import { gcloud } from '@google-cloud/gcloud-mcp-common';
 
 vi.mock('../package.json', () => ({
   default: {
@@ -35,7 +35,17 @@ vi.mock('./tools/run_gcloud_command.js', () => ({
     register: registerToolSpy,
   })),
 }));
-vi.mock('./gcloud.js');
+vi.mock('@google-cloud/gcloud-mcp-common', async () => {
+  const actual = await vi.importActual<typeof import('@google-cloud/gcloud-mcp-common')>(
+    '@google-cloud/gcloud-mcp-common',
+  );
+  return {
+    ...actual,
+    gcloud: {
+      isAvailable: vi.fn(),
+    },
+  };
+});
 vi.mock('fs');
 vi.mock('./commands/init.js');
 

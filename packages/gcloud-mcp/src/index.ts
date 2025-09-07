@@ -20,11 +20,10 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import pkg from '../package.json' with { type: 'json' };
 import { createRunGcloudCommand } from './tools/run_gcloud_command.js';
-import * as gcloud from './gcloud.js';
 import yargs, { ArgumentsCamelCase, CommandModule } from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { init } from './commands/init.js';
-import { log } from '@google-cloud/gcloud-mcp-common';
+import { gcloud, log } from '@google-cloud/gcloud-mcp-common';
 
 export const default_denylist: string[] = [
   'compute start-iap-tunnel',

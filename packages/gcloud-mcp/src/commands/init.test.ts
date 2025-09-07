@@ -17,12 +17,19 @@
 import { vi, describe, it, expect, afterEach } from 'vitest';
 import { init } from './init.js';
 import { initializeGeminiCLI } from './init-gemini-cli.js';
-import * as gcloud from '../gcloud.js';
-import { log } from '@google-cloud/gcloud-mcp-common';
+import { gcloud, log } from '@google-cloud/gcloud-mcp-common';
 
-vi.mock('../gcloud.js', () => ({
-  isAvailable: vi.fn(),
-}));
+vi.mock('@google-cloud/gcloud-mcp-common', async () => {
+  const actual = await vi.importActual<typeof import('@google-cloud/gcloud-mcp-common')>(
+    '@google-cloud/gcloud-mcp-common',
+  );
+  return {
+    ...actual,
+    gcloud: {
+      isAvailable: vi.fn(),
+    },
+  };
+});
 
 vi.mock('./init-gemini-cli.js', () => ({
   initializeGeminiCLI: vi.fn(),
