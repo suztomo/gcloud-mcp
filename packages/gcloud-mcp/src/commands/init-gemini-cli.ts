@@ -18,7 +18,7 @@ import { mkdir, readFile, writeFile } from 'fs/promises';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import pkg from '../../package.json' with { type: 'json' };
-import { log } from '../utility/logger.js';
+import { log } from '@google-cloud/gcloud-mcp-common';
 
 export const initializeGeminiCLI = async (local = false, fs = { mkdir, readFile, writeFile }) => {
   try {

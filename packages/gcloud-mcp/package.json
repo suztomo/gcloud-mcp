@@ -52,6 +52,7 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
+    "@google-cloud/gcloud-mcp-common": "0.0.0",
     "@modelcontextprotocol/sdk": "^1.17.1",
     "@types/yargs": "^17.0.33",
     "yargs": "^18.0.0",

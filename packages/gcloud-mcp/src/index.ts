@@ -24,7 +24,7 @@ import * as gcloud from './gcloud.js';
 import yargs, { ArgumentsCamelCase, CommandModule } from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { init } from './commands/init.js';
-import { log } from './utility/logger.js';
+import { log } from '@google-cloud/gcloud-mcp-common';
 
 export const default_denylist: string[] = [
   'compute start-iap-tunnel',

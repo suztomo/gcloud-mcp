@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-export { logger } from './logger.js';
+export { logger, log } from './logger.js';

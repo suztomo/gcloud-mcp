@@ -18,7 +18,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import * as gcloud from '../gcloud.js';
 import { deniedCommands } from '../denylist.js';
 import { z } from 'zod';
-import { log } from '../utility/logger.js';
+import { log } from '@google-cloud/gcloud-mcp-common';
 
 export const createRunGcloudCommand = (denylist: string[] = []) => ({
   register: (server: McpServer) => {

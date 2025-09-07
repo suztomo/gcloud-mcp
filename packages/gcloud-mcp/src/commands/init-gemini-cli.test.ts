@@ -18,11 +18,16 @@ import { test, expect, vi, beforeEach } from 'vitest';
 import { initializeGeminiCLI } from './init-gemini-cli.js';
 import { join } from 'path';
 import pkg from '../../package.json' with { type: 'json' };
-import { log } from '../utility/logger.js';
+import { log } from '@google-cloud/gcloud-mcp-common';
 
-vi.mock('../utility/logger.js', () => ({
+vi.mock('@google-cloud/gcloud-mcp-common', () => ({
   log: {
     error: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    debug: vi.fn(),
+    mcp: vi.fn(),
+    timer: vi.fn(),
   },
 }));
 
