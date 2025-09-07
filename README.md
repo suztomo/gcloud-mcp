@@ -155,8 +155,8 @@ For more information regarding installing the repository locally, please see
 
 ## 🔑 MCP Permissions
 
-The permissions of the gcloud MCP are directly tied to the permissions of the
-gcloud user. To restrict permissions and operate with the principle of least
+The permissions of these MCP servers are directly tied to the permissions of the
+current active gcloud account as shown in `gcloud auth list`. To restrict permissions and operate with the principle of least
 privilege, you can
 [authorize as a service account](https://cloud.google.com/sdk/docs/authorizing#service-account) and
 assign the service account a
