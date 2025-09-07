@@ -18,6 +18,7 @@ import { test, expect, vi, beforeEach } from 'vitest';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { registerTools } from './tools/registration.js';
+import * as gcloud from './utils/gcloud.js';
 import { init } from './commands/init.js';
 
 vi.mock('../package.json', () => ({
@@ -25,10 +26,12 @@ vi.mock('../package.json', () => ({
     version: '1.2.3',
   },
 }));
+vi.mock('./utils/gcloud.js');
 vi.mock('@modelcontextprotocol/sdk/server/mcp.js');
 vi.mock('@modelcontextprotocol/sdk/server/stdio.js');
 vi.mock('./tools/registration.js');
 vi.mock('./commands/init.js');
+vi.stubGlobal('process', { ...process, exit: vi.fn() });
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -37,12 +40,20 @@ beforeEach(() => {
 
 test('should initialize Gemini CLI when observability-mcp init --agent=gemini-cli is called', async () => {
   process.argv = ['node', 'server.js', 'init', '--agent=gemini-cli'];
-  vi.stubGlobal('process', { ...process, exit: vi.fn() });
-
   await import('./server.js');
 
   expect(init.handler).toHaveBeenCalled();
   expect(process.exit).toHaveBeenCalledWith(0);
+});
+
+test('should exit if gcloud is not available', async () => {
+  vi.spyOn(gcloud, 'isAvailable').mockResolvedValue(false);
+
+  process.argv = ['node', 'index.js'];
+  await import('./server.js');
+
+  expect(gcloud.isAvailable).toHaveBeenCalled();
+  expect(process.exit).toHaveBeenCalledWith(1);
 });
 
 test('should start the McpServer', async () => {
