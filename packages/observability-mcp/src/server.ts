@@ -23,6 +23,7 @@ import pkg from '../package.json' with { type: 'json' };
 import yargs, { ArgumentsCamelCase, CommandModule } from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { init } from './commands/init.js';
+import * as gcloud from './utils/gcloud.js';
 
 const getServer = (): McpServer => {
   const server = new McpServer({
@@ -50,6 +51,14 @@ const main = async () => {
     .version(pkg.version)
     .help()
     .parse();
+
+  const isAvailable = await gcloud.isAvailable();
+  if (!isAvailable) {
+    // TODO(https://github.com/googleapis/gcloud-mcp/issues/80): Update to use the custom logger once it's made sharable between packages
+    // eslint-disable-next-line no-console
+    console.error('Unable to start Cloud Observability MCP: gcloud executable not found for auth.');
+    process.exit(1);
+  }
 
   const server = getServer();
   await server.connect(new StdioServerTransport());
