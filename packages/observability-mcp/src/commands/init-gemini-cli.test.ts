@@ -45,7 +45,7 @@ test('initializeGeminiCLI should create directory and write files', async () => 
 
   // Verify gemini-extension.json content
   const expectedExtensionJson = {
-    name: pkg.name,
+    name: 'observability-mcp',
     version: pkg.version,
     description: 'Enable MCP-compatible AI agents to interact with Google Cloud Observability.',
     contextFileName: 'GEMINI.md',
@@ -90,7 +90,7 @@ test('initializeGeminiCLI should create directory and write files when process.e
 
   // Verify gemini-extension.json content
   const expectedExtensionJson = {
-    name: pkg.name,
+    name: 'observability-mcp',
     version: pkg.version,
     description: 'Enable MCP-compatible AI agents to interact with Google Cloud Observability.',
     contextFileName: 'GEMINI.md',
@@ -154,7 +154,7 @@ test('initializeGeminiCLI should create directory and write files with local=tru
 
   // Verify gemini-extension.json content
   const expectedExtensionJson = {
-    name: pkg.name + ' [LOCAL]',
+    name: 'observability-mcp-local',
     version: pkg.version,
     description: 'Enable MCP-compatible AI agents to interact with Google Cloud Observability.',
     contextFileName: 'GEMINI.md',

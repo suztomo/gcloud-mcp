@@ -42,9 +42,12 @@ To integrate gcloud MCP with Gemini CLI or Gemini Code Assist, you can run a
 single setup command. This will configure it as a
 [Gemini CLI extension](https://github.com/google-gemini/gemini-cli/blob/main/docs/extension.md).
 
-Run this command from your project's root directory (for a single project) or
-your home directory (for all projects) for each MCP server you would like to
-install from the list above:
+To make the MCP server(s) available for all your projects, run the command in
+your home directory. This will install the MCP server as a Gemini CLI extension
+globally for the current user.
+
+Alternatively, to make the MCP server(s) available for a specific project, run
+the command from your project's root directory.
 
 ```shell
 npx @google-cloud/[PACKAGE_NAME] init --agent=gemini-cli
@@ -134,20 +137,21 @@ For more information regarding installing the repository locally, please see
 
 ## 🧰 Available MCP Tools
 
-| MCP Server    | Tool                         | Description                                                                                                                                             |
-| :------------ | :--------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| gcloud        | `run_gcloud_command`         | Executes a gcloud command. Some commands have been restricted from execution by the agent. See [doc/denylist.md](doc/denylist.md) for more information. |
-| observability | `list_log_entries`           | Lists log entries from a project.                                                                                                                       |
-|               | `list_buckets`               | Lists log buckets from a project.                                                                                                                       |
-|               | `list_views`                 | Lists log views from a project.                                                                                                                         |
-|               | `list_sinks`                 | Lists log sinks from a project.                                                                                                                         |
-|               | `list_log_scopes`            | Lists log scopes from a project.                                                                                                                        |
-|               | `list_metric_descriptors`    | Lists metric descriptors for a project.                                                                                                                 |
-|               | `list_time_series`           | Lists time series data for a given metric.                                                                                                              |
-|               | `list_alert_policies`        | Lists the alert policies in a project.                                                                                                                  |
-|               | `list_notification_channels` | Lists the notification channels in a project.                                                                                                           |
-|               | `list_traces`                | Searches for traces in a project.                                                                                                                       |
-|               | `list_group_stats`           | Lists the error groups for a project.                                                                                                                   |
+| MCP Server    | Tool                      | Description                                                                                                                                               |
+| :------------ | :------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| gcloud        | `run_gcloud_command`      | Executes a gcloud command. Some commands have been restricted from execution by the agent. See [MCP Permissions](#-mcp-permissions) for more information. |
+| observability | `list_log_entries`        | Lists log entries from a project.                                                                                                                         |
+|               | `list_log_names`          | Lists log names from a project.                                                                                                                           |
+|               | `list_buckets`            | Lists log buckets from a project.                                                                                                                         |
+|               | `list_views`              | Lists log views from a project.                                                                                                                           |
+|               | `list_sinks`              | Lists log sinks from a project.                                                                                                                           |
+|               | `list_log_scopes`         | Lists log scopes from a project.                                                                                                                          |
+|               | `list_metric_descriptors` | Lists metric descriptors for a project.                                                                                                                   |
+|               | `list_time_series`        | Lists time series data for a given metric.                                                                                                                |
+|               | `list_alert_policies`     | Lists the alert policies in a project.                                                                                                                    |
+|               | `list_traces`             | Searches for traces in a project.                                                                                                                         |
+|               | `get_trace`               | Gets a specific trace by id in a project.                                                                                                                 |
+|               | `list_group_stats`        | Lists the error groups for a project.                                                                                                                     |
 
 ## 🔑 MCP Permissions
 
@@ -158,16 +162,23 @@ privilege, you can
 assign the service account a
 [role with limited permissions](https://cloud.google.com/iam/docs/roles-overview).
 
-By default, gcloud MCP denies commands deemed unsafe for agents. See
-[denylist.md](doc/denylist.md) for more information.
+By default, the gcloud MCP prevents execution of gcloud commands that don't
+make sense for AI agents. This is done to restrict commands that can run
+arbitrary inputs and initiate interactive sessions. See
+[here](https://github.com/googleapis/gcloud-mcp/blob/ed743f04272744e57aa4990f5fcd9816a05b03ba/packages/gcloud-mcp/src/index.ts#L29)
+for the list of denied commands.
 
 ## 💫 Other Google Cloud MCP Servers
 
 Google Cloud offers these other servers:
 
-- [Cloud Run MCP](https://github.com/GoogleCloudPlatform/cloud-run-mcp)
-- [Databases MCP](https://github.com/googleapis/genai-toolbox)
-- [GKE MCP](https://github.com/GoogleCloudPlatform/gke-mcp)
+- [Firebase MCP](https://firebase.google.com/docs/cli/mcp-server)
+- [Google Analytics MCP](https://github.com/googleanalytics/google-analytics-mcp)
+- [Google Cloud Genmedia MCP](https://github.com/GoogleCloudPlatform/vertex-ai-creative-studio/tree/main/experiments/mcp-genmedia)
+- [Google Cloud Run MCP](https://github.com/GoogleCloudPlatform/cloud-run-mcp)
+- [Google Kubernetes Engine (GKE) MCP](https://github.com/GoogleCloudPlatform/gke-mcp)
+- [Google Security Operations and Threat Intelligence MCP](https://github.com/google/mcp-security)
+- [MCP Toolbox for Databases](https://github.com/googleapis/genai-toolbox)
 
 ## 👥 Contributing
 

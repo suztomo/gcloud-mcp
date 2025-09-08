@@ -32,7 +32,7 @@ export const initializeGeminiCLI = async (local = false, fs = { mkdir, readFile,
     // Create gemini-extension.json
     const extensionFile = join(extensionDir, 'gemini-extension.json');
     const extensionJson = {
-      name: pkg.name + (local ? ' [LOCAL]' : ''),
+      name: 'observability-mcp' + (local ? '-local' : ''),
       version: pkg.version,
       description: 'Enable MCP-compatible AI agents to interact with Google Cloud Observability.',
       contextFileName: 'GEMINI.md',
