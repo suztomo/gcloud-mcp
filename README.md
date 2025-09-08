@@ -53,7 +53,7 @@ the command from your project's root directory.
 npx @google-cloud/[PACKAGE_NAME] init --agent=gemini-cli
 ```
 
-For example, for gcloud:
+For example, for the gcloud-mcp:
 
 ```shell
 npx @google-cloud/gcloud-mcp init --agent=gemini-cli
