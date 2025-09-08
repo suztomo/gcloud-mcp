@@ -19,18 +19,15 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import pkg from '../../package.json' with { type: 'json' };
 import { log } from '../utility/logger.js';
+import os from 'os';
 
 export const initializeGeminiCLI = async (local = false, fs = { mkdir, readFile, writeFile }) => {
   try {
-    // When running `npm start -w [workspace]`, npm sets the CWD to the workspace directory.
-    // INIT_CWD is an environment variable set by npm that holds the original CWD.
-    // Use the original CWD if it exists, otherwise use the process' CWD.
-    const cwd = process.env['INIT_CWD'] || process.cwd();
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
 
     // Create directory
-    const extensionDir = join(cwd, '.gemini', 'extensions', 'gcloud-mcp');
+    const extensionDir = join(os.homedir(), '.gemini', 'extensions', 'gcloud-mcp');
     await fs.mkdir(extensionDir, { recursive: true });
 
     // Create gemini-extension.json

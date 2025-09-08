@@ -19,6 +19,7 @@ import { initializeGeminiCLI } from './init-gemini-cli.js';
 import { join } from 'path';
 import pkg from '../../package.json' with { type: 'json' };
 import { log } from '../utility/logger.js';
+import os from 'os';
 
 vi.mock('../utility/logger.js', () => ({
   log: {
@@ -26,13 +27,19 @@ vi.mock('../utility/logger.js', () => ({
   },
 }));
 
+vi.mock('os', () => ({
+  default: {
+    homedir: vi.fn(),
+  },
+}));
+
 beforeEach(() => {
   vi.clearAllMocks();
-  delete process.env['INIT_CWD'];
 });
 
 test('initializeGeminiCLI should create directory and write files', async () => {
-  process.env['INIT_CWD'] = '/test/cwd';
+  const homedir = '/test/home';
+  vi.spyOn(os, 'homedir').mockReturnValue(homedir);
   const mockMkdir = vi.fn();
   const mockWriteFile = vi.fn();
   const mockReadFile = vi.fn().mockResolvedValue('Test content for GEMINI.md');
@@ -43,52 +50,7 @@ test('initializeGeminiCLI should create directory and write files', async () => 
     readFile: mockReadFile,
   });
 
-  const extensionDir = join('/test/cwd', '.gemini', 'extensions', 'gcloud-mcp');
-  const extensionFile = join(extensionDir, 'gemini-extension.json');
-  const geminiMdDestPath = join(extensionDir, 'GEMINI.md');
-
-  // Verify directory creation
-  expect(mockMkdir).toHaveBeenCalledWith(extensionDir, { recursive: true });
-
-  // Verify gemini-extension.json content
-  const expectedExtensionJson = {
-    name: 'gcloud-mcp',
-    version: pkg.version,
-    description: 'Enable MCP-compatible AI agents to interact with Google Cloud.',
-    contextFileName: 'GEMINI.md',
-    mcpServers: {
-      gcloud: {
-        command: 'npx',
-        args: ['-y', '@google-cloud/gcloud-mcp'],
-      },
-    },
-  };
-  expect(mockWriteFile).toHaveBeenCalledWith(
-    extensionFile,
-    JSON.stringify(expectedExtensionJson, null, 2),
-  );
-
-  // Verify GEMINI.md reading and writing
-  expect(mockReadFile).toHaveBeenCalled();
-  expect(mockWriteFile).toHaveBeenCalledWith(geminiMdDestPath, 'Test content for GEMINI.md');
-});
-
-test('initializeGeminiCLI should create directory and write files when process.env[init_cwd] is not set', async () => {
-  const fakecwd = '/fakecwd';
-  const spy = vi.spyOn(process, 'cwd');
-  spy.mockReturnValue(fakecwd);
-
-  const mockMkdir = vi.fn();
-  const mockWriteFile = vi.fn();
-  const mockReadFile = vi.fn().mockResolvedValue('Test content for GEMINI.md');
-
-  await initializeGeminiCLI(undefined, {
-    mkdir: mockMkdir,
-    writeFile: mockWriteFile,
-    readFile: mockReadFile,
-  });
-
-  const extensionDir = join(fakecwd, '.gemini', 'extensions', 'gcloud-mcp');
+  const extensionDir = join(homedir, '.gemini', 'extensions', 'gcloud-mcp');
   const extensionFile = join(extensionDir, 'gemini-extension.json');
   const geminiMdDestPath = join(extensionDir, 'GEMINI.md');
 
@@ -138,7 +100,8 @@ test('initializeGeminiCLI should log error if mkdir fails', async () => {
 });
 
 test('initializeGeminiCLI should create directory and write files with local=true', async () => {
-  process.env['INIT_CWD'] = '/test/cwd';
+  const homedir = '/test/home';
+  vi.spyOn(os, 'homedir').mockReturnValue(homedir);
   const mockMkdir = vi.fn();
   const mockWriteFile = vi.fn();
   const mockReadFile = vi.fn().mockResolvedValue('Test content for GEMINI.md');
@@ -149,7 +112,7 @@ test('initializeGeminiCLI should create directory and write files with local=tru
     readFile: mockReadFile,
   });
 
-  const extensionDir = join('/test/cwd', '.gemini', 'extensions', 'gcloud-mcp');
+  const extensionDir = join(homedir, '.gemini', 'extensions', 'gcloud-mcp');
   const extensionFile = join(extensionDir, 'gemini-extension.json');
   const geminiMdDestPath = join(extensionDir, 'GEMINI.md');
 
