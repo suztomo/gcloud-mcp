@@ -39,7 +39,8 @@ servers hosted outside of this repo are
 ### Gemini CLI and Gemini Code Assist
 
 To integrate gcloud MCP with Gemini CLI or Gemini Code Assist, you can run a
-single setup command. This will configure it as a
+single setup command for each MCP server listed in the table above. This will
+configure it as a
 [Gemini CLI extension](https://github.com/google-gemini/gemini-cli/blob/main/docs/extension.md).
 
 To make the MCP server(s) available for all your projects, run the command in
@@ -58,8 +59,6 @@ For example, for the gcloud-mcp:
 ```shell
 npx @google-cloud/gcloud-mcp init --agent=gemini-cli
 ```
-
-See [Local Development](doc/DEVELOPMENT.md) for help installing from source.
 
 After the initialization process, you can verify that the gcloud-mcp server is
 configured correctly by running the following command:
