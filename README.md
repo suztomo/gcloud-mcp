@@ -24,7 +24,7 @@ servers hosted outside of this repo are
 | MCP Server Name | Description                                                                   | Package Name        |
 | :-------------- | :---------------------------------------------------------------------------- | :------------------ |
 | gcloud          | Interact with Google Cloud via the gcloud CLI using natural language prompts. | `gcloud-mcp`        |
-| observability   | An MCP server for interacting with Google Cloud Observability APIs.           | `observability-mcp` |
+| observability   | Access Google Cloud Observability APIs to query logs, metrics, and traces.    | `observability-mcp` |
 
 ## 🚀 Getting Started
 
