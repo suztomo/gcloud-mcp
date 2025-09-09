@@ -99,8 +99,8 @@ Instructions for popular tools:
   `cline_mcp_settings.json`.
 - **Cursor:** Edit `.cursor/mcp.json` for a single project or
   `~/.cursor/mcp.json` for all projects.
-- **Gemini CLI (Manual Setup):** If not using extensions, edit
-  `.gemini/settings.json` for a single project or `~/.gemini/settings.json` for
+- **Gemini CLI (Manual Setup):** [If not using extensions](#gemini-cli-and-gemini-code-assist),
+  edit `.gemini/settings.json` for a single project or `~/.gemini/settings.json` for
   all projects.
 
 For **Visual Studio Code** edit the `.vscode/mcp.json` file in your workspace
