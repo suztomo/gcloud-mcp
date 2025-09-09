@@ -3,7 +3,7 @@
 The gcloud
 [Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/getting-started/intro)
 server enables AI assistants to easily interact with the Google Cloud
-environment using the gcloud CLI. With the gcloud MCP you can:
+environment using the gcloud CLI. With the gcloud MCP server you can:
 
 - **Interact with Google Cloud using natural language.** Describe the outcome
   you want instead of memorizing complex command syntax, flags, and arguments.
