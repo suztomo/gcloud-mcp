@@ -187,8 +187,7 @@ improving documentation, your contributions are welcome. Please read our
 
 ## 📄 Important Notes
 
-This repository is currently in prerelease and may see breaking changes until
-the first stable release (v1.0). This repository is providing a solution, not
-an officially supported Google product. It may break when the MCP
-specification, other SDKs, or when other solutions and products change. See
-also our [Security Policy](SECURITY.md).
+This repository is currently in preview and may see breaking changes. This
+repository is providing a solution, not an officially supported Google product.
+It may break when the MCP specification, other SDKs, or when other solutions
+and products change. See also our [Security Policy](SECURITY.md).
