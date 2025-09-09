@@ -181,9 +181,9 @@ Google Cloud offers these other servers:
 
 ## 👥 Contributing
 
-We welcome contributions to the gcloud MCP Server! Whether you're fixing bugs,
-sharing feedback, or improving documentation, your contributions are welcome.
-Please read our [Contributing Guide](CONTRIBUTING.md) to get started.
+We welcome contributions! Whether you're fixing bugs, sharing feedback, or
+improving documentation, your contributions are welcome. Please read our
+[Contributing Guide](CONTRIBUTING.md) to get started.
 
 ## 📄 Important Notes
 
