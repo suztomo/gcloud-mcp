@@ -18,15 +18,15 @@ import { mkdir, readFile, writeFile } from 'fs/promises';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import pkg from '../../package.json' with { type: 'json' };
+import os from 'os';
 
 export const initializeGeminiCLI = async (local = false, fs = { mkdir, readFile, writeFile }) => {
   try {
-    const cwd = process.env['INIT_CWD'] || process.cwd();
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
 
     // Create directory
-    const extensionDir = join(cwd, '.gemini', 'extensions', 'observability-mcp');
+    const extensionDir = join(os.homedir(), '.gemini', 'extensions', 'observability-mcp');
     await fs.mkdir(extensionDir, { recursive: true });
 
     // Create gemini-extension.json
