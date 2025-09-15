@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/suztomo/gcloud-mcp/compare/observability-mcp-v0.1.0...observability-mcp-v0.1.1) (2025-09-15)
+
+
+### Bug Fixes
+
+* Standardize install to home dir ([#178](https://github.com/suztomo/gcloud-mcp/issues/178)) ([2129a76](https://github.com/suztomo/gcloud-mcp/commit/2129a76d6c8887793c72d418245fe50250203312))
+
 ## 0.1.0 (2025-09-09)
 
 
