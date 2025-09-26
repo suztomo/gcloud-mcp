@@ -6,6 +6,10 @@
     "packages/observability-mcp": {}
   },
   "plugins": [
+        {
+      "type": "node-workspace",
+      "updatePeerDependencies": true
+    },
     {
       "type": "sentence-case"
     }
